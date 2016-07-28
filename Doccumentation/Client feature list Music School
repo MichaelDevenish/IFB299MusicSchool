@@ -1,0 +1,51 @@
+FEATURE LIST - CLIENT
+
+•	Teacher information
+    o	Name
+    o	Contact details
+    o	Facebook name
+    o	Qualifications/Level of skill
+    o	Instruments
+    o	Language skills
+    o	Feedback manager
+        •	Students on teacher
+        •	References on teacher
+        
+•	Student information
+    o	Name
+    o	General details
+    o	Contact details
+    o	Facebook name
+    o	Parental information (under 10’s)
+        •	Contact details
+        
+•	Student lesson preferences
+    o	Day
+    o	Time
+    o	Teacher
+        •	Gender
+        •	Language
+        
+•	Contract management
+    o	Lesson start time
+    o	Lesson end time
+    o	Lesson type
+    o	Lesson duration
+    o	Cost
+    o	Contract duration
+    o	Lesson restrictions (new v. old students)
+    
+•	Cost management system
+•	Instrument hire/inventory
+    o	Type
+    o	Cost
+    o	Condition
+    o	Hiring form (online)
+    
+•	Contact details
+    o	Contact info for school
+    o	Expression of interest form for teachers
+        •	Notes on interview
+        
+•	Reporting
+    o	Up to you :^)
