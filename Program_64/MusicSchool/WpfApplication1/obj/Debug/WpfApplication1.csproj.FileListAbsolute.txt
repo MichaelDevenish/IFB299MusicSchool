@@ -1,0 +1,12 @@
+C:\Users\patri_000\Desktop\app design\assignment\Program_64\MusicSchool\WpfApplication1\bin\Debug\WpfApplication1.exe.config
+C:\Users\patri_000\Desktop\app design\assignment\Program_64\MusicSchool\WpfApplication1\bin\Debug\WpfApplication1.exe
+C:\Users\patri_000\Desktop\app design\assignment\Program_64\MusicSchool\WpfApplication1\bin\Debug\WpfApplication1.pdb
+C:\Users\patri_000\Desktop\app design\assignment\Program_64\MusicSchool\WpfApplication1\obj\Debug\MainWindow.baml
+C:\Users\patri_000\Desktop\app design\assignment\Program_64\MusicSchool\WpfApplication1\obj\Debug\MainWindow.g.cs
+C:\Users\patri_000\Desktop\app design\assignment\Program_64\MusicSchool\WpfApplication1\obj\Debug\App.g.cs
+C:\Users\patri_000\Desktop\app design\assignment\Program_64\MusicSchool\WpfApplication1\obj\Debug\WpfApplication1_MarkupCompile.cache
+C:\Users\patri_000\Desktop\app design\assignment\Program_64\MusicSchool\WpfApplication1\obj\Debug\WpfApplication1.g.resources
+C:\Users\patri_000\Desktop\app design\assignment\Program_64\MusicSchool\WpfApplication1\obj\Debug\WpfApplication1.Properties.Resources.resources
+C:\Users\patri_000\Desktop\app design\assignment\Program_64\MusicSchool\WpfApplication1\obj\Debug\WpfApplication1.csproj.GenerateResource.Cache
+C:\Users\patri_000\Desktop\app design\assignment\Program_64\MusicSchool\WpfApplication1\obj\Debug\WpfApplication1.exe
+C:\Users\patri_000\Desktop\app design\assignment\Program_64\MusicSchool\WpfApplication1\obj\Debug\WpfApplication1.pdb
