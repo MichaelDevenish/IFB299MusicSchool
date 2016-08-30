@@ -11,3 +11,6 @@ C:\Users\patri_000\Desktop\app design\assignment\Program_64\MusicSchool\WpfAppli
 C:\Users\patri_000\Desktop\app design\assignment\Program_64\MusicSchool\WpfApplication1\obj\Debug\WpfApplication1.exe
 C:\Users\patri_000\Desktop\app design\assignment\Program_64\MusicSchool\WpfApplication1\obj\Debug\WpfApplication1.pdb
 C:\Users\patri_000\Desktop\app design\assignment\Program_64\MusicSchool\WpfApplication1\obj\Debug\WpfApplication1.csprojResolveAssemblyReference.cache
+C:\Users\Michael\Desktop\ifb299\Program_64\MusicSchool\WpfApplication1\bin\Debug\WpfApplication1.exe.config
+C:\Users\Michael\Desktop\ifb299\Program_64\MusicSchool\WpfApplication1\obj\Debug\WpfApplication1.exe
+C:\Users\Michael\Desktop\ifb299\Program_64\MusicSchool\WpfApplication1\obj\Debug\WpfApplication1.pdb
