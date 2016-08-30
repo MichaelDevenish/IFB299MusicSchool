@@ -22,6 +22,7 @@ namespace WpfApplication1
     {
         public MainWindow()
         {
+            bool logged_in = false;
             InitializeComponent();
         }
     }

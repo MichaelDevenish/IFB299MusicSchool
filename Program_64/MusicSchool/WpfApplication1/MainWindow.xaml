@@ -8,12 +8,14 @@
             <TabItem Header="ACCOUNT" Margin="-0.2,0,0,0" IsTabStop="False" Padding="0,-2,4,0" HorizontalAlignment="Left" Width="160">
                 <Grid Background="White">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="77*"/>
-                        <ColumnDefinition Width="13*"/>
-                        <ColumnDefinition Width="8*"/>
-                        <ColumnDefinition Width="43*"/>
-                        <ColumnDefinition Width="258*"/>
+                        <ColumnDefinition Width="200*"/>
+                        <ColumnDefinition Width="600*"/>
                     </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="51,72,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="261"/>
+                    <TextBox Grid.Column="1" HorizontalAlignment="Left" Height="22" Margin="51,142,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="261"/>
+                    <Label Content="Username" Grid.Column="1" HorizontalAlignment="Left" Margin="51,42,0,0" VerticalAlignment="Top" Width="167" Height="30"/>
+                    <Label Content="Label" Grid.Column="1" HorizontalAlignment="Left" Height="30" Margin="51,112,0,0" VerticalAlignment="Top" Width="217"/>
+                    <Button Content="Log on" Grid.Column="1" HorizontalAlignment="Left" Margin="51,188,0,0" VerticalAlignment="Top" Width="75"/>
                 </Grid>
             </TabItem>
             <TabItem Header="TIMETABLE" Width="160" Margin="0" HorizontalAlignment="Left">

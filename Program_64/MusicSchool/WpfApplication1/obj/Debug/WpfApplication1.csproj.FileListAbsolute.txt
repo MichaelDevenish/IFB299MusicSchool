@@ -10,3 +10,4 @@ C:\Users\patri_000\Desktop\app design\assignment\Program_64\MusicSchool\WpfAppli
 C:\Users\patri_000\Desktop\app design\assignment\Program_64\MusicSchool\WpfApplication1\obj\Debug\WpfApplication1.csproj.GenerateResource.Cache
 C:\Users\patri_000\Desktop\app design\assignment\Program_64\MusicSchool\WpfApplication1\obj\Debug\WpfApplication1.exe
 C:\Users\patri_000\Desktop\app design\assignment\Program_64\MusicSchool\WpfApplication1\obj\Debug\WpfApplication1.pdb
+C:\Users\patri_000\Desktop\app design\assignment\Program_64\MusicSchool\WpfApplication1\obj\Debug\WpfApplication1.csprojResolveAssemblyReference.cache
