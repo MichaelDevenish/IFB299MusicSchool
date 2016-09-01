@@ -20,10 +20,27 @@ namespace WpfApplication1
     /// </summary>
     public partial class MainWindow : Window
     {
+        public bool logged_in = false;
+
         public MainWindow()
         {
-            bool logged_in = false;
+            
             InitializeComponent();
+        }
+
+        private void tab_changed(object sender, SelectionChangedEventArgs e)
+        {
+            if (logged_in)
+            {
+                errorMessage.Visibility = System.Windows.Visibility.Hidden;
+                timetable_ret.Visibility = System.Windows.Visibility.Visible;
+            }
+            else
+            {
+                errorMessage.Visibility = System.Windows.Visibility.Visible;
+                timetable_ret.Visibility = System.Windows.Visibility.Hidden;
+
+            }
         }
     }
 }

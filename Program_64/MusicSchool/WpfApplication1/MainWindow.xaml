@@ -4,7 +4,7 @@
         Title="MainWindow" Height="600" Width="800">
     <Grid>
         <Image HorizontalAlignment="Left" Height="152" VerticalAlignment="Top" Width="790"/>
-        <TabControl HorizontalAlignment="Left" Height="417" Margin="0,152,0,0" VerticalAlignment="Top" Width="800" Padding="0">
+        <TabControl HorizontalAlignment="Left" Height="417" Margin="0,152,0,0" VerticalAlignment="Top" Width="800" Padding="0" SelectionChanged="tab_changed">
             <TabItem Header="ACCOUNT" Margin="-0.2,0,0,0" IsTabStop="False" Padding="0,-2,4,0" HorizontalAlignment="Left" Width="160">
                 <Grid Background="White">
                     <Grid.ColumnDefinitions>
@@ -25,7 +25,12 @@
                         <GradientStop Color="White" Offset="1"/>
                     </LinearGradientBrush>
                 </TabItem.Background>
-                <Grid Background="White"/>
+                <Grid Background="White">
+                    <Label x:Name="errorMessage" Content="Must be logged in to use this feature..." HorizontalAlignment="Left" Height="60" Margin="256,150,0,0" VerticalAlignment="Top" Width="324"/>
+                    <GroupBox x:Name ="timetable_ret" Header="GroupBox" HorizontalAlignment="Left" Height="320" Margin="206,34,0,0" VerticalAlignment="Top" Width="485">
+                        <Button Content="Retrieve timetable" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="102" Margin="39,236,0,0"/>
+                    </GroupBox>
+                </Grid>
             </TabItem>
             <TabItem Margin="0" Width="160" HorizontalContentAlignment="Stretch" HorizontalAlignment="Left" Padding="6,2,0,2" Header="CONTACT"/>
             <TabItem Margin="0" Width="160" HorizontalAlignment="Left" Header="FEATURES"/>
