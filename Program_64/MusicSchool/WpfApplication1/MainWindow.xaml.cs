@@ -28,17 +28,19 @@ namespace WpfApplication1
             InitializeComponent();
         }
 
+        //Each time the user changes the tab, check if the login status has changes and make the appropriate
+        //adjustments
         private void tab_changed(object sender, SelectionChangedEventArgs e)
         {
             if (logged_in)
             {
                 errorMessage.Visibility = System.Windows.Visibility.Hidden;
-                timetable_ret.Visibility = System.Windows.Visibility.Visible;
+                //timetable_ret.Visibility = System.Windows.Visibility.Visible;
             }
             else
             {
                 errorMessage.Visibility = System.Windows.Visibility.Visible;
-                timetable_ret.Visibility = System.Windows.Visibility.Hidden;
+                //timetable_ret.Visibility = System.Windows.Visibility.Hidden;
 
             }
         }
