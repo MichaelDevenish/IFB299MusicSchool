@@ -14,9 +14,9 @@
                     <Label Content="ACCOUNT" HorizontalAlignment="Left" Height="78" Margin="24,81,0,0" VerticalAlignment="Top" Width="166" Style="{StaticResource Page_header}"/>
                     <StackPanel Grid.Column="1" HorizontalAlignment="Left" Height="324" Margin="28,28,0,0" VerticalAlignment="Top" Width="532">
                         <Label Content="Username" HorizontalAlignment="Left" VerticalAlignment="Top" Width="167" Height="30"/>
-                        <TextBox HorizontalAlignment="Left" Height="24" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="262"/>
+                        <TextBox HorizontalAlignment="Left" Height="24" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="262"/>
                         <Label Content="Password" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="217"/>
-                        <TextBox HorizontalAlignment="Left" Height="22" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="262"/>
+                        <TextBox HorizontalAlignment="Left" Height="22" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="262"/>
                         <Button Content="Log on" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75"/>
 
 
@@ -35,11 +35,13 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Label x:Name="errorMessage" Content="Must be logged in to use this feature..." HorizontalAlignment="Left" Height="60" Margin="334,229,0,0" VerticalAlignment="Top" Width="324"/>
+                    <Label x:Name="errorMessage" Content="Must be logged in to use this feature..." HorizontalAlignment="Left" Height="60" Margin="299,409,0,0" VerticalAlignment="Top" Width="324"/>
                     <Label Style ="{StaticResource Page_header}" Content="TIMETABLE" HorizontalAlignment="Left" Height="50" Margin="37,127,0,0" VerticalAlignment="Top" Width="128"/>
-                    <StackPanel HorizontalAlignment="Left" Height="306" Margin="229,39,0,0" VerticalAlignment="Top" Width="522">
-                        <DataGrid Height="97"/>
-                        <Button Content="Button"/>
+                    <StackPanel HorizontalAlignment="Left" Height="322" Margin="229,39,0,0" VerticalAlignment="Top" Width="522">
+                        <DataGrid Height="162"/>
+                        <Button Content="View my upcoming classes"/>
+                        <DataGrid HorizontalAlignment="Left" VerticalAlignment="Top" Height="109" Width="522"/>
+                        <Button Content="View all classes"/>
                     </StackPanel>
                 </Grid>
             </TabItem>
