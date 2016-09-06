@@ -10,13 +10,17 @@ namespace WpfApplication1
 /// </summary>
     class PasswordManagment
     {
+
+        Random random;
+        private static int SALT_LENGTH = 16;
+
+
         /// <summary>
         /// Constructor to set up variables such as the random number generator
         /// </summary>
         public PasswordManagment()
         {
-
-
+            random = new Random();
         }
 
         /// <summary>
@@ -24,7 +28,7 @@ namespace WpfApplication1
         /// </summary>
         public PasswordManagment(int seededRandom)
         {
-
+            random = new Random(seededRandom);
         }
 
         /// <summary>
@@ -33,8 +37,10 @@ namespace WpfApplication1
         /// <param name="password">the password to hash</param>
         /// <param name="salt">the salt that will be appended</param>
         /// <returns></returns>
-        public byte[] GenerateHash(String password, String salt)
+        public byte[] GenerateHash(string password, string salt)
         {
+            string plaintext = password + salt;
+
             return null;
         }
 
@@ -44,7 +50,13 @@ namespace WpfApplication1
         /// <returns></returns>
         public string GenerateSalt()
         {
-            return null;
+            string characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            StringBuilder result = new StringBuilder(SALT_LENGTH);
+
+            for (int i = 0; i < SALT_LENGTH; i++)
+                result.Append(characters[random.Next(SALT_LENGTH)]);
+
+            return result.ToString();
         }
     }
 }
