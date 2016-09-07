@@ -4,7 +4,7 @@
         Title="MainWindow" Height="826.5" Width="800">
     <Grid>
         <Image HorizontalAlignment="Left" Height="152" VerticalAlignment="Top" Width="790"/>
-        <TabControl HorizontalAlignment="Left" Height="633" Margin="0,152,-8,0" VerticalAlignment="Top" Width="800" Padding="0" SelectionChanged="tab_changed">
+        <TabControl Margin="0,152,0,0" VerticalAlignment="Top" Padding="0" SelectionChanged="tab_changed">
             <TabItem Header="ACCOUNT" Margin="0" IsTabStop="False" Padding="0,-2,4,0" HorizontalAlignment="Left" Width="150">
                 <Grid Background="White">
                     <Grid.ColumnDefinitions>
@@ -35,14 +35,14 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Label x:Name="errorMessage" Content="Must be logged in to use this feature..." HorizontalAlignment="Left" Height="60" Margin="299,409,0,0" VerticalAlignment="Top" Width="324"/>
-                    <Label Style ="{StaticResource Page_header}" Content="TIMETABLE" HorizontalAlignment="Left" Height="50" Margin="37,127,0,0" VerticalAlignment="Top" Width="128"/>
-                    <StackPanel HorizontalAlignment="Left" Height="322" Margin="229,39,0,0" VerticalAlignment="Top" Width="522">
-                        <DataGrid Height="162"/>
-                        <Button Content="View my upcoming classes"/>
-                        <DataGrid HorizontalAlignment="Left" VerticalAlignment="Top" Height="109" Width="522"/>
-                        <Button Content="View all classes"/>
-                    </StackPanel>
+                    <TabControl x:Name="timetableTabControl"  VerticalAlignment="Top" Padding="0" SelectionChanged="tab_changed">
+                        <TabItem Header="All Classes" Margin="6,0,-6,0" HorizontalAlignment="Left" Width="150">
+                            <DataGrid x:Name="allClassesTable" Height="563" VerticalAlignment="Center" Margin="10" IsReadOnly="True"/>
+                        </TabItem>
+                        <TabItem Header="My Classes" Margin="6,0,-6,0" HorizontalAlignment="Left" Width="150">
+                            <DataGrid x:Name="myClassesTable" Height="563" VerticalAlignment="Center" Margin="10" IsReadOnly="True"/>
+                        </TabItem>
+                    </TabControl>
                 </Grid>
             </TabItem>
             <TabItem Margin="12,0,-12,0" Header="CONTACTS" HorizontalAlignment="Left" Width="150">
@@ -61,7 +61,6 @@
                         </ComboBox>
                         <TextBox HorizontalAlignment="Left" Height="243" TextWrapping="Wrap" Text="Message an Admin" VerticalAlignment="Top" Width="300"/>
                         <Button Content="Send" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="75" Margin="0,0,425,0" Height="55"/>
-
                     </StackPanel>
                     <Label VerticalAlignment="Top" HorizontalAlignment="Left" Height="489" Width="229" Margin="10,60,0,0" >
                         <TextBlock Height="318" Width="189"><Run Text="Administrator:"/><LineBreak/><Run/><LineBreak/><Run Text="Matt Damon"/><LineBreak/><Run Text="Phone Number:"/><LineBreak/><Run/><LineBreak/><Run Text="007"/><LineBreak/><Run Text="Address:"/><LineBreak/><Run/><LineBreak/><Run Text="123 Ipsum St Brisbane"/></TextBlock>
@@ -80,5 +79,6 @@
         </TabControl>
         <Image x:Name="imgMusicSchool" HorizontalAlignment="Left" Height="86" Margin="323,28,0,0" VerticalAlignment="Top" Width="150"/>
         <Image Source="Images/header.png" VerticalAlignment ="Top" Height="152"/>
+        <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Height="1" Margin="-400,320,0,0" VerticalAlignment="Top" Width="14"/>
     </Grid>
 </Window>
