@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WpfApplication1
+namespace PasswordManagment
 {/// <summary>
 /// This class is in charge of generating a SHA-3 hash and a 16 character salt for a supplied value
 /// </summary>

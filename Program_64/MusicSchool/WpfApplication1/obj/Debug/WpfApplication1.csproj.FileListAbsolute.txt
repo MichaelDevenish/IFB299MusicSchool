@@ -30,3 +30,15 @@ C:\Users\Nat\Documents\Uni\Third Year\Sem 2\IFB299\Program_64\MusicSchool\WpfApp
 C:\Users\Nat\Documents\Uni\Third Year\Sem 2\IFB299\Program_64\MusicSchool\WpfApplication1\obj\Debug\WpfApplication1.g.resources
 C:\Users\Nat\Documents\Uni\Third Year\Sem 2\IFB299\Program_64\MusicSchool\WpfApplication1\obj\Debug\WpfApplication1.Properties.Resources.resources
 C:\Users\Nat\Documents\Uni\Third Year\Sem 2\IFB299\Program_64\MusicSchool\WpfApplication1\obj\Debug\WpfApplication1.csproj.GenerateResource.Cache
+C:\Users\Michael\Desktop\ifb299\Program_64\MusicSchool\WpfApplication1\bin\Debug\WpfApplication1.exe
+C:\Users\Michael\Desktop\ifb299\Program_64\MusicSchool\WpfApplication1\bin\Debug\WpfApplication1.pdb
+C:\Users\Michael\Desktop\ifb299\Program_64\MusicSchool\WpfApplication1\bin\Debug\MySql.Data.dll
+C:\Users\Michael\Desktop\ifb299\Program_64\MusicSchool\WpfApplication1\obj\Debug\MainWindow.baml
+C:\Users\Michael\Desktop\ifb299\Program_64\MusicSchool\WpfApplication1\obj\Debug\App.baml
+C:\Users\Michael\Desktop\ifb299\Program_64\MusicSchool\WpfApplication1\obj\Debug\MainWindow.g.cs
+C:\Users\Michael\Desktop\ifb299\Program_64\MusicSchool\WpfApplication1\obj\Debug\App.g.cs
+C:\Users\Michael\Desktop\ifb299\Program_64\MusicSchool\WpfApplication1\obj\Debug\WpfApplication1_MarkupCompile.cache
+C:\Users\Michael\Desktop\ifb299\Program_64\MusicSchool\WpfApplication1\obj\Debug\WpfApplication1.g.resources
+C:\Users\Michael\Desktop\ifb299\Program_64\MusicSchool\WpfApplication1\obj\Debug\WpfApplication1.Properties.Resources.resources
+C:\Users\Michael\Desktop\ifb299\Program_64\MusicSchool\WpfApplication1\obj\Debug\WpfApplication1.csproj.GenerateResource.Cache
+C:\Users\Michael\Desktop\ifb299\Program_64\MusicSchool\WpfApplication1\obj\Debug\WpfApplication1.csprojResolveAssemblyReference.cache
