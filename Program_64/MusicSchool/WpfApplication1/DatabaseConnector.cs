@@ -117,12 +117,41 @@ namespace DatabaseConnector
         }
 
         /// <summary>
+        /// This is an example class that shows how execute a query to get data
+        /// </summary>
+        /// <returns>result of query</returns>
+        public bool CheckUsername(string username)
+        {
+            String query = "SELECT username FROM users WHERE username = @username;";
+            bool result = false;
+
+            if (OpenConnection())
+            {
+                //Create Command, bind value, Create a data reader and Execute the command
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@userID", username);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                //check if exists
+                while (dataReader.Read())
+                    if ((string)dataReader["username"] == username)
+                        result = true;
+
+                //close everything
+                dataReader.Close();
+                CloseConnection();
+            }
+            return result; //if cant connect return null
+
+        }
+
+        /// <summary>
         /// This is an example class that shows how to execute a query to set data
         /// </summary>
-        public void ExampleWriteDatabaseClass(string firstName, string lastName, DateTime dob, int role, byte[] password_hash, string salt)
+        public void ExampleWriteDatabaseClass(string firstName, string lastName, DateTime dob, int role, byte[] password_hash, string salt, string username)
         {
 
-            String query = "INSERT INTO users (first_name, last_name, dob, role, password_hash, salt) VALUES (@first_name, @last_name, @dob, @role, @password_hash, @salt);";
+            String query = "INSERT INTO users (first_name, last_name, dob, role, password_hash, salt,username) VALUES (@first_name, @last_name, @dob, @role, @password_hash, @salt,@username);";
 
             if (OpenConnection())
             {
@@ -136,6 +165,7 @@ namespace DatabaseConnector
                 cmd.Parameters.AddWithValue("@role", role);
                 cmd.Parameters.AddWithValue("@password_hash", password_hash);
                 cmd.Parameters.AddWithValue("@salt", salt);
+                cmd.Parameters.AddWithValue("@username", username);
 
                 cmd.ExecuteNonQuery();
 

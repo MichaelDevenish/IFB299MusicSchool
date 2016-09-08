@@ -29,6 +29,8 @@ namespace terminalHash
                 string last = RequestData("Please enter the users last name:");
                 string result = RequestData("Please enter the users password:");
 
+                string username = RequestUsername(database);
+
                 string salt = password.GenerateSalt();
                 byte[] hash = password.GenerateHash(result, salt);
 
@@ -36,14 +38,23 @@ namespace terminalHash
                 DateTime dob = EnterDOB();
 
                 if (RequestBinaryCondition("Is the data entered correctly (y/n)?", 'y', 'n'))
-                    database.ExampleWriteDatabaseClass(first, last, dob, role, hash, salt);
+                    database.ExampleWriteDatabaseClass(first, last, dob, role, hash, salt, username);
                 Console.WriteLine();
 
+                Console.ReadKey();
                 loop = RequestBinaryCondition("Do you wish to do another password (y/n)?", 'y', 'n');
                 Console.WriteLine();
             }
             Console.Write("Press any key to exit");
             Console.ReadKey();
+        }
+
+        private static string RequestUsername(DatabaseConnector.DatabaseConnector database)
+        {
+            string result = RequestData("what is the users username:");
+            while (database.CheckUsername(result))
+                result = RequestData("username already exists, try again:");
+            return result;
         }
 
         /// <summary>
