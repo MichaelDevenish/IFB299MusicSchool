@@ -24,7 +24,7 @@
 
                 </Grid>
             </TabItem>
-            <TabItem Header="TIMETABLE" Margin="6,0,-6,0" HorizontalAlignment="Left" Width="150">
+            <TabItem x:Name ="timetableTab" Header="TIMETABLE" Margin="6,0,-6,0" HorizontalAlignment="Left" Width="150">
                 <TabItem.Background>
                     <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
                         <GradientStop Color="#FFF0F0F0" Offset="0"/>
@@ -71,7 +71,7 @@
             <TabItem Margin="20,0,-20,0" Header="INSTRUMENTS" HorizontalAlignment="Left" Width="160">
                 <Label Content="Instrunment List" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="240" Margin="315,152,0,0"/>
             </TabItem>
-            <TabItem Margin="30,0,-30,0" Header="MISC" HorizontalAlignment="Left" Width="150">
+            <TabItem Margin="30,0,-30,0" Header="BOOKINGS" HorizontalAlignment="Left" Width="150">
                 <Label Content="Music School History" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="246" Margin="315,152,0,0"/>
             </TabItem>
 

@@ -75,6 +75,95 @@ namespace DatabaseConnector
             }
         }
 
+        public List<string>[] getTimetableInfo(int id)
+        {
+            List<string>[] list = new List<string>[5];
+            list[0] = new List<string>();
+            list[1] = new List<string>();
+            list[2] = new List<string>();
+            list[3] = new List<string>();
+            list[4] = new List<string>();
+
+            if (this.OpenConnection())
+            {
+                String query = "SELECT student_id,teacher_id,lesson_date,comments,attended FROM lessons WHERE student_id = @STUDENTID;";
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@STUDENTID", id);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                while (dataReader.Read())
+                {
+                    list[0].Add(dataReader["student_id"] + "");
+                    list[1].Add(dataReader["teacher_id"] + "");
+                    list[2].Add(dataReader["lesson_date"] + "");
+                    list[3].Add(dataReader["comments"] + "");
+                    list[4].Add(dataReader["attended"] + "");
+                }
+
+                dataReader.Close();
+                this.CloseConnection();
+            }
+
+            return list;
+        }
+
+
+        /// <summary>
+        /// Simplifies opening a connection, reading from or writing to the database, and closing the connection
+        /// </summary>
+        /// <param name="write">Boolean that is determines if it is a write operation for true, or a read operation for false</param>
+        /// <param name="query">Mysql statement to execute</param>
+        /// <param name="parameters">Dictionary of parameters where the keys are the variables in the MySql statement, and the values are the values to be binded to them </param>
+        /// <returns></returns>
+        public List<string>[] simpleConnection(bool write, string query, Dictionary<string, string> parameters)
+        {
+            if (this.OpenConnection())
+            {
+
+                MySqlCommand cmd = new MySqlCommand(query, this.connection);
+                //Get the values from the parameter dictionary and use it to bind variables in the query statement
+                if (parameters != null)
+                {
+                    foreach (KeyValuePair<string, string> par in parameters)
+                    {
+                        cmd.Parameters.AddWithValue(par.Key, par.Value);
+                    }
+                }
+
+
+                //-------WRITE OPERATION------
+                if (write)
+                {
+                    cmd.ExecuteNonQuery();
+                    CloseConnection();
+                    return null;
+                }
+                //---------READ OPERATION--------
+                else
+                {
+                    MySqlDataReader dataReader = cmd.ExecuteReader();
+                    //now that we know the field length, set up the list object
+                    List<string>[] list = new List<string>[dataReader.FieldCount];
+                    for (int i = 0; i < dataReader.FieldCount; i++)
+                    {
+                        list[i] = new List<string>();
+                    }
+                    while (dataReader.Read())
+                    {
+                        for (int i = 0; i < dataReader.FieldCount; i++)
+                        {
+                            list[i].Add(dataReader[i].ToString());
+                        }
+                    }
+                    dataReader.Close();
+                    CloseConnection();
+                    return list;
+                }
+
+            }
+            //connection wasn't opened
+            return null;
+        }
 
         /// <summary>
         /// This is an example class that shows how execute a query to get data
