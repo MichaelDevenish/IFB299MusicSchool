@@ -24,9 +24,11 @@ namespace WpfApplication1
         public bool logged_in = false;
         public List<HalfHour> allTimetables;
         public List<HalfHour> myTimetables;
+        public DatabaseConnector.DatabaseConnector db;
 
         public MainWindow()
         {
+            db = new DatabaseConnector.DatabaseConnector();
 
             InitializeComponent();
             allTimetables = GenerateTimetableDataBindings();
@@ -35,7 +37,13 @@ namespace WpfApplication1
             myClassesTable.ItemsSource = myTimetables;
 
             myTimetables[1].Monday = "hello";
-            //add database information to tables 
+
+            System.Diagnostics.Debug.WriteLine("aaa");
+            //test
+            Dictionary<string, string> param = new Dictionary<string, string>();
+            param.Add("@userID", "1");
+            List<string>[] list = db.simpleConnection(false, "SELECT first_name,last_name,dob FROM users WHERE user_id = @userID", param);
+            
         }
 
         //Each time the user changes the tab, check if the login status has changes and make the appropriate
@@ -44,9 +52,15 @@ namespace WpfApplication1
         {
             if (logged_in)
             {
-                //errorMessage.Visibility = System.Windows.Visibility.Hidden;
-                //timetable_ret.Visibility = System.Windows.Visibility.Visible;
+                //get data for timetable info
+                if(timetableTab.IsSelected)
+                {
+                    //List<string>[] info = db.getTimetableInfo();
+                }
             }
+            //errorMessage.Visibility = System.Windows.Visibility.Hidden;
+            //timetable_ret.Visibility = System.Windows.Visibility.Visible;
+
             else
             {
                 //errorMessage.Visibility = System.Windows.Visibility.Visible;

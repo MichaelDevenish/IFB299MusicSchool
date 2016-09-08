@@ -76,6 +76,7 @@ namespace DatabaseConnector
         }
 
 
+
         /// <summary>
         /// This is an example class that shows how execute a query to get data
         /// </summary>
