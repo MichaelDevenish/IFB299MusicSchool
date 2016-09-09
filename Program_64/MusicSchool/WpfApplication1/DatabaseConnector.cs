@@ -165,6 +165,7 @@ namespace DatabaseConnector
             return null;
         }
 
+
         /// <summary>
         /// This is an example class that shows how execute a query to get data
         /// </summary>
@@ -192,6 +193,89 @@ namespace DatabaseConnector
                     list[0].Add(dataReader["first_name"] + "");
                     list[1].Add(dataReader["last_name"] + "");
                     list[2].Add(dataReader["dob"] + "");
+                }
+
+                //close everything
+                dataReader.Close();
+                CloseConnection();
+
+                //return result
+                return list;
+            }
+            else return null; //if cant connect return null
+
+        }
+
+        /// <summary>
+        /// Searches the database for each lesson on a specified date that the user has booked and returns it
+        /// </summary>
+        /// <param name="id">the student id</param>
+        /// <param name="date"> the requested date</param>
+        /// <returns>an array containing the first and last name of the teacher, the lesson date and the
+        /// lesson length (0 = 30min, 1 - 60min)</returns>
+        public List<string[]> ReadUserLessons(int id, DateTime date)
+        {
+            String query = "SELECT users.first_name, users.last_name, lessons.lesson_date, lessons.lesson_length" +
+                          " FROM lessons LEFT JOIN users ON lessons.teacher_id = users.user_id" +
+                          " WHERE student_id = @userID AND DATE(lesson_date) = @date;";
+
+            List<string[]> list = new List<string[]>();
+
+            if (OpenConnection())
+            {
+                //Create Command, bind value, Create a data reader and Execute the command
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@userID", id);
+                cmd.Parameters.AddWithValue("@date", date.ToString("yyyy-MM-dd"));
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                //Read the data and store it
+                while (dataReader.Read())
+                {
+                    string[] tempArray = { dataReader["first_name"] + "",
+                        dataReader["last_name"] + "", dataReader["lesson_date"] + "",dataReader["lesson_length"] + "" };
+                    list.Add(tempArray);
+                }
+
+                //close everything
+                dataReader.Close();
+                CloseConnection();
+
+                //return result
+                return list;
+            }
+            else return null; //if cant connect return null
+
+        }
+
+        /// <summary>
+        /// Searches the database for each lesson on a specified date that does not have 
+        /// a student assigned and returns it
+        /// </summary>
+        /// <param name="date"> the requested date</param>
+        /// <returns>an array containing the first and last name of the teacher, the lesson date and the
+        /// lesson length (0 = 30min, 1 - 60min)</returns>
+        public List<string[]> ReadEmptyLessons(DateTime date)
+        {
+            String query = "SELECT users.first_name, users.last_name, lessons.lesson_date, lessons.lesson_length" +
+                          " FROM lessons LEFT JOIN users ON lessons.teacher_id = users.user_id" +
+                          " WHERE student_id IS NULL AND DATE(lesson_date) = @date ;";
+
+            List<string[]> list = new List<string[]>();
+
+            if (OpenConnection())
+            {
+                //Create Command, bind value, Create a data reader and Execute the command
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@date", date.ToString("yyyy-MM-dd"));
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                //Read the data and store it
+                while (dataReader.Read())
+                {
+                    string[] tempArray = { dataReader["first_name"] + "",
+                        dataReader["last_name"] + "", dataReader["lesson_date"] + "",dataReader["lesson_length"] + ""  };
+                    list.Add(tempArray);
                 }
 
                 //close everything
@@ -237,7 +321,7 @@ namespace DatabaseConnector
         /// <summary>
         /// This is an example class that shows how to execute a query to set data
         /// </summary>
-        public void ExampleWriteDatabaseClass(string firstName, string lastName, DateTime dob, int role, byte[] password_hash, string salt, string username)
+        public void InsertUser(string firstName, string lastName, DateTime dob, int role, byte[] password_hash, string salt, string username)
         {
 
             String query = "INSERT INTO users (first_name, last_name, dob, role, password_hash, salt,username) VALUES (@first_name, @last_name, @dob, @role, @password_hash, @salt,@username);";
@@ -261,8 +345,6 @@ namespace DatabaseConnector
                 //close everything
                 CloseConnection();
             }
-
-
         }
     }
 }
