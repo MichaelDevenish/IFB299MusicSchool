@@ -213,11 +213,11 @@ namespace DatabaseConnector
         /// <param name="date"> the requested date</param>
         /// <returns>an array containing the first and last name of the teacher, the lesson date and the
         /// lesson length (0 = 30min, 1 - 60min)</returns>
-        public List<string[]> ReadUserLessons(int id, DateTime date)
+        public List<string[]> ReadUserLessons(int id)
         {
             String query = "SELECT users.first_name, users.last_name, lessons.lesson_date, lessons.lesson_length" +
                           " FROM lessons LEFT JOIN users ON lessons.teacher_id = users.user_id" +
-                          " WHERE student_id = @userID AND DATE(lesson_date) = @date;";
+                          " WHERE student_id = @userID;";
 
             List<string[]> list = new List<string[]>();
 
@@ -226,7 +226,6 @@ namespace DatabaseConnector
                 //Create Command, bind value, Create a data reader and Execute the command
                 MySqlCommand cmd = new MySqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@userID", id);
-                cmd.Parameters.AddWithValue("@date", date.ToString("yyyy-MM-dd"));
                 MySqlDataReader dataReader = cmd.ExecuteReader();
 
                 //Read the data and store it
@@ -252,14 +251,13 @@ namespace DatabaseConnector
         /// Searches the database for each lesson on a specified date that does not have 
         /// a student assigned and returns it
         /// </summary>
-        /// <param name="date"> the requested date</param>
         /// <returns>an array containing the first and last name of the teacher, the lesson date and the
         /// lesson length (0 = 30min, 1 - 60min)</returns>
-        public List<string[]> ReadEmptyLessons(DateTime date)
+        public List<string[]> ReadEmptyLessons()
         {
             String query = "SELECT users.first_name, users.last_name, lessons.lesson_date, lessons.lesson_length" +
                           " FROM lessons LEFT JOIN users ON lessons.teacher_id = users.user_id" +
-                          " WHERE student_id IS NULL AND DATE(lesson_date) = @date ;";
+                          " WHERE student_id IS NULL;";
 
             List<string[]> list = new List<string[]>();
 
@@ -267,7 +265,6 @@ namespace DatabaseConnector
             {
                 //Create Command, bind value, Create a data reader and Execute the command
                 MySqlCommand cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@date", date.ToString("yyyy-MM-dd"));
                 MySqlDataReader dataReader = cmd.ExecuteReader();
 
                 //Read the data and store it

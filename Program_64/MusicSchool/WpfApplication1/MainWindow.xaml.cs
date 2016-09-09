@@ -17,7 +17,7 @@ using System.Windows.Shapes;
 namespace WpfApplication1
 {
 
-    //TODO find out what row and column the result goes in (LINE 165)
+    //TODO find out what row and column the result goes in (LINE 85)
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -79,26 +79,22 @@ namespace WpfApplication1
             allClassesTable.ItemsSource = allTimetables;
             myClassesTable.ItemsSource = myTimetables;
 
-            SetupDateSelector();
+            foreach (string[] result in db.ReadEmptyLessons())
+            {
+                MessageBox.Show(result[1]);
+                //first get the timeslot by first getting the minutes and if equal to 30 add one
+                //then get the hours multiply by 2 and minus the offset.
+                //Then put it in the corresponding result for that day by getting the current day of
+                //the week and get finding the lessons offset using  TimeSpan ts = newDate - oldDate; 
+                //if it is within an acceptable timespan depending of th day of the week add it to the
+                //required position 
+
+                //possible ways to reduce data use, get only the lessons within a timespan
+            }
+
         }
 
-        /// <summary>
-        /// Initialises the date selectors by setting them up with the 
-        /// required values and setting their default to the current date
-        /// </summary>
-        private void SetupDateSelector()
-        {
-            for (int i = 0; i < 31; i++)
-                dayBox.Items.Add(i + 1);
-            for (int i = 0; i < 12; i++)
-                monthBox.Items.Add(i + 1);
-            for (int i = 1900; i <= DateTime.Today.Year; i++)
-                yearBox.Items.Add(i);
 
-            dayBox.SelectedIndex = DateTime.Today.Day - 1;
-            monthBox.SelectedIndex = DateTime.Today.Month - 1;
-            yearBox.SelectedIndex = yearBox.Items.Count - 1;
-        }
 
         /// <summary>
         /// Generates a blank databinding for the timetables
@@ -149,51 +145,8 @@ namespace WpfApplication1
 
             return time;
         }
-
-        /// <summary>
-        /// Event handeler for when the user searches the timetable for a date, it searches the timetable for that
-        /// date and propogates the tables with the results
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void button_Click(object sender, RoutedEventArgs e)
-        {
-
-            allTimetables = GenerateTimetableDataBindings();
-            myTimetables = GenerateTimetableDataBindings();
-
-            //now we need to check what column and row the result goes into and then place it there
-
-            try
-            {
-                foreach (string[] result in db.ReadEmptyLessons(GetDate()))
-                {
-                    MessageBox.Show(result[1]);
-                }
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("The date supplied does not exist.");
-            }
-        }
-
-        /// <summary>
-        /// Returns the current date selected in the timetable tab represented as a DateTime
-        /// </summary>
-        /// <returns>DateTime representing the current selected date in the timetable tab</returns>
-        private DateTime GetDate()
-        {
-            string date = yearBox.SelectedItem + "-";
-
-            if (((int)monthBox.SelectedItem) < 10) date += "0" + monthBox.SelectedItem + "-";
-            else date += monthBox.SelectedItem + "-";
-
-            if (((int)dayBox.SelectedItem) < 10) date += "0" + dayBox.SelectedItem;
-            else date += dayBox.SelectedItem;
-
-            return DateTime.ParseExact(date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-        }
     }
+
 
     public class HalfHour
     {
@@ -207,3 +160,4 @@ namespace WpfApplication1
         public string Saturday { get; set; }
     }
 }
+

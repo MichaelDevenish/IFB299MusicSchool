@@ -36,21 +36,14 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
 
-                    <TabControl x:Name="timetableTabControl"  VerticalAlignment="Top" Padding="0" SelectionChanged="tab_changed" Height="562" Margin="0,46,0,0">
+                    <TabControl x:Name="timetableTabControl"  VerticalAlignment="Top" Padding="0" SelectionChanged="tab_changed" Height="608">
                         <TabItem Header="All Classes" Margin="6,0,-6,0" HorizontalAlignment="Left" Width="150">
-                            <DataGrid x:Name="allClassesTable" Height="527" VerticalAlignment="Center" Margin="10" IsReadOnly="True"/>
+                            <DataGrid x:Name="allClassesTable" Height="574" VerticalAlignment="Center" Margin="10" IsReadOnly="True"/>
                         </TabItem>
                         <TabItem Header="My Classes" Margin="6,0,-6,0" HorizontalAlignment="Left" Width="150">
-                            <DataGrid x:Name="myClassesTable" Height="563" VerticalAlignment="Center" Margin="10" IsReadOnly="True"/>
+                            <DataGrid x:Name="myClassesTable" Height="576" VerticalAlignment="Center" Margin="10" IsReadOnly="True"/>
                         </TabItem>
                     </TabControl>
-                    <ComboBox x:Name="dayBox" HorizontalAlignment="Left" Margin="51,10,0,0" VerticalAlignment="Top" Width="50"/>
-                    <ComboBox x:Name="monthBox" HorizontalAlignment="Left" Margin="172,10,0,0" VerticalAlignment="Top" Width="50"/>
-                    <ComboBox x:Name="yearBox" HorizontalAlignment="Left" Margin="270,10,0,0" VerticalAlignment="Top" Width="75"/>
-                    <Label x:Name="label" Content="Day:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-                    <Label x:Name="label_Copy" Content="Month:" HorizontalAlignment="Left" Margin="106,10,0,0" VerticalAlignment="Top"/>
-                    <Label x:Name="label_Copy1" Content="Year:" HorizontalAlignment="Left" Margin="227,10,0,0" VerticalAlignment="Top"/>
-                    <Button x:Name="searchButton" Content="Search" HorizontalAlignment="Left" Margin="350,10,0,0" VerticalAlignment="Top" Width="86" Height="33" Click="button_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Margin="12,0,-12,0" Header="CONTACTS" HorizontalAlignment="Left" Width="150">
