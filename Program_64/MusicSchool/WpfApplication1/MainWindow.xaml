@@ -4,7 +4,7 @@
         Title="MainWindow" Height="826.5" Width="800">
     <Grid>
         <Image HorizontalAlignment="Left" Height="152" VerticalAlignment="Top" Width="790"/>
-        <TabControl Margin="0,152,0,0" VerticalAlignment="Top" Padding="0" SelectionChanged="tab_changed">
+        <TabControl Margin="0,152,0,0" VerticalAlignment="Top" Padding="0" SelectionChanged="tab_changed" Height="501">
             <TabItem Header="ACCOUNT" Margin="0" IsTabStop="False" Padding="0,-2,4,0" HorizontalAlignment="Left" Width="150">
                 <Grid Background="White">
                     <Grid.ColumnDefinitions>
@@ -64,13 +64,20 @@
                         <Button Content="Send" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="75" Margin="0,0,425,0" Height="55"/>
                     </StackPanel>
                     <Label VerticalAlignment="Top" HorizontalAlignment="Left" Height="489" Width="229" Margin="10,60,0,0" >
-                        <TextBlock Height="318" Width="189"><Run Text="Administrator:"/><LineBreak/><Run/><LineBreak/><Run Text="Matt Damon"/><LineBreak/><Run Text="Phone Number:"/><LineBreak/><Run/><LineBreak/><Run Text="007"/><LineBreak/><Run Text="Address:"/><LineBreak/><Run/><LineBreak/><Run Text="123 Ipsum St Brisbane"/></TextBlock>
+                        <TextBlock Height="318" Width="189"><Run Text="Administrator:"/><LineBreak/><Run Text="Jenny Pinelands"/><LineBreak/><Run/><LineBreak/><Run Text="Phone Number:"/><LineBreak/><Run Text="3845 9857"/><LineBreak/><Run/><LineBreak/><Run Text="Address:"/><LineBreak/><Run Text="123 Ipsum St Brisbane"/></TextBlock>
                     </Label>
 
                 </Grid>
             </TabItem>
             <TabItem Margin="20,0,-20,0" Header="INSTRUMENTS" HorizontalAlignment="Left" Width="160">
-                <Label Content="Instrunment List" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="240" Margin="315,152,0,0"/>
+                <StackPanel Grid.Column="1" HorizontalAlignment="Left" Height="402" Margin="28,28,0,0" VerticalAlignment="Top" Width="734">
+                    <Label Content="Instrunment List" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="240" Margin="35,32,0,0"/>
+                    <ComboBox x:Name="cmbInstrument" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" FontFamily="Segoe UI" Text="Select Recipients">
+                        <ComboBoxItem>InstumentName#1</ComboBoxItem>
+                        <ComboBoxItem>InstumentName#2</ComboBoxItem>
+                        <ComboBoxItem>InstumentName#3</ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
             </TabItem>
             <TabItem Margin="30,0,-30,0" Header="BOOKINGS" HorizontalAlignment="Left" Width="150">
                 <Label Content="Music School History" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="246" Margin="315,152,0,0"/>
