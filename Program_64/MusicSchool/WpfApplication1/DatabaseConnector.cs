@@ -270,8 +270,8 @@ namespace DatabaseConnector
                 //Read the data and store it
                 while (dataReader.Read())
                 {
-                    string[] tempArray = { dataReader["first_name"] + "",
-                        dataReader["last_name"] + "", dataReader["lesson_date"] + "",dataReader["lesson_length"] + ""  };
+                    string[] tempArray = { dataReader["first_name"] + "", dataReader["last_name"] + "",
+                                        dataReader["lesson_date"] + "",dataReader["lesson_length"] + ""  };
                     list.Add(tempArray);
                 }
 
