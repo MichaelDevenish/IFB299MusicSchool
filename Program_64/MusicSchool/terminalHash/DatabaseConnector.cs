@@ -176,5 +176,34 @@ namespace DatabaseConnector
 
 
         }
+
+        /// <summary>
+        /// This is an example class that shows how to execute a query to set data
+        /// </summary>
+        public void ExampleWriteInstrumentDatabaseClass(string InstrumentQuality, string instrumentName, string instrumentType)
+        {
+
+            String query = "INSERT INTO instruments (quality, instrument_name, instrument_type) VALUES (@quality, @instrument_name, @instrument_type);";
+
+            if (OpenConnection())
+            {
+
+                //Create Command bind values and execute
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                cmd.Parameters.AddWithValue("@quality", InstrumentQuality);
+                cmd.Parameters.AddWithValue("@instrument_name", instrumentName);
+                cmd.Parameters.AddWithValue("@instrument_type", instrumentType);
+             
+                cmd.ExecuteNonQuery();
+
+                //close everything
+                CloseConnection();
+            }
+
+
+        }
+
+
     }
 }

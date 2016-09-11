@@ -19,31 +19,56 @@ namespace terminalHash
         static void Main(string[] args)
         {
             bool loop = true;
+            Console.WriteLine("Welcome");
 
             while (loop)
             {
+
+                
+                Console.Write("What would you like to do, 1 = add users, 2 = add instruments. ");
+                string task = Console.ReadLine();
+                int performTask = Int32.Parse(task);
+
                 DatabaseConnector.DatabaseConnector database = new DatabaseConnector.DatabaseConnector();
                 PasswordManagment.PasswordManagment password = new PasswordManagment.PasswordManagment();
 
-                string first = RequestData("Please enter the users first name:");
-                string last = RequestData("Please enter the users last name:");
-                string result = RequestData("Please enter the users password:");
+                if (performTask == 1)
+                {
+                    string first = RequestData("Please enter the users first name:");
+                    string last = RequestData("Please enter the users last name:");
+                    string result = RequestData("Please enter the users password:");
 
-                string username = RequestUsername(database);
+                    string username = RequestUsername(database);
 
-                string salt = password.GenerateSalt();
-                byte[] hash = password.GenerateHash(result, salt);
+                    string salt = password.GenerateSalt();
+                    byte[] hash = password.GenerateHash(result, salt);
 
-                int role = EnterRole();
-                DateTime dob = EnterDOB();
+                    int role = EnterRole();
+                    DateTime dob = EnterDOB();
 
-                if (RequestBinaryCondition("Is the data entered correctly (y/n)?", 'y', 'n'))
-                    database.ExampleWriteDatabaseClass(first, last, dob, role, hash, salt, username);
-                Console.WriteLine();
+                    if (RequestBinaryCondition("Is the data entered correctly (y/n)?", 'y', 'n'))
+                        database.ExampleWriteDatabaseClass(first, last, dob, role, hash, salt, username);
+                    Console.WriteLine();
 
-                Console.ReadKey();
-                loop = RequestBinaryCondition("Do you wish to do another password (y/n)?", 'y', 'n');
-                Console.WriteLine();
+                    Console.ReadKey();
+                    loop = RequestBinaryCondition("Do you wish to do another password (y/n)?", 'y', 'n');
+                    Console.WriteLine();
+                }
+                else if (performTask == 2)
+                {
+                    string instrumentName = RequestData("Please enter the instruments name: ");
+                    string instrumentType = RequestData("Please enter the instruments type, eg; string: ");
+                    string instrumentQuality = RequestData("Please briefly describe the instruments condition: ");
+
+                    if (RequestBinaryCondition("Is the data entered correctly (y/n)?", 'y', 'n'))
+                        database.ExampleWriteInstrumentDatabaseClass(instrumentQuality, instrumentName, instrumentType);
+                    Console.WriteLine();
+
+                    Console.ReadKey();
+                    loop = RequestBinaryCondition("Do you wish to do another password (y/n)?", 'y', 'n');
+                    Console.WriteLine();
+
+                }
             }
             Console.Write("Press any key to exit");
             Console.ReadKey();
