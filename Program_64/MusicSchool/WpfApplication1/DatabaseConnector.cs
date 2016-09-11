@@ -115,7 +115,7 @@ namespace DatabaseConnector
         /// <param name="query">Mysql statement to execute</param>
         /// <param name="parameters">Dictionary of parameters where the keys are the variables in the MySql statement, and the values are the values to be binded to them </param>
         /// <returns></returns>
-        public List<string>[] simpleConnection(bool write, string query, Dictionary<string, string> parameters)
+        public List<string[]> simpleConnection(bool write, string query, Dictionary<string, object> parameters)
         {
             if (this.OpenConnection())
             {
@@ -124,7 +124,7 @@ namespace DatabaseConnector
                 //Get the values from the parameter dictionary and use it to bind variables in the query statement
                 if (parameters != null)
                 {
-                    foreach (KeyValuePair<string, string> par in parameters)
+                    foreach (KeyValuePair<string, object> par in parameters)
                     {
                         cmd.Parameters.AddWithValue(par.Key, par.Value);
                     }
@@ -143,17 +143,16 @@ namespace DatabaseConnector
                 {
                     MySqlDataReader dataReader = cmd.ExecuteReader();
                     //now that we know the field length, set up the list object
-                    List<string>[] list = new List<string>[dataReader.FieldCount];
-                    for (int i = 0; i < dataReader.FieldCount; i++)
-                    {
-                        list[i] = new List<string>();
-                    }
+                    List<string[]> list = new List<string[]>();
+
                     while (dataReader.Read())
                     {
+                        string[] tempArray = new string[dataReader.FieldCount];
                         for (int i = 0; i < dataReader.FieldCount; i++)
                         {
-                            list[i].Add(dataReader[i].ToString());
+                            tempArray[i] = dataReader[i].ToString();
                         }
+                        list.Add(tempArray);
                     }
                     dataReader.Close();
                     CloseConnection();
@@ -177,9 +176,12 @@ namespace DatabaseConnector
             String query = "SELECT users.first_name, users.last_name, lessons.lesson_date, lessons.lesson_length" +
                           " FROM lessons LEFT JOIN users ON lessons.teacher_id = users.user_id" +
                           " WHERE student_id = @userID;";
+            Dictionary<string, object> parameters = new Dictionary<string, object>() { {"@userID", id } };
 
-            List<string[]> list = new List<string[]>();
 
+            return simpleConnection(false, query, parameters);
+
+            /*
             if (OpenConnection())
             {
                 //Create Command, bind value, Create a data reader and Execute the command
@@ -203,6 +205,7 @@ namespace DatabaseConnector
                 return list;
             }
             else return null; //if cant connect return null
+            */
 
         }
 
@@ -218,6 +221,9 @@ namespace DatabaseConnector
                           " FROM lessons LEFT JOIN users ON lessons.teacher_id = users.user_id" +
                           " WHERE student_id IS NULL;";
 
+            return simpleConnection(false, query, null);
+
+            /*
             List<string[]> list = new List<string[]>();
 
             if (OpenConnection())
@@ -242,6 +248,8 @@ namespace DatabaseConnector
                 return list;
             }
             else return null; //if cant connect return null
+
+    */
 
         }
 

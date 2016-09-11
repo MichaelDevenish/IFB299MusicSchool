@@ -26,7 +26,7 @@ namespace WpfApplication1
     public partial class MainWindow : Window
     {
 
-        public bool logged_in = false;
+        public bool logged_in = true;
         public bool isAdmin = false;
         public int studentID = 11;//placeholder change this
 
@@ -41,11 +41,6 @@ namespace WpfApplication1
             InitializeComponent();
             RefreshTimetables();
 
-            System.Diagnostics.Debug.WriteLine("aaa");
-            //test
-            Dictionary<string, string> param = new Dictionary<string, string>();
-            param.Add("@userID", "1");
-            List<string>[] list = db.simpleConnection(false, "SELECT first_name,last_name,dob FROM users WHERE user_id = @userID", param);
         }
 
         //Each time the user changes the tab, check if the login status has changes and make the appropriate

@@ -26,6 +26,20 @@ namespace WpfApplication1
             InitializeComponent();
             this.parentWindow = parentWindow;
             this.studentID = studentID;
+            string[] data = { "1", "2", "3", "4", "5" };
+            selectTeacher.ItemsSource = data;
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            string query = "INSERT INTO `musicschool`.`lessons` (`student_id`, `teacher_id`, `lesson_date`, `attended`, `lesson_length`) VALUES(@userID, @teacherID, @timeDate, '0', '1')";
+            Dictionary<string, object> parameters = new Dictionary<string, object> {
+                { "@userID", this.studentID },
+                { "@teacherID", selectTeacher.SelectedIndex},
+                { "@timeDate", "2016-09-16 11:00:00" }};
+
+            DatabaseConnector.DatabaseConnector db = new DatabaseConnector.DatabaseConnector();
+            db.simpleConnection(true, query, parameters);
         }
     }
 }
