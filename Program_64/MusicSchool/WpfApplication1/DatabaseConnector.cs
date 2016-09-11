@@ -51,7 +51,7 @@ namespace DatabaseConnector
                 connection.Open();
                 return true;
             }
-            catch (MySqlException e)
+            catch (MySqlException)
             {
                 return false;
             }
@@ -69,7 +69,7 @@ namespace DatabaseConnector
                 connection.Close();
                 return true;
             }
-            catch (MySqlException e)
+            catch (MySqlException)
             {
                 return false;
             }
@@ -163,47 +163,6 @@ namespace DatabaseConnector
             }
             //connection wasn't opened
             return null;
-        }
-
-
-        /// <summary>
-        /// This is an example class that shows how execute a query to get data
-        /// </summary>
-        /// <returns>result of query</returns>
-        public List<string>[] ExampleReadDatabaseClass(int id)
-        {
-            String query = "SELECT first_name,last_name,dob FROM users WHERE user_id = @userID;";
-
-            //each sublist represents a column in the database
-            List<string>[] list = new List<string>[3];
-            list[0] = new List<string>();
-            list[1] = new List<string>();
-            list[2] = new List<string>();
-
-            if (OpenConnection())
-            {
-                //Create Command, bind value, Create a data reader and Execute the command
-                MySqlCommand cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@userID", id);
-                MySqlDataReader dataReader = cmd.ExecuteReader();
-
-                //Read the data and store it
-                while (dataReader.Read())
-                {
-                    list[0].Add(dataReader["first_name"] + "");
-                    list[1].Add(dataReader["last_name"] + "");
-                    list[2].Add(dataReader["dob"] + "");
-                }
-
-                //close everything
-                dataReader.Close();
-                CloseConnection();
-
-                //return result
-                return list;
-            }
-            else return null; //if cant connect return null
-
         }
 
         /// <summary>

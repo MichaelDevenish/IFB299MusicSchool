@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -26,8 +27,9 @@ namespace WpfApplication1
     {
 
         public bool logged_in = false;
-        public List<HalfHour> allTimetables;
-        public List<HalfHour> myTimetables;
+        public int studentID;
+        public ObservableCollection<HalfHour> allTimetables;
+        public ObservableCollection<HalfHour> myTimetables;
         public DatabaseConnector.DatabaseConnector db;
 
         public MainWindow()
@@ -53,18 +55,31 @@ namespace WpfApplication1
                 //get data for timetable info
                 if (timetableTab.IsSelected)
                 {
-                    //List<string>[] info = db.getTimetableInfo();
+                    RefreshTimetables();
                 }
+                errorMessage.Visibility = System.Windows.Visibility.Hidden;
+                bookButton.IsEnabled = true;
             }
-            //errorMessage.Visibility = System.Windows.Visibility.Hidden;
             //timetable_ret.Visibility = System.Windows.Visibility.Visible;
 
             else
             {
-                //errorMessage.Visibility = System.Windows.Visibility.Visible;
+                errorMessage.Visibility = System.Windows.Visibility.Visible;
+                bookButton.IsEnabled = false;
                 //timetable_ret.Visibility = System.Windows.Visibility.Hidden;
 
             }
+        }
+
+        /// <summary>
+        /// Refreshes the timetables with data from the database
+        /// </summary>
+        private void RefreshTimetables()
+        {
+            allTimetables = GenerateTimetableDataBindings();
+            LoadTimetableData(db.ReadEmptyLessons(), allTimetables);
+            allClassesTable.ItemsSource = allTimetables;
+            allClassesTable.Items.Refresh();
         }
 
         /// <summary>
@@ -90,7 +105,7 @@ namespace WpfApplication1
         /// </summary>
         /// <param name="results">the results that are to be added</param>
         /// <param name="timetable">the table databinding that is to be added to</param>
-        private void LoadTimetableData(List<string[]> results, List<HalfHour> timetable)
+        private void LoadTimetableData(List<string[]> results, ObservableCollection<HalfHour> timetable)
         {
             foreach (string[] result in results)
             {
@@ -170,9 +185,9 @@ namespace WpfApplication1
         /// Generates a blank databinding for the timetables
         /// </summary>
         /// <returns>a blank array of object HalfHour that is all blank except for Time</returns>
-        private List<HalfHour> GenerateTimetableDataBindings()
+        private ObservableCollection<HalfHour> GenerateTimetableDataBindings()
         {
-            List<HalfHour> Days = new List<HalfHour>();
+            ObservableCollection<HalfHour> Days = new ObservableCollection<HalfHour>();
             for (int i = 0; i <= 16; i++)
             {
                 Days.Add(new HalfHour()
@@ -210,6 +225,17 @@ namespace WpfApplication1
             else time += "am";
 
             return time;
+        }
+
+        private void bookButton_Click(object sender, RoutedEventArgs e)
+        {
+            BookWindow book = new BookWindow(this, studentID);
+            book.ShowDialog();
+        }
+
+        private void refreshButton_Click(object sender, RoutedEventArgs e)
+        {
+            RefreshTimetables();
         }
     }
 
