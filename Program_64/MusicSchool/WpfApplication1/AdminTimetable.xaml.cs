@@ -14,18 +14,16 @@ using System.Windows.Shapes;
 
 namespace WpfApplication1
 {
-    /// <summary>
-    /// A window that the user uses to book lessons
-    /// </summary>
-    public partial class BookWindow : Window
+   /// <summary>
+   /// A window that the admin uses to add lessons to the timetable
+   /// </summary>
+    public partial class AdminTimetable : Window
     {
         private MainWindow parentWindow;
-        private int studentID;
-        public BookWindow(MainWindow parentWindow, int studentID)
+        public AdminTimetable(MainWindow parentWindow)
         {
             InitializeComponent();
             this.parentWindow = parentWindow;
-            this.studentID = studentID;
         }
     }
 }

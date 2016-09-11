@@ -27,7 +27,9 @@ namespace WpfApplication1
     {
 
         public bool logged_in = false;
-        public int studentID;
+        public bool isAdmin = false;
+        public int studentID = 11;//placeholder change this
+
         public ObservableCollection<HalfHour> allTimetables;
         public ObservableCollection<HalfHour> myTimetables;
         public DatabaseConnector.DatabaseConnector db;
@@ -37,7 +39,7 @@ namespace WpfApplication1
             db = new DatabaseConnector.DatabaseConnector();
 
             InitializeComponent();
-            SetupTimetable();
+            RefreshTimetables();
 
             System.Diagnostics.Debug.WriteLine("aaa");
             //test
@@ -50,6 +52,7 @@ namespace WpfApplication1
         //adjustments
         private void tab_changed(object sender, SelectionChangedEventArgs e)
         {
+            adminLessonButton.Visibility = Visibility.Hidden;
             if (logged_in)
             {
                 //get data for timetable info
@@ -57,6 +60,11 @@ namespace WpfApplication1
                 {
                     RefreshTimetables();
                 }
+                if (isAdmin)
+                {
+                    adminLessonButton.Visibility = Visibility.Visible;
+                }
+
                 errorMessage.Visibility = System.Windows.Visibility.Hidden;
                 bookButton.IsEnabled = true;
             }
@@ -80,23 +88,11 @@ namespace WpfApplication1
             LoadTimetableData(db.ReadEmptyLessons(), allTimetables);
             allClassesTable.ItemsSource = allTimetables;
             allClassesTable.Items.Refresh();
-        }
 
-        /// <summary>
-        /// Sets up everything related to the Timetable tab
-        /// Does this by creating blank data bindings for the tables
-        /// and calling a function to populate the Date Selectors
-        /// </summary>
-        private void SetupTimetable()
-        {
-            allTimetables = GenerateTimetableDataBindings();
             myTimetables = GenerateTimetableDataBindings();
-            allClassesTable.ItemsSource = allTimetables;
+            LoadTimetableData(db.ReadUserLessons(studentID), myTimetables);
             myClassesTable.ItemsSource = myTimetables;
-
-            LoadTimetableData(db.ReadEmptyLessons(), allTimetables);
-            //all we have to do to setup the personal timetable is call
-            //the above command but with a different query and refrence myTimetables
+            myClassesTable.Items.Refresh();
         }
 
         /// <summary>
@@ -236,6 +232,12 @@ namespace WpfApplication1
         private void refreshButton_Click(object sender, RoutedEventArgs e)
         {
             RefreshTimetables();
+        }
+
+        private void adminLessonButton_Click(object sender, RoutedEventArgs e)
+        {
+            AdminTimetable admin = new AdminTimetable(this);
+            admin.ShowDialog();
         }
     }
 
