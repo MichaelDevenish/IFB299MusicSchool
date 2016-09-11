@@ -4,15 +4,16 @@
         Title="MainWindow" Height="826.5" Width="800">
     <Grid>
         <Image HorizontalAlignment="Left" Height="152" VerticalAlignment="Top" Width="790"/>
-        <TabControl Margin="0,152,0,0" VerticalAlignment="Top" Padding="0" SelectionChanged="tab_changed" Height="501">
+        <TabControl Margin="0,152,0,0" VerticalAlignment="Top" Padding="0" SelectionChanged="tab_changed" Height="650">
             <TabItem Header="ACCOUNT" Margin="0" IsTabStop="False" Padding="0,-2,4,0" HorizontalAlignment="Left" Width="150">
                 <Grid Background="White">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="200*"/>
-                        <ColumnDefinition Width="600*"/>
+                        <ColumnDefinition Width="99*"/>
+                        <ColumnDefinition Width="20*"/>
+                        <ColumnDefinition Width="276*"/>
                     </Grid.ColumnDefinitions>
                     <Label Content="ACCOUNT" HorizontalAlignment="Left" Height="78" Margin="24,81,0,0" VerticalAlignment="Top" Width="166" Style="{StaticResource Page_header}"/>
-                    <StackPanel Grid.Column="1" HorizontalAlignment="Left" Height="324" Margin="28,28,0,0" VerticalAlignment="Top" Width="532">
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Left" Height="324" Margin="28,28,0,0" VerticalAlignment="Top" Width="532" Grid.ColumnSpan="2">
                         <Label Content="Username" HorizontalAlignment="Left" VerticalAlignment="Top" Width="167" Height="30"/>
                         <TextBox HorizontalAlignment="Left" Height="24" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="262"/>
                         <Label Content="Password" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="217"/>
@@ -36,13 +37,27 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
 
-                    <TabControl x:Name="timetableTabControl"  VerticalAlignment="Top" Padding="0" SelectionChanged="tab_changed" Height="608">
+                    <TabControl x:Name="timetableTabControl" Padding="0" SelectionChanged="tab_changed">
                         <TabItem Header="All Classes" Margin="6,0,-6,0" HorizontalAlignment="Left" Width="150">
-                            <DataGrid x:Name="allClassesTable" Height="574" VerticalAlignment="Center" Margin="10" IsReadOnly="True"/>
+                            <Grid Margin="0" Height="576">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="40"/>
+                                    <RowDefinition Height="10"/>
+                                </Grid.RowDefinitions>
+
+                                <DataGrid x:Name="allClassesTable" Height="520" VerticalAlignment="Center" Margin="10,0,10,-514" IsReadOnly="True" Grid.Row="1"/>
+                                <Button x:Name="bookButton" Content="Book Lesson" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="102" Click="bookButton_Click" />
+                                <Button x:Name="refreshButton" Content="Refresh" HorizontalAlignment="Left" Margin="703,10,0,0" VerticalAlignment="Top" Width="75" Click="refreshButton_Click" />
+                                <Label x:Name="errorMessage" Content="You must be logged in to Book a lesson" HorizontalAlignment="Left" Height="31" Margin="117,7,0,0" VerticalAlignment="Top" Width="294" Foreground="Red"/>
+                                <Button x:Name="adminLessonButton" Content="Add Lessons" HorizontalAlignment="Left" Height="25" Margin="599,10,0,0" VerticalAlignment="Top" Width="99" Click="adminLessonButton_Click"/>
+                            </Grid>
+
                         </TabItem>
                         <TabItem Header="My Classes" Margin="6,0,-6,0" HorizontalAlignment="Left" Width="150">
-                            <DataGrid x:Name="myClassesTable" Height="576" VerticalAlignment="Center" Margin="10" IsReadOnly="True"/>
+                            <DataGrid x:Name="myClassesTable" Height="550" VerticalAlignment="Center" Margin="10" IsReadOnly="True"/>
                         </TabItem>
+
+
                     </TabControl>
                 </Grid>
             </TabItem>
