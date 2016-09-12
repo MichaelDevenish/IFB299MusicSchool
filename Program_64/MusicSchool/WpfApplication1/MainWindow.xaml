@@ -95,8 +95,8 @@
                     <TextBox HorizontalAlignment="Left" Height="260" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="608"/>
                 </StackPanel>
             </TabItem>
-            <TabItem Margin="30,0,-30,0" Header="BOOKINGS" HorizontalAlignment="Left" Width="150">
-                <Label Content="Music School History" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="246" Margin="315,152,0,0"/>
+            <TabItem Margin="30,0,-30,0" Header="INFO" HorizontalAlignment="Left" Width="150">
+                <Label Content="Music School History" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="246" Margin="10,24,0,0"/>
             </TabItem>
             <TextBlock Height="148" TextWrapping="Wrap" Text="TextBlock" Width="232"/>
 
