@@ -176,12 +176,8 @@ namespace DatabaseConnector
             String query = "SELECT users.first_name, users.last_name, lessons.lesson_date, lessons.lesson_length" +
                           " FROM lessons LEFT JOIN users ON lessons.teacher_id = users.user_id" +
                           " WHERE student_id = @userID;";
-            Dictionary<string, object> parameters = new Dictionary<string, object>() { {"@userID", id } };
+            List<string[]> list = new List<string[]>();
 
-
-            return simpleConnection(false, query, parameters);
-
-            /*
             if (OpenConnection())
             {
                 //Create Command, bind value, Create a data reader and Execute the command
@@ -205,7 +201,7 @@ namespace DatabaseConnector
                 return list;
             }
             else return null; //if cant connect return null
-            */
+
 
         }
 
@@ -221,9 +217,7 @@ namespace DatabaseConnector
                           " FROM lessons LEFT JOIN users ON lessons.teacher_id = users.user_id" +
                           " WHERE student_id IS NULL;";
 
-            return simpleConnection(false, query, null);
 
-            /*
             List<string[]> list = new List<string[]>();
 
             if (OpenConnection())
@@ -249,7 +243,7 @@ namespace DatabaseConnector
             }
             else return null; //if cant connect return null
 
-    */
+
 
         }
 
