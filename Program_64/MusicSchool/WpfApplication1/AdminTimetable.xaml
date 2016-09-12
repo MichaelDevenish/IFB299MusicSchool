@@ -5,8 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApplication1"
         mc:Ignorable="d"
-        Title="AdminTimetable" Height="300" Width="300">
+        Title="AdminTimetable" Height="230.847" Width="302.034">
     <Grid>
-        
+        <ComboBox x:Name="teacherBox" HorizontalAlignment="Left" Margin="80,14,0,0" VerticalAlignment="Top" Width="205"/>
+        <Label x:Name="label" Content="Teacher:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label1" Content="Date:" HorizontalAlignment="Left" Margin="10,45,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="dayBox" HorizontalAlignment="Left" Margin="80,54,0,0" VerticalAlignment="Top" Width="50"/>
+        <ComboBox x:Name="monthBox" HorizontalAlignment="Left" Margin="130,54,0,0" VerticalAlignment="Top" Width="50"/>
+        <ComboBox x:Name="yearBox" HorizontalAlignment="Left" Margin="180,54,0,0" VerticalAlignment="Top" Width="75"/>
+        <ComboBox x:Name="lengthBox" HorizontalAlignment="Left" Margin="80,130,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label x:Name="label4" Content="Length:" HorizontalAlignment="Left" Margin="10,121,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label2" Content="Hour:" HorizontalAlignment="Left" Margin="10,81,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="hourOfBox" HorizontalAlignment="Left" Margin="80,90,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label x:Name="label3" Content="Repeats:" HorizontalAlignment="Left" Margin="10,157,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="repeatBox" HorizontalAlignment="Left" Margin="79,166,0,0" VerticalAlignment="Top" Width="51"/>
+        <Label x:Name="label5" Content="times" HorizontalAlignment="Left" Margin="135,157,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="button" Content="Submit" HorizontalAlignment="Left" Margin="197,163,0,0" VerticalAlignment="Top" Width="75"/>
+
     </Grid>
 </Window>
