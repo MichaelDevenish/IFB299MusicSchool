@@ -71,6 +71,8 @@ namespace WpfApplication1
         private void button_Click(object sender, RoutedEventArgs e)
         {
             int userID = int.Parse(teacherInfo[teacherBox.SelectedIndex][0]);
+            // DateTime date = firstDatePicker.SelectedDate;
+            //date = date.addhours
         }
     }
 }
