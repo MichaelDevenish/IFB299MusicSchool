@@ -26,15 +26,20 @@ namespace WpfApplication1
     public partial class MainWindow : Window
     {
 
-        public bool logged_in = true;
-        public bool isAdmin = true;
-        public int studentID = 11;//placeholder change this
+        private bool logged_in = true;
+        private bool isAdmin = true;
+        private int studentID = 11;//placeholder change this
 
         public ObservableCollection<HalfHour> allTimetables;
         public ObservableCollection<HalfHour> myTimetables;
         private List<string[]> teacherInfo;
         private List<string[]> instrumentInfo;
-        public DatabaseConnector.DatabaseConnector db;
+        private DatabaseConnector.DatabaseConnector db;
+
+
+        public List<string[]> TeacherInfo { get { return teacherInfo; } }
+        public List<string[]> InstrumentInfo { get { return instrumentInfo; } }
+        public DatabaseConnector.DatabaseConnector DB { get { return db; } }
 
         public MainWindow()
         {
@@ -245,7 +250,7 @@ namespace WpfApplication1
 
         private void adminLessonButton_Click(object sender, RoutedEventArgs e)
         {
-            AdminTimetable admin = new AdminTimetable(this, teacherInfo);
+            AdminTimetable admin = new AdminTimetable(this);
             admin.ShowDialog();
         }
 

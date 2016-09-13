@@ -21,11 +21,9 @@ namespace WpfApplication1
     public partial class AdminTimetable : Window
     {
         private MainWindow parentWindow;
-        private List<string[]> teacherInfo;
-        public AdminTimetable(MainWindow parentWindow, List<string[]> teacherInfo)
+        public AdminTimetable(MainWindow parentWindow)
         {
             InitializeComponent();
-            this.teacherInfo = teacherInfo;
             this.parentWindow = parentWindow;
             SetupSelectors();
         }
@@ -35,8 +33,8 @@ namespace WpfApplication1
             for (int i = 0; i < 20; i++)
                 repeatBox.Items.Add(i + 1);
 
-            for (int i = 0; i < teacherInfo.Count; i++)
-                teacherBox.Items.Add(teacherInfo[i][1] + " " + teacherInfo[i][2]);
+            for (int i = 0; i < parentWindow.TeacherInfo.Count; i++)
+                teacherBox.Items.Add(parentWindow.TeacherInfo[i][1] + " " + parentWindow.TeacherInfo[i][2]);
 
             lengthBox.Items.Add("30 minutes");
             lengthBox.Items.Add("1 hour");
@@ -61,33 +59,40 @@ namespace WpfApplication1
             int hour = (((i + 18) % 24) / 2);
             if (hour == 0) hour = 12;
 
-            string time = hour + ":";
+            string time = "";
+            if (hour > 9) time += hour + ":";
+            else time += "0" + hour + ":";
 
-            if (i % 2 == 1) time += "30";
-            else time += "00";
+            if (i % 2 == 1) time += "30:00";
+            else time += "00:00";
 
-            if (i >= 6) time += "pm";
-            else time += "am";
+            if (i >= 6) time += " PM";
+            else time += " AM";
 
             return time;
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            int userID = int.Parse(teacherInfo[teacherBox.SelectedIndex][0]);
-            int repeats = repeatBox.SelectedIndex + 1;
+            int userID = int.Parse(parentWindow.TeacherInfo[teacherBox.SelectedIndex][0]);
             bool length = lengthBox.SelectedIndex != 0;
 
-            DateTime day = DateTime.Parse(firstDatePicker.SelectedDate.ToString());//event handling
-            string hours = hourOfBox.SelectedItem.ToString();
-            string date = day.ToString("dd/MM/yyyy");
+            DateTime day;
+            if (DateTime.TryParse(firstDatePicker.SelectedDate.ToString(), out day))
+            {
+                string dateString = day.ToString("dd/MM/yyyy") + " " + hourOfBox.SelectedItem.ToString();
+                DateTime dateof = DateTime.ParseExact(dateString
+                   , "dd/MM/yyyy hh:mm:ss tt", System.Globalization.CultureInfo.InvariantCulture);
 
-            //check the formating and convert to datetime
-            MessageBox.Show(date + hours);
+                for (int i = 0; i < repeatBox.SelectedIndex + 1; i++)
+                {
+                    if (i != 0) dateof = dateof.AddDays(7);
 
-
-            // DateTime date = firstDatePicker.SelectedDate;
-            //date = date.addhours
+                    parentWindow.DB.InsertLesson(userID, dateof, length);
+                }
+                MessageBox.Show("Insertion Complete");
+            }
+            else MessageBox.Show("The date entered was invalid");
         }
     }
 }

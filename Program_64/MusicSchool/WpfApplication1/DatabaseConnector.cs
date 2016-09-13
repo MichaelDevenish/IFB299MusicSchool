@@ -293,7 +293,7 @@ namespace DatabaseConnector
                 //Read the data and store it
                 while (dataReader.Read())
                 {
-                    string[] tempArray = { dataReader["user_id"] + "", dataReader["first_name"] + "", dataReader["last_name"] + ""};
+                    string[] tempArray = { dataReader["user_id"] + "", dataReader["first_name"] + "", dataReader["last_name"] + "" };
                     list.Add(tempArray);
                 }
 
@@ -366,6 +366,31 @@ namespace DatabaseConnector
                 cmd.Parameters.AddWithValue("@password_hash", password_hash);
                 cmd.Parameters.AddWithValue("@salt", salt);
                 cmd.Parameters.AddWithValue("@username", username);
+
+                cmd.ExecuteNonQuery();
+
+                //close everything
+                CloseConnection();
+            }
+        }
+
+        /// <summary>
+        /// This is an example class that shows how to execute a query to set data
+        /// </summary>
+        public void InsertLesson(int teacherID, DateTime lessonDate, bool length)
+        {
+
+            String query = "INSERT INTO lessons (teacher_id,lesson_length,lesson_date) VALUES (@id, @length, @date);";
+
+            if (OpenConnection())
+            {
+                //Create Command bind values and execute
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                cmd.Parameters.AddWithValue("@id", teacherID);
+                cmd.Parameters.AddWithValue("@length", length);
+                cmd.Parameters.AddWithValue("@date", lessonDate.ToString("yyyy-MM-dd HH:mm:ss"));
+
 
                 cmd.ExecuteNonQuery();
 
