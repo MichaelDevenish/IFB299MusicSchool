@@ -27,7 +27,7 @@ namespace WpfApplication1
     {
 
         public bool logged_in = true;
-        public bool isAdmin = false;
+        public bool isAdmin = true;
         public int studentID = 11;//placeholder change this
 
         public ObservableCollection<HalfHour> allTimetables;
@@ -44,9 +44,9 @@ namespace WpfApplication1
             instrumentInfo = db.ReadInstrumentInfo();
             InitializeComponent();
             RefreshTimetables();
-            for (int i = 0; i < teacherInfo.Count; i++) 
+            for (int i = 0; i < teacherInfo.Count; i++)
             {
-                cmbRecipient.Items.Add(teacherInfo[i][1]+" " + teacherInfo[i][2]);
+                cmbRecipient.Items.Add(teacherInfo[i][1] + " " + teacherInfo[i][2]);
             }
 
             for (int i = 0; i < instrumentInfo.Count; i++)
@@ -245,7 +245,7 @@ namespace WpfApplication1
 
         private void adminLessonButton_Click(object sender, RoutedEventArgs e)
         {
-            AdminTimetable admin = new AdminTimetable(this,teacherInfo);
+            AdminTimetable admin = new AdminTimetable(this, teacherInfo);
             admin.ShowDialog();
         }
 

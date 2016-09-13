@@ -35,6 +35,9 @@ namespace WpfApplication1
             for (int i = 0; i < 20; i++)
                 repeatBox.Items.Add(i + 1);
 
+            for (int i = 0; i < teacherInfo.Count; i++)
+                teacherBox.Items.Add(teacherInfo[i][1] + " " + teacherInfo[i][2]);
+
             lengthBox.Items.Add("30 minutes");
             lengthBox.Items.Add("1 hour");
 
@@ -44,6 +47,7 @@ namespace WpfApplication1
             lengthBox.SelectedIndex = 0;
             hourOfBox.SelectedIndex = 0;
             repeatBox.SelectedIndex = 0;
+            teacherBox.SelectedIndex = 0;
         }
 
         /// <summary>
@@ -74,13 +78,12 @@ namespace WpfApplication1
             int repeats = repeatBox.SelectedIndex + 1;
             bool length = lengthBox.SelectedIndex != 0;
 
-
+            DateTime day = DateTime.Parse(firstDatePicker.SelectedDate.ToString());//event handling
             string hours = hourOfBox.SelectedItem.ToString();
-            MessageBox.Show(hours);
-
-            string date = firstDatePicker.SelectedDate.ToString();
+            string date = day.ToString("dd/MM/yyyy");
 
             //check the formating and convert to datetime
+            MessageBox.Show(date + hours);
 
 
             // DateTime date = firstDatePicker.SelectedDate;
