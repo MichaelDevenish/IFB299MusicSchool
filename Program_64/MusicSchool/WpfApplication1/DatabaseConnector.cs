@@ -313,7 +313,7 @@ namespace DatabaseConnector
 
         public List<string[]> ReadInstrumentInfo()
         {
-            String query = "SELECT instrument.instrument_id, instrument.instrument_name, instrument.instrument_type, instrument.quality";
+            String query = "SELECT instrument_id, instrument_name, instrument_type, quality FROM instruments;";
 
 
             List<string[]> list = new List<string[]>();

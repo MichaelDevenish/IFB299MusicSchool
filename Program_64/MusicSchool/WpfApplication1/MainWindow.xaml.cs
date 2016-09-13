@@ -32,16 +32,30 @@ namespace WpfApplication1
 
         public ObservableCollection<HalfHour> allTimetables;
         public ObservableCollection<HalfHour> myTimetables;
+        private List<string[]> teacherInfo;
+        private List<string[]> instrumentInfo;
         public DatabaseConnector.DatabaseConnector db;
 
         public MainWindow()
         {
             db = new DatabaseConnector.DatabaseConnector();
 
+            teacherInfo = db.ReadTeacherInfo();
+            instrumentInfo = db.ReadInstrumentInfo();
             InitializeComponent();
             RefreshTimetables();
+            for (int i = 0; i < teacherInfo.Count; i++) 
+            {
+                cmbRecipient.Items.Add(teacherInfo[i][1]+" " + teacherInfo[i][2]);
+            }
 
+            for (int i = 0; i < instrumentInfo.Count; i++)
+            {
+                cmbInstrument.Items.Add(instrumentInfo[i][1]);
+            }
         }
+
+
 
         //Each time the user changes the tab, check if the login status has changes and make the appropriate
         //adjustments
@@ -231,8 +245,20 @@ namespace WpfApplication1
 
         private void adminLessonButton_Click(object sender, RoutedEventArgs e)
         {
-            AdminTimetable admin = new AdminTimetable(this);
+            AdminTimetable admin = new AdminTimetable(this,teacherInfo);
             admin.ShowDialog();
+        }
+
+        private void cmbRecipient_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int teacherID = int.Parse(teacherInfo[cmbRecipient.SelectedIndex][0]);
+            //lblTeacherAge.Content(teacherInfo[teacherID][3]);
+        }
+
+        private void cmbInstrument_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int instrumentID = int.Parse(instrumentInfo[cmbInstrument.SelectedIndex][0]);
+            //lblTeacherAge.Content(instrumentInfo[instrumentID][3]);
         }
     }
 
