@@ -17,24 +17,21 @@ namespace WpfApplication1
     /// <summary>
     /// A window that the admin uses to add lessons to the timetable
     /// </summary>
+    ///
     public partial class AdminTimetable : Window
     {
         private MainWindow parentWindow;
-        public AdminTimetable(MainWindow parentWindow)
+        private List<string[]> teacherInfo;
+        public AdminTimetable(MainWindow parentWindow, List<string[]> teacherInfo)
         {
             InitializeComponent();
+            this.teacherInfo = teacherInfo;
             this.parentWindow = parentWindow;
             SetupSelectors();
         }
 
         private void SetupSelectors()
         {
-            for (int i = 0; i < 31; i++)
-                dayBox.Items.Add(i + 1);
-            for (int i = 0; i < 12; i++)
-                monthBox.Items.Add(i + 1);
-            for (int i = 1900; i <= DateTime.Today.Year; i++)
-                yearBox.Items.Add(i);
             for (int i = 0; i < 20; i++)
                 repeatBox.Items.Add(i + 1);
 
@@ -44,9 +41,6 @@ namespace WpfApplication1
             for (int i = 0; i <= 16; i++)
                 hourOfBox.Items.Add(Get9to5TimeFrom16Int(i));
 
-            dayBox.SelectedIndex = DateTime.Today.Day - 1;
-            monthBox.SelectedIndex = DateTime.Today.Month - 1;
-            yearBox.SelectedIndex = yearBox.Items.Count - 1;
             lengthBox.SelectedIndex = 0;
             hourOfBox.SelectedIndex = 0;
             repeatBox.SelectedIndex = 0;
@@ -72,6 +66,11 @@ namespace WpfApplication1
             else time += "am";
 
             return time;
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            int userID = int.Parse(teacherInfo[teacherBox.SelectedIndex][0]);
         }
     }
 }
