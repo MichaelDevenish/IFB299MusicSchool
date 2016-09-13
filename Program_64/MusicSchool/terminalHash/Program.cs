@@ -51,7 +51,7 @@ namespace terminalHash
                     Console.WriteLine();
 
                     Console.ReadKey();
-                    loop = RequestBinaryCondition("Do you wish to do another password (y/n)?", 'y', 'n');
+                    loop = RequestBinaryCondition("Do you wish to do another user (y/n)?", 'y', 'n');
                     Console.WriteLine();
                 }
                 else if (performTask == 2)
@@ -65,7 +65,7 @@ namespace terminalHash
                     Console.WriteLine();
 
                     Console.ReadKey();
-                    loop = RequestBinaryCondition("Do you wish to do another password (y/n)?", 'y', 'n');
+                    loop = RequestBinaryCondition("Do you wish to do another intstrument (y/n)?", 'y', 'n');
                     Console.WriteLine();
 
                 }

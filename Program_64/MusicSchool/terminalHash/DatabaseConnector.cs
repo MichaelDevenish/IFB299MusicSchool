@@ -178,7 +178,7 @@ namespace DatabaseConnector
         }
 
         /// <summary>
-        /// This is an example class that shows how to execute a query to set data
+        /// This is an example class that outlines data insertion into the instruments table
         /// </summary>
         public void ExampleWriteInstrumentDatabaseClass(string InstrumentQuality, string instrumentName, string instrumentType)
         {
