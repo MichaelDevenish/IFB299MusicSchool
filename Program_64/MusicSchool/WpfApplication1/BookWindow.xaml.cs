@@ -21,13 +21,21 @@ namespace WpfApplication1
     {
         private MainWindow parentWindow;
         private int studentID;
+        List<string[]> teacherinfo;
         public BookWindow(MainWindow parentWindow, int studentID)
         {
+            DatabaseConnector.DatabaseConnector db = new DatabaseConnector.DatabaseConnector();
             InitializeComponent();
             this.parentWindow = parentWindow;
             this.studentID = studentID;
-            string[] data = { "1", "2", "3", "4", "5" };
-            selectTeacher.ItemsSource = data;
+
+            teacherinfo = db.ReadTeacherInfo();
+            List<string> teacherNames = new List<string>();
+            foreach(string[] name in teacherinfo)
+            {
+                teacherNames.Add(name[1] + " " + name[2]);
+            }
+            selectTeacher.ItemsSource = teacherNames;
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
@@ -35,8 +43,8 @@ namespace WpfApplication1
             string query = "INSERT INTO `musicschool`.`lessons` (`student_id`, `teacher_id`, `lesson_date`, `attended`, `lesson_length`) VALUES(@userID, @teacherID, @timeDate, '0', '1')";
             Dictionary<string, object> parameters = new Dictionary<string, object> {
                 { "@userID", this.studentID },
-                { "@teacherID", selectTeacher.SelectedIndex},
-                { "@timeDate", "2016-09-16 11:00:00" }};
+                { "@teacherID", teacherinfo[selectTeacher.SelectedIndex][0]},
+                { "@timeDate", selectDate.SelectedDate}};
 
             DatabaseConnector.DatabaseConnector db = new DatabaseConnector.DatabaseConnector();
             db.simpleConnection(true, query, parameters);
