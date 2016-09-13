@@ -29,6 +29,8 @@ namespace WpfApplication1
             this.parentWindow = parentWindow;
             this.studentID = studentID;
 
+            //selectDate.SelectedDate = DateTime.Now.;
+
             teacherinfo = db.ReadTeacherInfo();
             List<string> teacherNames = new List<string>();
             foreach(string[] name in teacherinfo)
@@ -36,10 +38,9 @@ namespace WpfApplication1
                 teacherNames.Add(name[1] + " " + name[2]);
             }
             selectTeacher.ItemsSource = teacherNames;
-            string[] validTimes = new string[17] { "8:00am", "8:30am", "9:00am", "9:30am", "10:00am",
+            string[] validTimes = new string[13] { "9:00am", "9:30am", "10:00am",
                                                      "10:30am", "11:00am", "11:30am", "12:00pm", "12:30pm",
-                                                      "1:00pm", "1:30pm", "2:00pm", "2:30pm", "3:00pm", "3:30pm",
-                                                       "4:00pm"};
+                                                      "1:00pm", "1:30pm", "2:00pm", "2:30pm", "3:00pm"};
             selectTime.ItemsSource = validTimes;
         }
 
@@ -48,11 +49,12 @@ namespace WpfApplication1
 
             DateTime date = (DateTime)(selectDate.SelectedDate);
 
-            string query = "INSERT INTO `musicschool`.`lessons` (`student_id`, `teacher_id`, `lesson_date`, `attended`, `lesson_length`) VALUES(@userID, @teacherID, @timeDate, '0', '1')";
+            string query = "INSERT INTO `musicschool`.`lessons` (`student_id`, `teacher_id`, `lesson_date`, `attended`, `lesson_length`) VALUES(@userID, @teacherID, @timeDate, '0', @half)";
             Dictionary<string, object> parameters = new Dictionary<string, object> {
                 { "@userID", this.studentID },
                 { "@teacherID", teacherinfo[selectTeacher.SelectedIndex][0]},
-                { "@timeDate", date.AddHours(selectTime.SelectedIndex/2 + 8).AddMinutes((selectTime.SelectedIndex % 2)*30)} };
+                { "@timeDate", date.AddHours(selectTime.SelectedIndex/2 + 9).AddMinutes((selectTime.SelectedIndex % 2)*30)},
+                { "@half", Convert.ToInt32(selectHalf.IsChecked)} };
 
             DatabaseConnector.DatabaseConnector db = new DatabaseConnector.DatabaseConnector();
             db.simpleConnection(true, query, parameters);
