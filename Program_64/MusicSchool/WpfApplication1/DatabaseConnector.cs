@@ -51,7 +51,7 @@ namespace DatabaseConnector
                 connection.Open();
                 return true;
             }
-            catch (MySqlException e)
+            catch (MySqlException)
             {
                 return false;
             }
@@ -69,7 +69,7 @@ namespace DatabaseConnector
                 connection.Close();
                 return true;
             }
-            catch (MySqlException e)
+            catch (MySqlException)
             {
                 return false;
             }
@@ -115,7 +115,7 @@ namespace DatabaseConnector
         /// <param name="query">Mysql statement to execute</param>
         /// <param name="parameters">Dictionary of parameters where the keys are the variables in the MySql statement, and the values are the values to be binded to them </param>
         /// <returns></returns>
-        public List<string>[] simpleConnection(bool write, string query, Dictionary<string, string> parameters)
+        public List<string[]> simpleConnection(bool write, string query, Dictionary<string, object> parameters)
         {
             if (this.OpenConnection())
             {
@@ -124,7 +124,7 @@ namespace DatabaseConnector
                 //Get the values from the parameter dictionary and use it to bind variables in the query statement
                 if (parameters != null)
                 {
-                    foreach (KeyValuePair<string, string> par in parameters)
+                    foreach (KeyValuePair<string, object> par in parameters)
                     {
                         cmd.Parameters.AddWithValue(par.Key, par.Value);
                     }
@@ -143,17 +143,16 @@ namespace DatabaseConnector
                 {
                     MySqlDataReader dataReader = cmd.ExecuteReader();
                     //now that we know the field length, set up the list object
-                    List<string>[] list = new List<string>[dataReader.FieldCount];
-                    for (int i = 0; i < dataReader.FieldCount; i++)
-                    {
-                        list[i] = new List<string>();
-                    }
+                    List<string[]> list = new List<string[]>();
+
                     while (dataReader.Read())
                     {
+                        string[] tempArray = new string[dataReader.FieldCount];
                         for (int i = 0; i < dataReader.FieldCount; i++)
                         {
-                            list[i].Add(dataReader[i].ToString());
+                            tempArray[i] = dataReader[i].ToString();
                         }
+                        list.Add(tempArray);
                     }
                     dataReader.Close();
                     CloseConnection();
@@ -163,47 +162,6 @@ namespace DatabaseConnector
             }
             //connection wasn't opened
             return null;
-        }
-
-
-        /// <summary>
-        /// This is an example class that shows how execute a query to get data
-        /// </summary>
-        /// <returns>result of query</returns>
-        public List<string>[] ExampleReadDatabaseClass(int id)
-        {
-            String query = "SELECT first_name,last_name,dob FROM users WHERE user_id = @userID;";
-
-            //each sublist represents a column in the database
-            List<string>[] list = new List<string>[3];
-            list[0] = new List<string>();
-            list[1] = new List<string>();
-            list[2] = new List<string>();
-
-            if (OpenConnection())
-            {
-                //Create Command, bind value, Create a data reader and Execute the command
-                MySqlCommand cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@userID", id);
-                MySqlDataReader dataReader = cmd.ExecuteReader();
-
-                //Read the data and store it
-                while (dataReader.Read())
-                {
-                    list[0].Add(dataReader["first_name"] + "");
-                    list[1].Add(dataReader["last_name"] + "");
-                    list[2].Add(dataReader["dob"] + "");
-                }
-
-                //close everything
-                dataReader.Close();
-                CloseConnection();
-
-                //return result
-                return list;
-            }
-            else return null; //if cant connect return null
-
         }
 
         /// <summary>
@@ -218,7 +176,6 @@ namespace DatabaseConnector
             String query = "SELECT users.first_name, users.last_name, lessons.lesson_date, lessons.lesson_length" +
                           " FROM lessons LEFT JOIN users ON lessons.teacher_id = users.user_id" +
                           " WHERE student_id = @userID;";
-
             List<string[]> list = new List<string[]>();
 
             if (OpenConnection())
@@ -245,6 +202,7 @@ namespace DatabaseConnector
             }
             else return null; //if cant connect return null
 
+
         }
 
         /// <summary>
@@ -259,6 +217,7 @@ namespace DatabaseConnector
                           " FROM lessons LEFT JOIN users ON lessons.teacher_id = users.user_id" +
                           " WHERE student_id IS NULL;";
 
+
             List<string[]> list = new List<string[]>();
 
             if (OpenConnection())
@@ -270,8 +229,8 @@ namespace DatabaseConnector
                 //Read the data and store it
                 while (dataReader.Read())
                 {
-                    string[] tempArray = { dataReader["first_name"] + "",
-                        dataReader["last_name"] + "", dataReader["lesson_date"] + "",dataReader["lesson_length"] + ""  };
+                    string[] tempArray = { dataReader["first_name"] + "", dataReader["last_name"] + "",
+                                        dataReader["lesson_date"] + "",dataReader["lesson_length"] + ""  };
                     list.Add(tempArray);
                 }
 
@@ -283,6 +242,8 @@ namespace DatabaseConnector
                 return list;
             }
             else return null; //if cant connect return null
+
+
 
         }
 
@@ -314,6 +275,75 @@ namespace DatabaseConnector
             return result; //if cant connect return null
 
         }
+
+
+        public List<string[]> ReadTeacherInfo()
+        {
+            String query = "SELECT user_id, first_name, last_name FROM users WHERE role=1";
+
+
+            List<string[]> list = new List<string[]>();
+
+            if (OpenConnection())
+            {
+                //Create Command, bind value, Create a data reader and Execute the command
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                //Read the data and store it
+                while (dataReader.Read())
+                {
+                    string[] tempArray = { dataReader["user_id"] + "", dataReader["first_name"] + "", dataReader["last_name"] + ""};
+                    list.Add(tempArray);
+                }
+
+                //close everything
+                dataReader.Close();
+                CloseConnection();
+
+                //return result
+                return list;
+            }
+            else return null; //if cant connect return null
+
+
+
+        }
+
+
+        public List<string[]> ReadInstrumentInfo()
+        {
+            String query = "SELECT instrument_id, instrument_name, instrument_type, quality FROM instruments;";
+
+
+            List<string[]> list = new List<string[]>();
+
+            if (OpenConnection())
+            {
+                //Create Command, bind value, Create a data reader and Execute the command
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                //Read the data and store it
+                while (dataReader.Read())
+                {
+                    string[] tempArray = { dataReader["instrument_id"] + "", dataReader["instrument_name"] + "", dataReader["instrument_type"] + "", dataReader["quality"] + "" };
+                    list.Add(tempArray);
+                }
+
+                //close everything
+                dataReader.Close();
+                CloseConnection();
+
+                //return result
+                return list;
+            }
+            else return null; //if cant connect return null
+
+
+
+        }
+
 
         /// <summary>
         /// This is an example class that shows how to execute a query to set data
