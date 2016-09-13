@@ -5,11 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApplication1"
         mc:Ignorable="d"
-        Title="BookWindow" Height="300" Width="300">
+        Title="BookWindow" Height="423" Width="300">
     <Grid>
         <Calendar x:Name="selectDate" HorizontalAlignment="Left" Margin="61,10,0,0" VerticalAlignment="Top" Height="163" Width="176"/>
-        <Button x:Name="bookConfirm" Content="Book" HorizontalAlignment="Left" Margin="61,234,0,0" VerticalAlignment="Top" Width="75" Click="button_Click"/>
-        <ComboBox x:Name="selectTeacher" HorizontalAlignment="Left" Margin="61,192,0,0" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="bookConfirm" Content="Book" HorizontalAlignment="Left" Margin="61,357,0,0" VerticalAlignment="Top" Width="75" Click="button_Click"/>
+        <ComboBox x:Name="selectTeacher" HorizontalAlignment="Left" Margin="61,232,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="1"/>
+        <ComboBox x:Name="selectTime" HorizontalAlignment="Left" Margin="61,194,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="1"/>
 
     </Grid>
 </Window>
