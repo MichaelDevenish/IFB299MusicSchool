@@ -71,6 +71,18 @@ namespace WpfApplication1
         private void button_Click(object sender, RoutedEventArgs e)
         {
             int userID = int.Parse(teacherInfo[teacherBox.SelectedIndex][0]);
+            int repeats = repeatBox.SelectedIndex + 1;
+            bool length = lengthBox.SelectedIndex != 0;
+
+
+            string hours = hourOfBox.SelectedItem.ToString();
+            MessageBox.Show(hours);
+
+            string date = firstDatePicker.SelectedDate.ToString();
+
+            //check the formating and convert to datetime
+
+
             // DateTime date = firstDatePicker.SelectedDate;
             //date = date.addhours
         }
