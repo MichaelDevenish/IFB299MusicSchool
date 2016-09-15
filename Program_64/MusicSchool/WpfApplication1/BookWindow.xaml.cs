@@ -42,26 +42,41 @@ namespace WpfApplication1
             }
             selectTeacher.ItemsSource = teacherNames;
 
+
+            //Access the databse and determine which timeslots for the next 90 days are
+            //valid
             string query = "SELECT lesson_date, lesson_length FROM lessons";
             List<string[]> lessons = db.simpleConnection(false, query, null);
-
+            
             int[,] bookArray = new int[90, 13];
 
             foreach (string[] day in lessons)
             {
                 DateTime currentDate = Convert.ToDateTime(day[0]);
 
-                if (DateTime.Now.CompareTo(currentDate) < 0 && (currentDate.Hour - 9 )* 2 < 13 && (currentDate.Hour - 9) * 2 >= 0)
+                if (DateTime.Now.Date.CompareTo(currentDate.Date) < 1 && (currentDate.Hour - 9 )* 2 < 13 && (currentDate.Hour - 9) * 2 >= 0)
                 {
                     System.TimeSpan diff = currentDate - DateTime.Now;
-                    bookArray[diff.Days, (currentDate.Hour - 9) *2] = 1;
-                    if(day[1] == "1") bookArray[diff.Days, (currentDate.Hour - 9) * 2 + 1] = 1;
+                    bookArray[diff.Days, (currentDate.Hour - 9) *2 + currentDate.Minute/30] = 1;
+                    if(day[1] == "True") bookArray[diff.Days, (currentDate.Hour - 9) * 2 + 1] = 1;
                 }
 
             }
+
+            List<TimeSpan> validTimes = new List<TimeSpan>();
+            for (int i = 0; i < 13; i++)
+            {
+                if(bookArray[0,i] == 0)
+                {
+                    //validTimes.Add(((i/2 + 9) % 12) + ":" + (i % 2) * 30);
+                    validTimes.Add(new TimeSpan(i / 2 + 9, (i % 2) * 30, 0));
+                }
+            }
+            /*
             string[] validTimes = new string[13] { "9:00am", "9:30am", "10:00am",
                                                      "10:30am", "11:00am", "11:30am", "12:00pm", "12:30pm",
                                                       "1:00pm", "1:30pm", "2:00pm", "2:30pm", "3:00pm"};
+                                                      */
             selectTime.ItemsSource = validTimes;
         }
 
@@ -74,7 +89,7 @@ namespace WpfApplication1
             Dictionary<string, object> parameters = new Dictionary<string, object> {
                 { "@userID", this.studentID },
                 { "@teacherID", teacherinfo[selectTeacher.SelectedIndex][0]},
-                { "@timeDate", date.AddHours(selectTime.SelectedIndex/2 + 9).AddMinutes((selectTime.SelectedIndex % 2)*30)},
+                { "@timeDate", date.Add((TimeSpan)selectTime.SelectedItem)},
                 { "@half", Convert.ToInt32(selectHalf.IsChecked)} };
 
             DatabaseConnector.DatabaseConnector db = new DatabaseConnector.DatabaseConnector();
