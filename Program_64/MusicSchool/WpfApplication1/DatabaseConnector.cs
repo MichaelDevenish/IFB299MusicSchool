@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WpfApplication1;
 
 namespace DatabaseConnector
 {
@@ -75,39 +76,6 @@ namespace DatabaseConnector
             }
         }
 
-        public List<string>[] getTimetableInfo(int id)
-        {
-            List<string>[] list = new List<string>[5];
-            list[0] = new List<string>();
-            list[1] = new List<string>();
-            list[2] = new List<string>();
-            list[3] = new List<string>();
-            list[4] = new List<string>();
-
-            if (this.OpenConnection())
-            {
-                String query = "SELECT student_id,teacher_id,lesson_date,comments,attended FROM lessons WHERE student_id = @STUDENTID;";
-                MySqlCommand cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@STUDENTID", id);
-                MySqlDataReader dataReader = cmd.ExecuteReader();
-
-                while (dataReader.Read())
-                {
-                    list[0].Add(dataReader["student_id"] + "");
-                    list[1].Add(dataReader["teacher_id"] + "");
-                    list[2].Add(dataReader["lesson_date"] + "");
-                    list[3].Add(dataReader["comments"] + "");
-                    list[4].Add(dataReader["attended"] + "");
-                }
-
-                dataReader.Close();
-                this.CloseConnection();
-            }
-
-            return list;
-        }
-
-
         /// <summary>
         /// Simplifies opening a connection, reading from or writing to the database, and closing the connection
         /// </summary>
@@ -119,17 +87,11 @@ namespace DatabaseConnector
         {
             if (this.OpenConnection())
             {
-
                 MySqlCommand cmd = new MySqlCommand(query, this.connection);
                 //Get the values from the parameter dictionary and use it to bind variables in the query statement
                 if (parameters != null)
-                {
                     foreach (KeyValuePair<string, object> par in parameters)
-                    {
                         cmd.Parameters.AddWithValue(par.Key, par.Value);
-                    }
-                }
-
 
                 //-------WRITE OPERATION------
                 if (write)
@@ -149,9 +111,8 @@ namespace DatabaseConnector
                     {
                         string[] tempArray = new string[dataReader.FieldCount];
                         for (int i = 0; i < dataReader.FieldCount; i++)
-                        {
                             tempArray[i] = dataReader[i].ToString();
-                        }
+
                         list.Add(tempArray);
                     }
                     dataReader.Close();
@@ -201,8 +162,6 @@ namespace DatabaseConnector
                 return list;
             }
             else return null; //if cant connect return null
-
-
         }
 
         /// <summary>
@@ -228,9 +187,55 @@ namespace DatabaseConnector
 
                 //Read the data and store it
                 while (dataReader.Read())
+                    list.Add(new string[]{ dataReader["first_name"] + "", dataReader["last_name"] + "",
+                                        dataReader["lesson_date"] + "",dataReader["lesson_length"] + ""  });
+
+                //close everything
+                dataReader.Close();
+                CloseConnection();
+
+                //return result
+                return list;
+            }
+            else return null; //if cant connect return null
+        }
+
+        /// <summary>
+        /// Checks if the users login credentials are correct and returns the permission status and id of the user
+        /// if correct and all values set to false or -1 respectively if wrong
+        /// </summary>
+        /// <param name="username">the username of the user</param>
+        /// <param name="password">the users password</param>
+        /// <returns>[0] = admin bool, [1] = teacher bool, [2] = userID</returns>
+        public List<string[]> ReadLoginCheck(string username, string password)
+        {
+            String query = "SELECT user_id, role, password_hash, salt FROM users WHERE username = @username";
+            List<string[]> list = new List<string[]>();
+            PasswordManagment pass = new PasswordManagment();
+
+            if (OpenConnection())
+            {
+                //Create Command, bind value, Create a data reader and Execute the command
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@username", username);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                //Read the data do some comparisons and insert results into an array
+                while (dataReader.Read())
                 {
-                    string[] tempArray = { dataReader["first_name"] + "", dataReader["last_name"] + "",
-                                        dataReader["lesson_date"] + "",dataReader["lesson_length"] + ""  };
+                    //checks the users roles
+                    bool teacher = false;
+                    bool admin = false;
+                    int role = Convert.ToInt32(dataReader["role"]);
+                    if (role == 1) teacher = true;
+                    if (role == 0) admin = true;
+
+                    string[] tempArray;
+
+                    if (compareByteArrays((byte[])dataReader["password_hash"], pass.GenerateHash(password, dataReader["salt"].ToString())))
+                        tempArray = new[] { true.ToString(), admin.ToString(), teacher.ToString(), dataReader["user_id"].ToString() };
+                    else tempArray = new[] { false.ToString(), false.ToString(), false.ToString(), "-1" };
+
                     list.Add(tempArray);
                 }
 
@@ -243,9 +248,25 @@ namespace DatabaseConnector
             }
             else return null; //if cant connect return null
 
-
-
         }
+
+        /// <summary>
+        /// Compares two byte arrays together and returns true if they match and false if they dont
+        /// </summary>
+        /// <param name="byte1"></param>
+        /// <param name="byte2"></param>
+        /// <returns></returns>
+        private static bool compareByteArrays(byte[] byte1, byte[] byte2)
+        {
+            bool hashComparison = true;
+            if (byte1.Length != byte2.Length)
+                hashComparison = false;
+            for (int i = 0; i < byte1.Length; i++)
+                if (byte1[i] != byte2[i])
+                    hashComparison = false;
+            return hashComparison;
+        }
+
 
         /// <summary>
         /// This is an example class that shows how execute a query to get data
@@ -292,10 +313,7 @@ namespace DatabaseConnector
 
                 //Read the data and store it
                 while (dataReader.Read())
-                {
-                    string[] tempArray = { dataReader["user_id"] + "", dataReader["first_name"] + "", dataReader["last_name"] + "" };
-                    list.Add(tempArray);
-                }
+                    list.Add(new string[] { dataReader["user_id"] + "", dataReader["first_name"] + "", dataReader["last_name"] + "" });
 
                 //close everything
                 dataReader.Close();
@@ -305,9 +323,6 @@ namespace DatabaseConnector
                 return list;
             }
             else return null; //if cant connect return null
-
-
-
         }
 
 
@@ -326,10 +341,8 @@ namespace DatabaseConnector
 
                 //Read the data and store it
                 while (dataReader.Read())
-                {
-                    string[] tempArray = { dataReader["instrument_id"] + "", dataReader["instrument_name"] + "", dataReader["instrument_type"] + "", dataReader["quality"] + "" };
-                    list.Add(tempArray);
-                }
+                    list.Add(new string[]{ dataReader["instrument_id"] + "", dataReader["instrument_name"] + "",
+                        dataReader["instrument_type"] + "", dataReader["quality"] + "" });
 
                 //close everything
                 dataReader.Close();
@@ -339,23 +352,25 @@ namespace DatabaseConnector
                 return list;
             }
             else return null; //if cant connect return null
-
-
-
         }
 
 
         /// <summary>
-        /// This is an example class that shows how to execute a query to set data
+        /// Inserts a provided user into the database
         /// </summary>
+        /// <param name="firstName">the first name of the user</param>
+        /// <param name="lastName">the last name of the user</param>
+        /// <param name="dob">the dob of the user</param>
+        /// <param name="role">the role of the user (0 = admin, 1 = teacher, 2 = student)</param>
+        /// <param name="password_hash">a hashed version of the users password</param>
+        /// <param name="salt">the salt that the users password was hashed with</param>
+        /// <param name="username">the users username</param>
         public void InsertUser(string firstName, string lastName, DateTime dob, int role, byte[] password_hash, string salt, string username)
         {
-
             String query = "INSERT INTO users (first_name, last_name, dob, role, password_hash, salt,username) VALUES (@first_name, @last_name, @dob, @role, @password_hash, @salt,@username);";
 
             if (OpenConnection())
             {
-
                 //Create Command bind values and execute
                 MySqlCommand cmd = new MySqlCommand(query, connection);
 
@@ -375,8 +390,11 @@ namespace DatabaseConnector
         }
 
         /// <summary>
-        /// This is an example class that shows how to execute a query to set data
+        /// Inserts a lesson into the database
         /// </summary>
+        /// <param name="teacherID">the teacher holding the lesson</param>
+        /// <param name="lessonDate">the date of the lesson in half hour increments from 9am to 5pm</param>
+        /// <param name="length">the length of the lesson (false = 30 minutes, true = 1 hour)</param>
         public void InsertLesson(int teacherID, DateTime lessonDate, bool length)
         {
 
