@@ -22,6 +22,10 @@ namespace WpfApplication1
         private MainWindow parentWindow;
         private int studentID;
         List<string[]> teacherinfo;
+
+        int[,] bookArray = new int[90, 13];
+
+
         public BookWindow(MainWindow parentWindow, int studentID)
         {
             DatabaseConnector.DatabaseConnector db = new DatabaseConnector.DatabaseConnector();
@@ -44,21 +48,19 @@ namespace WpfApplication1
 
 
             //Access the databse and determine which timeslots for the next 90 days are
-            //valid
+            //valid, and populate bookarray
             string query = "SELECT lesson_date, lesson_length FROM lessons";
             List<string[]> lessons = db.simpleConnection(false, query, null);
             
-            int[,] bookArray = new int[90, 13];
-
             foreach (string[] day in lessons)
             {
                 DateTime currentDate = Convert.ToDateTime(day[0]);
-
-                if (DateTime.Now.Date.CompareTo(currentDate.Date) < 1 && (currentDate.Hour - 9 )* 2 < 13 && (currentDate.Hour - 9) * 2 >= 0)
+                int diff = currentDate.Day - DateTime.Now.Day;
+                if (diff >=0 && (currentDate.Hour - 9 )* 2 < 13 && (currentDate.Hour - 9) * 2 >= 0)
                 {
-                    System.TimeSpan diff = currentDate - DateTime.Now;
-                    bookArray[diff.Days, (currentDate.Hour - 9) *2 + currentDate.Minute/30] = 1;
-                    if(day[1] == "True") bookArray[diff.Days, (currentDate.Hour - 9) * 2 + 1] = 1;
+                    
+                    bookArray[diff, (currentDate.Hour - 9) *2 + currentDate.Minute/30] = 1;
+                    if(day[1] == "True" && (currentDate.Hour - 9) * 2 != 12) bookArray[diff, (currentDate.Hour - 9) * 2 + 1] = 1;
                 }
 
             }
@@ -68,7 +70,6 @@ namespace WpfApplication1
             {
                 if(bookArray[0,i] == 0)
                 {
-                    //validTimes.Add(((i/2 + 9) % 12) + ":" + (i % 2) * 30);
                     validTimes.Add(new TimeSpan(i / 2 + 9, (i % 2) * 30, 0));
                 }
             }
@@ -94,6 +95,20 @@ namespace WpfApplication1
 
             DatabaseConnector.DatabaseConnector db = new DatabaseConnector.DatabaseConnector();
             db.simpleConnection(true, query, parameters);
+        }
+
+        private void changeDate(object sender, SelectionChangedEventArgs e)
+        {
+            List<TimeSpan> validTimes = new List<TimeSpan>();
+            for (int i = 0; i < 13; i++)
+            {
+                int diff = ((DateTime)(selectDate.SelectedDate)).Day - DateTime.Now.Day;
+                if (diff >= 0 && bookArray[diff,i] == 0)
+                {
+                    validTimes.Add(new TimeSpan(i / 2 + 9, (i % 2) * 30, 0));
+                }
+            }
+            selectTime.ItemsSource = validTimes;
         }
     }
 }
