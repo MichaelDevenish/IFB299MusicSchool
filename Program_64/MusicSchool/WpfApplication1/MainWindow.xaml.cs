@@ -65,12 +65,13 @@ namespace WpfApplication1
         /// <param name="e"></param>
         private void info_DoWork(object sender, DoWorkEventArgs e)
         {
+                DatabaseConnector.DatabaseConnector data = new DatabaseConnector.DatabaseConnector();
+                List<string[]> teacherThread = data.ReadTeacherInfo();
+                List<string[]> instrumentThread = data.ReadInstrumentInfo();
             this.Dispatcher.Invoke((Action)(() =>
             {
-                DatabaseConnector.DatabaseConnector data = new DatabaseConnector.DatabaseConnector();
-                teacherInfo = data.ReadTeacherInfo();
-                instrumentInfo = data.ReadInstrumentInfo();
-
+                teacherInfo = teacherThread;
+                instrumentInfo = instrumentThread;
                 for (int i = 0; i < teacherInfo.Count; i++)
                     cmbRecipient.Items.Add(teacherInfo[i][1] + " " + teacherInfo[i][2]);
                 for (int i = 0; i < instrumentInfo.Count; i++)
