@@ -65,9 +65,9 @@ namespace WpfApplication1
         /// <param name="e"></param>
         private void info_DoWork(object sender, DoWorkEventArgs e)
         {
-                DatabaseConnector.DatabaseConnector data = new DatabaseConnector.DatabaseConnector();
-                List<string[]> teacherThread = data.ReadTeacherInfo();
-                List<string[]> instrumentThread = data.ReadInstrumentInfo();
+            DatabaseConnector.DatabaseConnector data = new DatabaseConnector.DatabaseConnector();
+            List<string[]> teacherThread = data.ReadTeacherInfo();
+            List<string[]> instrumentThread = data.ReadInstrumentInfo();
             this.Dispatcher.Invoke((Action)(() =>
             {
                 teacherInfo = teacherThread;
@@ -76,7 +76,9 @@ namespace WpfApplication1
                     cmbRecipient.Items.Add(teacherInfo[i][1] + " " + teacherInfo[i][2]);
                 for (int i = 0; i < instrumentInfo.Count; i++)
                     cmbInstrument.Items.Add(instrumentInfo[i][1]);
-            }));
+                if(isAdmin)
+                    adminLessonButton.Visibility = Visibility.Visible;
+            })); 
         }
 
         //Each time the user changes the tab, check if the login status has changes and make the appropriate
@@ -94,7 +96,7 @@ namespace WpfApplication1
 
                     //RefreshTimetables();
                 }
-                if (isAdmin)
+                if (isAdmin && teacherInfo != null)
                 {
                     adminLessonButton.Visibility = Visibility.Visible;
                 }
