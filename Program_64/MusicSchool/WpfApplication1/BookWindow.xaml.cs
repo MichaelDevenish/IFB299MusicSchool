@@ -87,14 +87,24 @@ namespace WpfApplication1
             DateTime date = (DateTime)(selectDate.SelectedDate);
 
             string query = "INSERT INTO `musicschool`.`lessons` (`student_id`, `teacher_id`, `lesson_date`, `attended`, `lesson_length`) VALUES(@userID, @teacherID, @timeDate, '0', @half)";
-            Dictionary<string, object> parameters = new Dictionary<string, object> {
-                { "@userID", this.studentID },
-                { "@teacherID", teacherinfo[selectTeacher.SelectedIndex][0]},
-                { "@timeDate", date.Add((TimeSpan)selectTime.SelectedItem)},
-                { "@half", Convert.ToInt32(selectHalf.IsChecked)} };
+            try
+            { 
+                Dictionary<string, object> parameters = new Dictionary<string, object> {
+                    { "@userID", this.studentID },
+                    { "@teacherID", teacherinfo[selectTeacher.SelectedIndex][0]},
+                    { "@timeDate", date.Add((TimeSpan)selectTime.SelectedItem)},
+                    { "@half", Convert.ToInt32(selectHalf.IsChecked)} };
 
-            DatabaseConnector.DatabaseConnector db = new DatabaseConnector.DatabaseConnector();
-            db.simpleConnection(true, query, parameters);
+                DatabaseConnector.DatabaseConnector db = new DatabaseConnector.DatabaseConnector();
+                db.simpleConnection(true, query, parameters);
+                MessageBoxResult success = MessageBox.Show("Booking successful", "Success", MessageBoxButton.OK);
+                this.Close();
+            }
+            catch
+            {
+                MessageBoxResult failure = MessageBox.Show("Booking failed", "Failure", MessageBoxButton.OK);
+                this.Close();
+            }
         }
 
         private void changeDate(object sender, SelectionChangedEventArgs e)
