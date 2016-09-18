@@ -280,13 +280,14 @@ namespace WpfApplication1
         private void cmbRecipient_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int teacherID = int.Parse(teacherInfo[cmbRecipient.SelectedIndex][0]);
-            //lblTeacherAge.Content(teacherInfo[teacherID][3]);
+            txtTeacherName.Text = "Teacher Name: " + teacherInfo[teacherID-1][1] + " " + teacherInfo[teacherID-1][2];
+            txtTeacherSkill.Text = "Teacher's Instruments: " + "Example";
         }
 
         private void cmbInstrument_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int instrumentID = int.Parse(instrumentInfo[cmbInstrument.SelectedIndex][0]);
-            //lblTeacherAge.Content(instrumentInfo[instrumentID][3]);
+            txtInstrumentInfo.Text = "Instrument Info: " + instrumentInfo[instrumentID][3] + ", " + instrumentInfo[instrumentID][1];
         }
     }
 
