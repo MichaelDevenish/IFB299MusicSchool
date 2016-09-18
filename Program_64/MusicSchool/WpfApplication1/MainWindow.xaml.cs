@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -35,7 +36,7 @@ namespace WpfApplication1
         private List<string[]> teacherInfo;
         private List<string[]> instrumentInfo;
         private DatabaseConnector.DatabaseConnector db;
-
+        private BackgroundWorker worker;
 
         public List<string[]> TeacherInfo { get { return teacherInfo; } }
         public List<string[]> InstrumentInfo { get { return instrumentInfo; } }
@@ -48,7 +49,9 @@ namespace WpfApplication1
             teacherInfo = db.ReadTeacherInfo();
             instrumentInfo = db.ReadInstrumentInfo();
             InitializeComponent();
-            RefreshTimetables();
+            worker = new BackgroundWorker();
+            worker.DoWork += worker_DoWork;
+            worker.RunWorkerAsync();
             for (int i = 0; i < teacherInfo.Count; i++)
             {
                 cmbRecipient.Items.Add(teacherInfo[i][1] + " " + teacherInfo[i][2]);
@@ -72,7 +75,10 @@ namespace WpfApplication1
                 //get data for timetable info
                 if (timetableTab.IsSelected)
                 {
-                    RefreshTimetables();
+                    if (!worker.IsBusy)
+                        worker.RunWorkerAsync();
+
+                    //RefreshTimetables();
                 }
                 if (isAdmin)
                 {
@@ -91,6 +97,22 @@ namespace WpfApplication1
                 //timetable_ret.Visibility = System.Windows.Visibility.Hidden;
 
             }
+        }
+
+        void worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            allTimetables = GenerateTimetableDataBindings();
+            LoadTimetableData(db.ReadEmptyLessons(), allTimetables);
+            myTimetables = GenerateTimetableDataBindings();
+            LoadTimetableData(db.ReadUserLessons(studentID), myTimetables);
+
+            this.Dispatcher.Invoke((Action)(() =>
+            {
+                allClassesTable.ItemsSource = allTimetables;
+                allClassesTable.Items.Refresh();
+                myClassesTable.ItemsSource = myTimetables;
+                myClassesTable.Items.Refresh();
+            }));
         }
 
         /// <summary>
@@ -245,7 +267,8 @@ namespace WpfApplication1
 
         private void refreshButton_Click(object sender, RoutedEventArgs e)
         {
-            RefreshTimetables();
+            if (!worker.IsBusy)
+                worker.RunWorkerAsync();
         }
 
         private void adminLessonButton_Click(object sender, RoutedEventArgs e)
