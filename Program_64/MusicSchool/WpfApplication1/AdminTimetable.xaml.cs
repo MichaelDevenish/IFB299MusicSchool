@@ -84,12 +84,7 @@ namespace WpfApplication1
                 DateTime dateof = DateTime.ParseExact(dateString
                    , "dd/MM/yyyy hh:mm:ss tt", System.Globalization.CultureInfo.InvariantCulture);
 
-                for (int i = 0; i < repeatBox.SelectedIndex + 1; i++)
-                {
-                    if (i != 0) dateof = dateof.AddDays(7);
-
-                    parentWindow.DB.InsertLesson(userID, dateof, length);
-                }
+                parentWindow.DB.InsertLesson(userID, dateof, length, repeatBox.SelectedIndex);
                 MessageBox.Show("Insertion Complete");
             }
             else MessageBox.Show("The date entered was invalid");

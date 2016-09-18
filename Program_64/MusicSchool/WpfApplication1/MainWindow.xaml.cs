@@ -42,28 +42,41 @@ namespace WpfApplication1
         public List<string[]> InstrumentInfo { get { return instrumentInfo; } }
         public DatabaseConnector.DatabaseConnector DB { get { return db; } }
 
+        #region general
         public MainWindow()
         {
             db = new DatabaseConnector.DatabaseConnector();
 
-            teacherInfo = db.ReadTeacherInfo();
-            instrumentInfo = db.ReadInstrumentInfo();
             InitializeComponent();
-            worker = new BackgroundWorker();
-            worker.DoWork += worker_DoWork;
-            worker.RunWorkerAsync();
-            for (int i = 0; i < teacherInfo.Count; i++)
-            {
-                cmbRecipient.Items.Add(teacherInfo[i][1] + " " + teacherInfo[i][2]);
-            }
 
-            for (int i = 0; i < instrumentInfo.Count; i++)
-            {
-                cmbInstrument.Items.Add(instrumentInfo[i][1]);
-            }
+            BackgroundWorker firstLoad = new BackgroundWorker();
+            firstLoad.DoWork += info_DoWork;
+            firstLoad.RunWorkerAsync();
+
+            worker = new BackgroundWorker();
+            worker.DoWork += timetable_DoWork;
+            worker.RunWorkerAsync();
         }
 
+        /// <summary>
+        /// Gets the initial information from the database that is needed for the application to run
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void info_DoWork(object sender, DoWorkEventArgs e)
+        {
+            this.Dispatcher.Invoke((Action)(() =>
+            {
+                DatabaseConnector.DatabaseConnector data = new DatabaseConnector.DatabaseConnector();
+                teacherInfo = data.ReadTeacherInfo();
+                instrumentInfo = data.ReadInstrumentInfo();
 
+                for (int i = 0; i < teacherInfo.Count; i++)
+                    cmbRecipient.Items.Add(teacherInfo[i][1] + " " + teacherInfo[i][2]);
+                for (int i = 0; i < instrumentInfo.Count; i++)
+                    cmbInstrument.Items.Add(instrumentInfo[i][1]);
+            }));
+        }
 
         //Each time the user changes the tab, check if the login status has changes and make the appropriate
         //adjustments
@@ -98,13 +111,18 @@ namespace WpfApplication1
 
             }
         }
-
-        void worker_DoWork(object sender, DoWorkEventArgs e)
+        #endregion
+        #region timetable
+        /// <summary>
+        /// Refreshes the timetables with data from the database
+        /// </summary>
+        void timetable_DoWork(object sender, DoWorkEventArgs e)
         {
+            DatabaseConnector.DatabaseConnector data = new DatabaseConnector.DatabaseConnector();
             allTimetables = GenerateTimetableDataBindings();
-            LoadTimetableData(db.ReadEmptyLessons(), allTimetables);
+            LoadTimetableData(data.ReadEmptyLessons(), allTimetables);
             myTimetables = GenerateTimetableDataBindings();
-            LoadTimetableData(db.ReadUserLessons(studentID), myTimetables);
+            LoadTimetableData(data.ReadUserLessons(studentID), myTimetables);
 
             this.Dispatcher.Invoke((Action)(() =>
             {
@@ -113,22 +131,6 @@ namespace WpfApplication1
                 myClassesTable.ItemsSource = myTimetables;
                 myClassesTable.Items.Refresh();
             }));
-        }
-
-        /// <summary>
-        /// Refreshes the timetables with data from the database
-        /// </summary>
-        private void RefreshTimetables()
-        {
-            allTimetables = GenerateTimetableDataBindings();
-            LoadTimetableData(db.ReadEmptyLessons(), allTimetables);
-            allClassesTable.ItemsSource = allTimetables;
-            allClassesTable.Items.Refresh();
-
-            myTimetables = GenerateTimetableDataBindings();
-            LoadTimetableData(db.ReadUserLessons(studentID), myTimetables);
-            myClassesTable.ItemsSource = myTimetables;
-            myClassesTable.Items.Refresh();
         }
 
         /// <summary>
@@ -276,11 +278,12 @@ namespace WpfApplication1
             AdminTimetable admin = new AdminTimetable(this);
             admin.ShowDialog();
         }
+        #endregion
 
         private void cmbRecipient_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int teacherID = int.Parse(teacherInfo[cmbRecipient.SelectedIndex][0]);
-            txtTeacherName.Text = "Teacher Name: " + teacherInfo[teacherID-1][1] + " " + teacherInfo[teacherID-1][2];
+            txtTeacherName.Text = "Teacher Name: " + teacherInfo[teacherID - 1][1] + " " + teacherInfo[teacherID - 1][2];
             txtTeacherSkill.Text = "Teacher's Instruments: " + "Example";
         }
 

@@ -207,7 +207,7 @@ namespace DatabaseConnector
         /// <param name="username">the username of the user</param>
         /// <param name="password">the users password</param>
         /// <returns>[0] = admin bool, [1] = teacher bool, [2] = userID</returns>
-        public List<string[]> ReadLoginCheck(string username, string password)
+        public List<string[]> ReadLoginCheckValid(string username, string password)
         {
             String query = "SELECT user_id, role, password_hash, salt FROM users WHERE username = @username";
             List<string[]> list = new List<string[]>();
@@ -395,23 +395,27 @@ namespace DatabaseConnector
         /// <param name="teacherID">the teacher holding the lesson</param>
         /// <param name="lessonDate">the date of the lesson in half hour increments from 9am to 5pm</param>
         /// <param name="length">the length of the lesson (false = 30 minutes, true = 1 hour)</param>
-        public void InsertLesson(int teacherID, DateTime lessonDate, bool length)
+        /// <param name="count">The ammount of times the lesson repeats, zero means insert only once since it dosent repeat</param>
+        public void InsertLesson(int teacherID, DateTime lessonDate, bool length, int count)
         {
 
             String query = "INSERT INTO lessons (teacher_id,lesson_length,lesson_date) VALUES (@id, @length, @date);";
 
             if (OpenConnection())
             {
-                //Create Command bind values and execute
-                MySqlCommand cmd = new MySqlCommand(query, connection);
+                for (int i = 0; i < count + 1; i++)
+                {
+                    if (i != 0) lessonDate = lessonDate.AddDays(7);
+                    //Create Command bind values and execute
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
 
-                cmd.Parameters.AddWithValue("@id", teacherID);
-                cmd.Parameters.AddWithValue("@length", length);
-                cmd.Parameters.AddWithValue("@date", lessonDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                    cmd.Parameters.AddWithValue("@id", teacherID);
+                    cmd.Parameters.AddWithValue("@length", length);
+                    cmd.Parameters.AddWithValue("@date", lessonDate.ToString("yyyy-MM-dd HH:mm:ss"));
 
+                    cmd.ExecuteNonQuery();
 
-                cmd.ExecuteNonQuery();
-
+                }
                 //close everything
                 CloseConnection();
             }
