@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -354,6 +355,89 @@ namespace DatabaseConnector
             else return null; //if cant connect return null
         }
 
+        /// <summary>
+        /// Method to return a scpecific user based upon information entered by the administrator
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="username"></param>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <returns></returns>
+        public DataTable getUser(int id, String username, string firstName, string lastName)
+        {
+            DataTable dt = new DataTable();
+
+            String query = "SELECT * FROM users WHERE user_id = @user_id OR username = @username OR (first_name = @first_name AND last_name = @last_name);";
+
+            MySqlCommand cmd = new MySqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@first_name", firstName);
+            cmd.Parameters.AddWithValue("@last_name", lastName);
+            cmd.Parameters.AddWithValue("@user_id", id);
+            cmd.Parameters.AddWithValue("@username", username);
+            OpenConnection();
+
+            using (MySqlDataReader dr = cmd.ExecuteReader())
+            {
+                dt.Load(dr);
+            }
+            return dt;
+
+        }
+
+        /// <summary>
+        /// Simple method to return a instrument based upon search criteria entered by administrator.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="instrumentName"></param>
+        /// <param name="instrument_type"></param>
+        /// <returns></returns>
+        public DataTable getInstrument(int id, String instrumentName, string instrument_type)
+        {
+            DataTable dt = new DataTable();
+
+            String query = "SELECT * FROM instruments WHERE instrument_id = @instrument_id OR instrument_name = @instrument_name OR instrument_type = @instrument_type";
+
+            MySqlCommand cmd = new MySqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@instrument_name", instrumentName);
+            cmd.Parameters.AddWithValue("@instrument_id", id);
+            cmd.Parameters.AddWithValue("@instrument_type", instrument_type);
+            OpenConnection();
+
+            using (MySqlDataReader dr = cmd.ExecuteReader())
+            {
+                dt.Load(dr);
+            }
+            return dt;
+
+        }
+
+        public void DeleteUser(int id)
+        {
+            String query = "Delete FROM users where user_id = @user_id;";
+
+            OpenConnection();
+            MySqlCommand cmd = new MySqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@user_id", id);
+
+            cmd.ExecuteNonQuery();
+
+            CloseConnection();
+
+        }
+
+        public void DeleteInstrument(int id)
+        {
+            String query = "Delete FROM instruments where instrument_id = @instrument_id;";
+
+            OpenConnection();
+            MySqlCommand cmd = new MySqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@instrument_id", id);
+
+            cmd.ExecuteNonQuery();
+
+            CloseConnection();
+
+        }
 
         /// <summary>
         /// Inserts a provided user into the database

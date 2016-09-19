@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -26,54 +27,192 @@ namespace terminalHash
             {
 
 
-                Console.Write("What would you like to do, 1 = add users, 2 = add instruments. ");
+                Console.WriteLine("What would you like to do? ");
+                Console.WriteLine("1 = add user ");
+                Console.WriteLine("2 = add instrument");
+                Console.WriteLine("3 = search users ");
+                Console.WriteLine("4 = search instruments");
+                Console.WriteLine("5 = delete user ");
+                Console.WriteLine("6 = delete instrument ");
                 string task = Console.ReadLine();
                 int performTask = Int32.Parse(task);
 
                 DatabaseConnector.DatabaseConnector database = new DatabaseConnector.DatabaseConnector();
                 PasswordManagment password = new PasswordManagment();
 
-                if (performTask == 1)
+               if (performTask == 1)
                 {
-                    string first = RequestData("Please enter the users first name:");
-                    string last = RequestData("Please enter the users last name:");
-                    string result = RequestData("Please enter the users password:");
-
-                    string username = RequestUsername(database);
-
-                    string salt = password.GenerateSalt();
-                    byte[] hash = password.GenerateHash(result, salt);
-
-                    int role = EnterRole();
-                    DateTime dob = EnterDOB();
-
-                    if (RequestBinaryCondition("Is the data entered correctly (y/n)?", 'y', 'n'))
-                        database.InsertUser(first, last, dob, role, hash, salt, username);
-                    Console.WriteLine();
-
-                    Console.ReadKey();
-                    loop = RequestBinaryCondition("Do you wish to do another user (y/n)?", 'y', 'n');
-                    Console.WriteLine();
+                    addUser(loop, database, password);
                 }
                 else if (performTask == 2)
                 {
-                    string instrumentName = RequestData("Please enter the instruments name: ");
-                    string instrumentType = RequestData("Please enter the instruments type, eg; string: ");
-                    string instrumentQuality = RequestData("Please briefly describe the instruments condition: ");
-
-                    if (RequestBinaryCondition("Is the data entered correctly (y/n)?", 'y', 'n'))
-                        database.InsertInstrument(instrumentQuality, instrumentName, instrumentType);
-                    Console.WriteLine();
-
-                    Console.ReadKey();
-                    loop = RequestBinaryCondition("Do you wish to do another intstrument (y/n)?", 'y', 'n');
-                    Console.WriteLine();
-
+                    AddInstrument(loop, database);
                 }
+                else if (performTask == 3)
+                {
+                    SearchUser(loop, database);
+                }
+                else if (performTask == 4)
+                {
+                    SearchInstrument(loop, database);
+                }
+               else if (performTask == 5)
+               {
+                   deleteUser(loop, database);
+               }
+               else if (performTask == 6)
+               {
+                   deleteInstrument(loop, database);
+               }
+
             }
             Console.Write("Press any key to exit");
             Console.ReadKey();
         }
+
+        //#####################################//
+
+        private static Boolean AddInstrument(Boolean loop, DatabaseConnector.DatabaseConnector database)
+        {
+            string instrumentName = RequestData("Please enter the instruments name: ");
+            string instrumentType = RequestData("Please enter the instruments type, eg; string: ");
+            string instrumentQuality = RequestData("Please briefly describe the instruments condition: ");
+
+            if (RequestBinaryCondition("Is the data entered correctly (y/n)?", 'y', 'n'))
+                database.InsertInstrument(instrumentQuality, instrumentName, instrumentType);
+            Console.WriteLine();
+
+            Console.ReadKey();
+            loop = RequestBinaryCondition("Do you wish to do another intstrument (y/n)?", 'y', 'n');
+            Console.WriteLine();
+
+            return loop;
+        }
+
+        private static Boolean SearchInstrument(Boolean loop, DatabaseConnector.DatabaseConnector database)
+        {
+            int id = Int32.Parse(RequestData("Please enter the instrument's ID: "));
+            string instrumentName = RequestData("Please enter the instrument's name: ");
+            string instrumentType = RequestData("Please enter the insturment's type: ");
+
+            DataTable dt = database.getInstrument(id, instrumentName, instrumentType);
+
+            string quality = "";
+            foreach (DataRow row in dt.Rows)
+            {
+                id = row.Field<int>(0);
+                instrumentName = row.Field<string>(1);
+                quality = row.Field<string>(2);
+                instrumentType = row.Field<string>(3);
+
+                Console.WriteLine(id + ", " + instrumentName + ", " + quality + ", " + instrumentType);
+            }
+
+            return loop;
+        }
+
+        private static Boolean addUser(Boolean loop, DatabaseConnector.DatabaseConnector database, PasswordManagment password)
+        {
+            string first = RequestData("Please enter the users first name:");
+            string last = RequestData("Please enter the users last name:");
+            string result = RequestData("Please enter the users password:");
+
+            string username = RequestUsername(database);
+
+            string salt = password.GenerateSalt();
+            byte[] hash = password.GenerateHash(result, salt);
+
+            int role = EnterRole();
+            DateTime dob = EnterDOB();
+
+            if (RequestBinaryCondition("Is the data entered correctly (y/n)?", 'y', 'n'))
+                database.InsertUser(first, last, dob, role, hash, salt, username);
+            Console.WriteLine();
+
+            Console.ReadKey();
+            loop = RequestBinaryCondition("Do you wish to do another user (y/n)?", 'y', 'n');
+            Console.WriteLine();
+
+            return loop;
+        }
+
+        private static Boolean SearchUser(Boolean loop, DatabaseConnector.DatabaseConnector database)
+        {
+            int id = Int32.Parse(RequestData("Please enter the users ID: "));
+            string username = RequestUsername(database);
+            string firstName = RequestData("Please enter the user's name: ");
+            string lastName = RequestData("Please enter the user's last name: ");
+
+            DataTable dt = database.getUser(id, username, firstName, lastName);
+
+            byte[] password = null;
+            DateTime dob = new DateTime();
+            int role = 0;
+
+            foreach (DataRow row in dt.Rows)
+            {
+                id = row.Field<int>(0);
+                firstName = row.Field<string>(1);
+                lastName = row.Field<string>(2);
+                dob = row.Field<DateTime>(3);
+                role = row.Field<int>(4);
+                password = row.Field<byte[]>(5);
+                username = row.Field<string>(7);
+
+                Console.WriteLine(id + ", " + firstName + ", " + lastName + ", " + dob + ", " + role + ", " + password + ", " + username);
+            }
+
+            return loop;
+        }
+
+        private static Boolean deleteUser(Boolean loop, DatabaseConnector.DatabaseConnector database)
+        {
+            Boolean sure = false;
+            int id = Int32.Parse(RequestData("Please enter the users ID: "));
+            Console.ReadKey();
+            sure = RequestBinaryCondition("Are you sure you wish to delete this user (y/n)?", 'y', 'n');
+            if (sure)
+            {
+                database.DeleteUser(id);
+            }
+            else { }
+            return loop;
+        }
+
+        private static Boolean deleteInstrument(Boolean loop, DatabaseConnector.DatabaseConnector database)
+        {
+            Boolean sure = false;
+            int id = Int32.Parse(RequestData("Please enter the instrument ID: "));
+            Console.ReadKey();
+            sure = RequestBinaryCondition("Are you sure you wish to delete this instrument (y/n)?", 'y', 'n');
+            if (sure)
+            {
+                database.DeleteInstrument(id);
+            }
+            else { }
+            return loop;
+        }
+
+
+        /// <summary>
+        /// under construction
+        /// </summary>
+        /// <param name="loop"></param>
+        /// <param name="database"></param>
+        /// <returns></returns>
+        public Boolean editUser(Boolean loop, DatabaseConnector.DatabaseConnector database)
+        {
+
+            String firstName = "";
+            String lastName = "";
+            String username = "";
+            int id = Int32.Parse(RequestData("Please enter the User ID of the User you wish to edit: "));
+            DataTable dt = database.getUser(id, username, firstName, lastName);
+
+            return loop;
+        }
+
+        //######################################//
 
         private static string RequestUsername(DatabaseConnector.DatabaseConnector database)
         {
