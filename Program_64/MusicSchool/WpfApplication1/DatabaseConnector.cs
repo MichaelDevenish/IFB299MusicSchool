@@ -281,7 +281,7 @@ namespace DatabaseConnector
             {
                 //Create Command, bind value, Create a data reader and Execute the command
                 MySqlCommand cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@userID", username);
+                cmd.Parameters.AddWithValue("@username", username);
                 MySqlDataReader dataReader = cmd.ExecuteReader();
 
                 //check if exists
@@ -387,6 +387,33 @@ namespace DatabaseConnector
                 //close everything
                 CloseConnection();
             }
+        }
+
+        /// <summary>
+        /// This is an example class that outlines data insertion into the instruments table
+        /// </summary>
+        public void InsertInstrument(string InstrumentQuality, string instrumentName, string instrumentType)
+        {
+
+            String query = "INSERT INTO instruments (quality, instrument_name, instrument_type) VALUES (@quality, @instrument_name, @instrument_type);";
+
+            if (OpenConnection())
+            {
+
+                //Create Command bind values and execute
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                cmd.Parameters.AddWithValue("@quality", InstrumentQuality);
+                cmd.Parameters.AddWithValue("@instrument_name", instrumentName);
+                cmd.Parameters.AddWithValue("@instrument_type", instrumentType);
+
+                cmd.ExecuteNonQuery();
+
+                //close everything
+                CloseConnection();
+            }
+
+
         }
 
         /// <summary>

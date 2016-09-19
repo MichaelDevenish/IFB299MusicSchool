@@ -8,7 +8,7 @@ namespace WpfApplication1
 {/// <summary>
 /// This class is in charge of generating a SHA-3 hash and a 16 character salt for a supplied value
 /// </summary>
-    class PasswordManagment
+    public class PasswordManagment
     {
 
         Random random;
@@ -55,7 +55,7 @@ namespace WpfApplication1
             StringBuilder result = new StringBuilder(SALT_LENGTH);
 
             for (int i = 0; i < SALT_LENGTH; i++)
-                result.Append(characters[random.Next(SALT_LENGTH)]);
+                result.Append(characters[random.Next(characters.Length)]);
 
             return result.ToString();
         }

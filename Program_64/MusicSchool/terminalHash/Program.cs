@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WpfApplication1;
 
 namespace terminalHash
 {
@@ -24,13 +25,13 @@ namespace terminalHash
             while (loop)
             {
 
-                
+
                 Console.Write("What would you like to do, 1 = add users, 2 = add instruments. ");
                 string task = Console.ReadLine();
                 int performTask = Int32.Parse(task);
 
                 DatabaseConnector.DatabaseConnector database = new DatabaseConnector.DatabaseConnector();
-                PasswordManagment.PasswordManagment password = new PasswordManagment.PasswordManagment();
+                PasswordManagment password = new PasswordManagment();
 
                 if (performTask == 1)
                 {
@@ -47,7 +48,7 @@ namespace terminalHash
                     DateTime dob = EnterDOB();
 
                     if (RequestBinaryCondition("Is the data entered correctly (y/n)?", 'y', 'n'))
-                        database.ExampleWriteDatabaseClass(first, last, dob, role, hash, salt, username);
+                        database.InsertUser(first, last, dob, role, hash, salt, username);
                     Console.WriteLine();
 
                     Console.ReadKey();
@@ -61,7 +62,7 @@ namespace terminalHash
                     string instrumentQuality = RequestData("Please briefly describe the instruments condition: ");
 
                     if (RequestBinaryCondition("Is the data entered correctly (y/n)?", 'y', 'n'))
-                        database.ExampleWriteInstrumentDatabaseClass(instrumentQuality, instrumentName, instrumentType);
+                        database.InsertInstrument(instrumentQuality, instrumentName, instrumentType);
                     Console.WriteLine();
 
                     Console.ReadKey();
