@@ -4,7 +4,7 @@
         Title="MainWindow" Height="826.5" Width="800">
     <Grid>
         <Image HorizontalAlignment="Left" Height="152" VerticalAlignment="Top" Width="790"/>
-        <TabControl Margin="0,152,0,0" VerticalAlignment="Top" Padding="0" SelectionChanged="tab_changed" Height="650">
+        <TabControl Margin="0,100,0,-7" VerticalAlignment="Top" Padding="0" SelectionChanged="tab_changed" Height="702">
             <TabItem Header="ACCOUNT" Margin="0" IsTabStop="False" Padding="0,-2,4,0" HorizontalAlignment="Left" Width="150">
                 <Grid Background="White">
                     <Grid.ColumnDefinitions>
@@ -39,13 +39,13 @@
 
                     <TabControl x:Name="timetableTabControl" Padding="0" SelectionChanged="tab_changed">
                         <TabItem Header="All Classes" Margin="6,0,-6,0" HorizontalAlignment="Left" Width="150">
-                            <Grid Margin="0" Height="576">
+                            <Grid Margin="0">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="40"/>
                                     <RowDefinition Height="10"/>
                                 </Grid.RowDefinitions>
 
-                                <DataGrid x:Name="allClassesTable" Height="520" VerticalAlignment="Center" Margin="10,0,10,-514" IsReadOnly="True" Grid.Row="1"/>
+                                <DataGrid x:Name="allClassesTable" Height="575" VerticalAlignment="Center" Margin="10,35,10,-558" IsReadOnly="True" Grid.RowSpan="2"/>
                                 <Button x:Name="bookButton" Content="Book Lesson" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="102" Click="bookButton_Click" />
                                 <Button x:Name="refreshButton" Content="Refresh" HorizontalAlignment="Left" Margin="703,10,0,0" VerticalAlignment="Top" Width="75" Click="refreshButton_Click" />
                                 <Label x:Name="errorMessage" Content="You must be logged in to Book a lesson" HorizontalAlignment="Left" Height="31" Margin="117,7,0,0" VerticalAlignment="Top" Width="294" Foreground="Red"/>
@@ -97,8 +97,8 @@
 
 
         </TabControl>
-        <Image x:Name="imgMusicSchool" HorizontalAlignment="Left" Height="86" Margin="323,28,0,0" VerticalAlignment="Top" Width="150"/>
-        <Image Source="Images/header.png" VerticalAlignment ="Top" Height="152"/>
+        <Image x:Name="imgMusicSchool" HorizontalAlignment="Left" Height="100" Stretch="Fill" VerticalAlignment="Top" Width="792"/>
+        <Image Source="Images/header.png" VerticalAlignment ="Top" Height="100"/>
         <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Height="1" Margin="-400,320,0,0" VerticalAlignment="Top" Width="14"/>
     </Grid>
 </Window>

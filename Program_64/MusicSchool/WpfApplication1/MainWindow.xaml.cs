@@ -48,6 +48,7 @@ namespace WpfApplication1
             db = new DatabaseConnector.DatabaseConnector();
 
             InitializeComponent();
+            imgMusicSchool.Source = new BitmapImage(new Uri(Environment.CurrentDirectory + "/header.jpg"));
 
             BackgroundWorker firstLoad = new BackgroundWorker();
             firstLoad.DoWork += info_DoWork;
