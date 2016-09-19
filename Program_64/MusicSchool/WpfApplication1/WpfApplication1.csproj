@@ -80,6 +80,7 @@
       <DependentUpon>BookWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="DatabaseConnector.cs" />
+    <Compile Include="HelperFunctions.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

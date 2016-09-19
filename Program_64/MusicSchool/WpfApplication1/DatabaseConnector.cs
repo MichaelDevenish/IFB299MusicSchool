@@ -233,7 +233,7 @@ namespace DatabaseConnector
 
                     string[] tempArray;
 
-                    if (compareByteArrays((byte[])dataReader["password_hash"], pass.GenerateHash(password, dataReader["salt"].ToString())))
+                    if (HelperFunctions.compareByteArrays((byte[])dataReader["password_hash"], pass.GenerateHash(password, dataReader["salt"].ToString())))
                         tempArray = new[] { true.ToString(), admin.ToString(), teacher.ToString(), dataReader["user_id"].ToString() };
                     else tempArray = new[] { false.ToString(), false.ToString(), false.ToString(), "-1" };
 
@@ -252,25 +252,7 @@ namespace DatabaseConnector
         }
 
         /// <summary>
-        /// Compares two byte arrays together and returns true if they match and false if they dont
-        /// </summary>
-        /// <param name="byte1"></param>
-        /// <param name="byte2"></param>
-        /// <returns></returns>
-        private static bool compareByteArrays(byte[] byte1, byte[] byte2)
-        {
-            bool hashComparison = true;
-            if (byte1.Length != byte2.Length)
-                hashComparison = false;
-            for (int i = 0; i < byte1.Length; i++)
-                if (byte1[i] != byte2[i])
-                    hashComparison = false;
-            return hashComparison;
-        }
-
-
-        /// <summary>
-        /// This is an example class that shows how execute a query to get data
+        /// This query checks to see if a username already exists
         /// </summary>
         /// <returns>result of query</returns>
         public bool CheckUsername(string username)
@@ -436,7 +418,6 @@ namespace DatabaseConnector
             cmd.ExecuteNonQuery();
 
             CloseConnection();
-
         }
 
         /// <summary>

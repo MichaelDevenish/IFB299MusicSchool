@@ -77,9 +77,9 @@ namespace WpfApplication1
                     cmbRecipient.Items.Add(teacherInfo[i][1] + " " + teacherInfo[i][2]);
                 for (int i = 0; i < instrumentInfo.Count; i++)
                     cmbInstrument.Items.Add(instrumentInfo[i][1]);
-                if(isAdmin)
+                if (isAdmin)
                     adminLessonButton.Visibility = Visibility.Visible;
-            })); 
+            }));
         }
 
         //Each time the user changes the tab, check if the login status has changes and make the appropriate
@@ -230,7 +230,7 @@ namespace WpfApplication1
             {
                 Days.Add(new HalfHour()
                 {
-                    Time = Get9to5TimeFrom16Int(i),
+                    Time = HelperFunctions.Get9to5TimeFrom16Int(i),
                     Monday = "",
                     Tuesday = "",
                     Wednesday = "",
@@ -243,27 +243,6 @@ namespace WpfApplication1
             return Days;
         }
 
-        /// <summary>
-        /// converts a number between 0 and 16 to a time string between 9:00am 
-        /// and 5:00pm in half hour intervals
-        /// </summary>
-        /// <param name="i"> the current time as a number between 0 and 16</param>
-        /// <returns>a time string between 9:00am and 5:00pm in half hour intervals</returns>
-        private static string Get9to5TimeFrom16Int(int i)
-        {
-            int hour = (((i + 18) % 24) / 2);
-            if (hour == 0) hour = 12;
-
-            string time = hour + ":";
-
-            if (i % 2 == 1) time += "30";
-            else time += "00";
-
-            if (i >= 6) time += "pm";
-            else time += "am";
-
-            return time;
-        }
 
         private void bookButton_Click(object sender, RoutedEventArgs e)
         {

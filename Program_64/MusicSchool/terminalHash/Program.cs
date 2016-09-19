@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,12 @@ namespace terminalHash
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            PasswordManagment passTest = new PasswordManagment(2);
+            byte[] output = passTest.GenerateHash("password", passTest.GenerateSalt());
+            foreach (var item in output)
+            {
+                Debug.Write(item.ToString() + ",");
+            }
             bool loop = true;
             Console.WriteLine("Welcome");
 
@@ -40,7 +47,7 @@ namespace terminalHash
                 DatabaseConnector.DatabaseConnector database = new DatabaseConnector.DatabaseConnector();
                 PasswordManagment password = new PasswordManagment();
 
-               if (performTask == 1)
+                if (performTask == 1)
                 {
                     addUser(loop, database, password);
                 }
@@ -56,14 +63,14 @@ namespace terminalHash
                 {
                     SearchInstrument(loop, database);
                 }
-               else if (performTask == 5)
-               {
-                   deleteUser(loop, database);
-               }
-               else if (performTask == 6)
-               {
-                   deleteInstrument(loop, database);
-               }
+                else if (performTask == 5)
+                {
+                    deleteUser(loop, database);
+                }
+                else if (performTask == 6)
+                {
+                    deleteInstrument(loop, database);
+                }
 
             }
             Console.Write("Press any key to exit");

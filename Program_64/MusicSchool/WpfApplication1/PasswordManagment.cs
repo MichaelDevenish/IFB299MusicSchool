@@ -10,10 +10,8 @@ namespace WpfApplication1
 /// </summary>
     public class PasswordManagment
     {
-
         Random random;
         private static int SALT_LENGTH = 16;
-
 
         /// <summary>
         /// Constructor to set up variables such as the random number generator
