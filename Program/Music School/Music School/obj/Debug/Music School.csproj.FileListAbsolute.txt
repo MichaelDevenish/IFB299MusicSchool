@@ -1,2 +1,0 @@
-C:\Users\patri_000\Desktop\app design\assignment\Program\Music School\Music School\bin\Debug\Music School.exe.config
-C:\Users\patri_000\Desktop\app design\assignment\Program\Music School\Music School\obj\Debug\Music School.exe

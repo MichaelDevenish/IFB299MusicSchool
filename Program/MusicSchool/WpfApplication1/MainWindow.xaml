@@ -1,0 +1,104 @@
+﻿<Window x:Class="WpfApplication1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="826.5" Width="800">
+    <Grid>
+        <Image HorizontalAlignment="Left" Height="152" VerticalAlignment="Top" Width="790"/>
+        <TabControl Margin="0,100,0,-7" VerticalAlignment="Top" Padding="0" SelectionChanged="tab_changed" Height="702">
+            <TabItem Header="ACCOUNT" Margin="0" IsTabStop="False" Padding="0,-2,4,0" HorizontalAlignment="Left" Width="150">
+                <Grid Background="White">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="99*"/>
+                        <ColumnDefinition Width="20*"/>
+                        <ColumnDefinition Width="276*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="ACCOUNT" HorizontalAlignment="Left" Height="78" Margin="24,81,0,0" VerticalAlignment="Top" Width="166" Style="{StaticResource Page_header}"/>
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Left" Height="324" Margin="28,28,0,0" VerticalAlignment="Top" Width="532" Grid.ColumnSpan="2">
+                        <Label Content="Username" HorizontalAlignment="Left" VerticalAlignment="Top" Width="167" Height="30"/>
+                        <TextBox HorizontalAlignment="Left" Height="24" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="262"/>
+                        <Label Content="Password" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="217"/>
+                        <TextBox HorizontalAlignment="Left" Height="22" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="262"/>
+                        <Button Content="Log on" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75"/>
+
+
+                    </StackPanel>
+
+                </Grid>
+            </TabItem>
+            <TabItem x:Name ="timetableTab" Header="TIMETABLE" Margin="6,0,-6,0" HorizontalAlignment="Left" Width="150">
+                <TabItem.Background>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                        <GradientStop Color="#FFF0F0F0" Offset="0"/>
+                        <GradientStop Color="White" Offset="1"/>
+                    </LinearGradientBrush>
+                </TabItem.Background>
+                <Grid Background="White">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <TabControl x:Name="timetableTabControl" Padding="0" SelectionChanged="tab_changed">
+                        <TabItem Header="All Classes" Margin="6,0,-6,0" HorizontalAlignment="Left" Width="150">
+                            <Grid Margin="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="40"/>
+                                    <RowDefinition Height="10"/>
+                                </Grid.RowDefinitions>
+
+                                <DataGrid x:Name="allClassesTable" Height="575" VerticalAlignment="Center" Margin="10,35,10,-558" IsReadOnly="True" Grid.RowSpan="2"/>
+                                <Button x:Name="bookButton" Content="Book Lesson" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="102" Click="bookButton_Click" />
+                                <Button x:Name="refreshButton" Content="Refresh" HorizontalAlignment="Left" Margin="703,10,0,0" VerticalAlignment="Top" Width="75" Click="refreshButton_Click" />
+                                <Label x:Name="errorMessage" Content="You must be logged in to Book a lesson" HorizontalAlignment="Left" Height="31" Margin="117,7,0,0" VerticalAlignment="Top" Width="294" Foreground="Red"/>
+                                <Button x:Name="adminLessonButton" Content="Add Lessons" HorizontalAlignment="Left" Height="25" Margin="599,10,0,0" VerticalAlignment="Top" Width="99" Click="adminLessonButton_Click"/>
+                            </Grid>
+
+                        </TabItem>
+                        <TabItem Header="My Classes" Margin="6,0,-6,0" HorizontalAlignment="Left" Width="150">
+                            <DataGrid x:Name="myClassesTable" Height="550" VerticalAlignment="Center" Margin="10" IsReadOnly="True"/>
+                        </TabItem>
+
+
+                    </TabControl>
+                </Grid>
+            </TabItem>
+            <TabItem Margin="12,0,-12,0" Header="CONTACTS" HorizontalAlignment="Left" Width="150">
+                <Grid Background="White">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250*"/>
+                        <ColumnDefinition Width="550*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Contact Information" HorizontalAlignment="Left" Height="50" Margin="10,10,0,0" VerticalAlignment="Top" Width="215" Style="{StaticResource Page_header}"/>
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Left" Height="500" Margin="28,28,0,0" VerticalAlignment="Top" Width="500">
+                        <Label Content="Messenger" HorizontalAlignment="Left" VerticalAlignment="Top" Width="167" Height="30"/>
+                        <ComboBox x:Name="cmbRecipient" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" FontFamily="Segoe UI" Text="Select Recipients" SelectionChanged="cmbRecipient_SelectionChanged">
+                        </ComboBox>
+                        <TextBox HorizontalAlignment="Left" Height="243" TextWrapping="Wrap" Text="Message a staff member" VerticalAlignment="Top" Width="300"/>
+                        <Button Content="Send" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="75" Margin="0,0,425,0" Height="55"/>
+                    </StackPanel>
+                    <Label VerticalAlignment="Top" HorizontalAlignment="Left" Height="209" Width="229" Margin="10,281,0,0" >
+                        <TextBlock Height="184" Width="189"><Run Text="Administrator:"/><LineBreak/><Run Text="Jenny Pinelands"/><LineBreak/><Run/><LineBreak/><Run Text="Phone Number:"/><LineBreak/><Run Text="3845 9857"/><LineBreak/><Run/><LineBreak/><Run Text="Address:"/><LineBreak/><Run Text="123 Ipsum St Brisbane"/></TextBlock>
+                    </Label>
+                    <TextBox x:Name="txtTeacherName" HorizontalAlignment="Left" Height="64" Margin="10,65,0,0" TextWrapping="Wrap" Text="Teacher Name:" VerticalAlignment="Top" Width="215" IsReadOnly="True"/>
+                    <TextBox x:Name="txtTeacherSkill" HorizontalAlignment="Left" Height="64" Margin="10,134,0,0" TextWrapping="Wrap" Text="Teacher's Instruments:" VerticalAlignment="Top" Width="215" IsReadOnly="True"/>
+
+                </Grid>
+            </TabItem>
+            <TabItem Margin="20,0,-20,0" Header="INSTRUMENTS" HorizontalAlignment="Left" Width="160">
+                <StackPanel Grid.Column="1" HorizontalAlignment="Left" Height="402" Margin="28,28,0,0" VerticalAlignment="Top" Width="734">
+                    <Label Content="Instrunment List" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="240" Margin="35,32,0,0"/>
+                    <ComboBox x:Name="cmbInstrument" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" FontFamily="Segoe UI" Text="Select Recipients" SelectionChanged="cmbInstrument_SelectionChanged">
+                    </ComboBox>
+                    <TextBox x:Name="txtInstrumentInfo" HorizontalAlignment="Left" Height="260" TextWrapping="Wrap" Text="Instrument Information:" VerticalAlignment="Top" Width="608"/>
+                </StackPanel>
+            </TabItem>
+            <TabItem Margin="30,0,-30,0" Header="INFO" HorizontalAlignment="Left" Width="150">
+                <Label Content="Music School History" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="246" Margin="10,24,0,0"/>
+            </TabItem>
+
+
+        </TabControl>
+        <Image x:Name="imgMusicSchool" HorizontalAlignment="Left" Height="100" Stretch="Fill" VerticalAlignment="Top" Width="792"/>
+        <Image Source="Images/header.png" VerticalAlignment ="Top" Height="100"/>
+        <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Height="1" Margin="-400,320,0,0" VerticalAlignment="Top" Width="14"/>
+    </Grid>
+</Window>
