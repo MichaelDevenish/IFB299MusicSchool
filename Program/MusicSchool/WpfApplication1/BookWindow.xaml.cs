@@ -20,18 +20,16 @@ namespace WpfApplication1
     public partial class BookWindow : Window
     {
         private MainWindow parentWindow;
-        private int studentID;
         List<string[]> teacherinfo;
 
         int[,] bookArray = new int[90, 13];
 
 
-        public BookWindow(MainWindow parentWindow, int studentID)
+        public BookWindow(MainWindow parentWindow)
         {
             DatabaseConnector.DatabaseConnector db = new DatabaseConnector.DatabaseConnector();
             InitializeComponent();
             this.parentWindow = parentWindow;
-            this.studentID = studentID;
 
             selectDate.SelectedDate = DateTime.Now.Date;
 
@@ -40,7 +38,7 @@ namespace WpfApplication1
             //Get the names of the teachers and populate the teacher combobox
             teacherinfo = db.ReadTeacherInfo();
             List<string> teacherNames = new List<string>();
-            foreach(string[] name in teacherinfo)
+            foreach (string[] name in teacherinfo)
             {
                 teacherNames.Add(name[1] + " " + name[2]);
             }
@@ -51,16 +49,16 @@ namespace WpfApplication1
             //valid, and populate bookarray
             string query = "SELECT lesson_date, lesson_length FROM lessons";
             List<string[]> lessons = db.simpleConnection(false, query, null);
-            
+
             foreach (string[] day in lessons)
             {
                 DateTime currentDate = Convert.ToDateTime(day[0]);
                 int diff = currentDate.Day - DateTime.Now.Day;
-                if (diff >=0 && (currentDate.Hour - 9 )* 2 < 13 && (currentDate.Hour - 9) * 2 >= 0)
+                if (diff >= 0 && (currentDate.Hour - 9) * 2 < 13 && (currentDate.Hour - 9) * 2 >= 0)
                 {
-                    
-                    bookArray[diff, (currentDate.Hour - 9) *2 + currentDate.Minute/30] = 1;
-                    if(day[1] == "True" && (currentDate.Hour - 9) * 2 != 12) bookArray[diff, (currentDate.Hour - 9) * 2 + 1] = 1;
+
+                    bookArray[diff, (currentDate.Hour - 9) * 2 + currentDate.Minute / 30] = 1;
+                    if (day[1] == "True" && (currentDate.Hour - 9) * 2 != 12) bookArray[diff, (currentDate.Hour - 9) * 2 + 1] = 1;
                 }
 
             }
@@ -68,7 +66,7 @@ namespace WpfApplication1
             List<TimeSpan> validTimes = new List<TimeSpan>();
             for (int i = 0; i < 13; i++)
             {
-                if(bookArray[0,i] == 0)
+                if (bookArray[0, i] == 0)
                 {
                     validTimes.Add(new TimeSpan(i / 2 + 9, (i % 2) * 30, 0));
                 }
@@ -88,9 +86,9 @@ namespace WpfApplication1
 
             string query = "INSERT INTO `musicschool`.`lessons` (`student_id`, `teacher_id`, `lesson_date`, `attended`, `lesson_length`) VALUES(@userID, @teacherID, @timeDate, '0', @half)";
             try
-            { 
+            {
                 Dictionary<string, object> parameters = new Dictionary<string, object> {
-                    { "@userID", this.studentID },
+                    { "@userID", parentWindow.StudentID },
                     { "@teacherID", teacherinfo[selectTeacher.SelectedIndex][0]},
                     { "@timeDate", date.Add((TimeSpan)selectTime.SelectedItem)},
                     { "@half", Convert.ToInt32(selectHalf.IsChecked)} };
@@ -113,7 +111,7 @@ namespace WpfApplication1
             for (int i = 0; i < 13; i++)
             {
                 int diff = ((DateTime)(selectDate.SelectedDate)).Day - DateTime.Now.Day;
-                if (diff >= 0 && bookArray[diff,i] == 0)
+                if (diff >= 0 && bookArray[diff, i] == 0)
                 {
                     validTimes.Add(new TimeSpan(i / 2 + 9, (i % 2) * 30, 0));
                 }

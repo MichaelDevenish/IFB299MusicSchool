@@ -41,6 +41,7 @@ namespace WpfApplication1
         public List<string[]> TeacherInfo { get { return teacherInfo; } }
         public List<string[]> InstrumentInfo { get { return instrumentInfo; } }
         public DatabaseConnector.DatabaseConnector DB { get { return db; } }
+        public int StudentID { get { return studentID; } }
 
         #region general
         public MainWindow()
@@ -246,7 +247,7 @@ namespace WpfApplication1
 
         private void bookButton_Click(object sender, RoutedEventArgs e)
         {
-            BookWindow book = new BookWindow(this, studentID);
+            BookWindow book = new BookWindow(this);
             book.ShowDialog();
         }
 
@@ -274,6 +275,37 @@ namespace WpfApplication1
         {
             int instrumentID = int.Parse(instrumentInfo[cmbInstrument.SelectedIndex][0]);
             txtInstrumentInfo.Text = "Instrument Info: " + instrumentInfo[instrumentID][3] + ", " + instrumentInfo[instrumentID][1];
+        }
+
+        private void signupButton_Click(object sender, RoutedEventArgs e)
+        {
+            SignupWindow admin = new SignupWindow(this);
+            admin.ShowDialog();
+        }
+
+        private void loginButton_Click(object sender, RoutedEventArgs e)
+        {
+            bool error = false;
+            if (usernameBox.Text == "")
+            {
+                error = true;
+                usernameError.Visibility = Visibility.Visible;
+            }
+            else usernameError.Visibility = Visibility.Hidden;
+
+            if (passwordBox.Password == "")
+            {
+                error = true;
+                passwordError.Visibility = Visibility.Visible;
+            }
+            else passwordError.Visibility = Visibility.Hidden;
+
+            if (!error)
+            {
+                //execute login
+            }
+
+
         }
     }
 
