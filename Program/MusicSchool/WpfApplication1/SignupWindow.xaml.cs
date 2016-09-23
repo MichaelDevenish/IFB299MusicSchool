@@ -35,12 +35,35 @@ namespace WpfApplication1
             error = checkError(error, lastError, lastBox);
             error = checkError(error, nameError, userBox);
 
-            ////Check dob and passwords
+
+            if (birthPicker.SelectedDate == null)
+                ShowError(birthError);
+            else birthError.Visibility = Visibility.Hidden;
 
             if (parentWindow.DB.CheckUsername(userBox.Text) && userBox.Text != "")
+                ShowError(nameErrorExist);
+            else nameErrorExist.Visibility = Visibility.Hidden;
+
+            if (passwordBox.Password == "")
+                ShowError(passwordError);
+            else passwordError.Visibility = Visibility.Hidden;
+
+            if (passwordBox.Password != confirmBox.Password && passwordBox.Password != "")
+                ShowError(confirmError);
+            else confirmError.Visibility = Visibility.Hidden;
+
+            if (!error)
             {
-                error = false;
-                nameErrorExist.Visibility = Visibility.Visible;
+                PasswordManagment passwordGen = new PasswordManagment();
+                string salt = passwordGen.GenerateSalt();
+                byte[] hash = passwordGen.GenerateHash(passwordBox.Password, salt);
+                DateTime date;
+                if (DateTime.TryParse(birthPicker.Text, out date))
+                {
+                    parentWindow.DB.InsertUser(firstBox.Text, lastBox.Text, date, 2, hash, salt, userBox.Text);
+                    MessageBox.Show("user inserted");
+                }
+
             }
 
         }
