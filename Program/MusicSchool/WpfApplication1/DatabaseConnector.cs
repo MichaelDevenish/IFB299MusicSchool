@@ -269,8 +269,7 @@ namespace DatabaseConnector
 
                 //check if exists
                 while (dataReader.Read())
-                    if ((string)dataReader["username"] == username)
-                        result = true;
+                    result = ((string)dataReader["username"] == username);
 
                 //close everything
                 dataReader.Close();

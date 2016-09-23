@@ -28,8 +28,9 @@ namespace WpfApplication1
     {
 
         private bool logged_in = true;
-        private bool isAdmin = true;
-        private int studentID = 11;//placeholder change this
+        private bool isAdmin = false;
+        private bool isTeacher = false;
+        private int studentID = -1;
 
         public ObservableCollection<HalfHour> allTimetables;
         public ObservableCollection<HalfHour> myTimetables;
@@ -302,6 +303,16 @@ namespace WpfApplication1
 
             if (!error)
             {
+                List<string[]> result = db.ReadLoginCheckValid(usernameBox.Text, passwordBox.Password);
+                if (bool.Parse(result[0][0]))
+                {
+                    isAdmin = bool.Parse(result[0][1]);
+                    isTeacher = bool.Parse(result[0][2]);
+                    studentID = int.Parse(result[0][3]);
+                    //show confirmation and change user screen
+                }
+                else loginError.Visibility = Visibility.Visible;
+
                 //execute login
             }
 

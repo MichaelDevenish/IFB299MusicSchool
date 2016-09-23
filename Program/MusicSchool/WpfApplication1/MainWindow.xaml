@@ -50,7 +50,8 @@
                     <Label x:Name="label1" Content="Password" Margin="0,121,155,0" VerticalAlignment="Top" FontFamily="Corbel" FontSize="18.667" HorizontalAlignment="Center" Width="105"/>
                     <Label x:Name="label2_Copy" Content="Username" Margin="0,62,170,0" VerticalAlignment="Top" FontFamily="Corbel" FontSize="18.667" HorizontalAlignment="Center" Width="91"/>
                     <Label x:Name="passwordError" Content="Password must not be null" HorizontalAlignment="Center" Height="34" Margin="100,125,0,0" VerticalAlignment="Top" Width="176" FontSize="14.667" FontFamily="Corbel" Foreground="Red" Visibility="Hidden"/>
-                    <Label x:Name="usernameError" Content="Username must not be null" HorizontalAlignment="Center" Height="33" Margin="100,66,0,0" VerticalAlignment="Top" Width="176" FontSize="14.667" FontFamily="Corbel" Foreground="Red" Visibility="Hidden"/>
+                    <Label x:Name="usernameError" Content="Username must not be null" HorizontalAlignment="Center" Height="33" Margin="100,66,0,0" VerticalAlignment="Top" Width="176" FontSize="14.667" FontFamily="Corbel" Foreground="Red" IsHitTestVisible="True" Visibility="Hidden"/>
+                    <Label x:Name="loginError" Content="Username or Password is incorrect" HorizontalAlignment="Center" Height="33" Margin="0,252,0,0" VerticalAlignment="Top" Width="224" FontSize="14.667" FontFamily="Corbel" Foreground="Red" IsHitTestVisible="True" Visibility="Hidden"/>
 
 
 
