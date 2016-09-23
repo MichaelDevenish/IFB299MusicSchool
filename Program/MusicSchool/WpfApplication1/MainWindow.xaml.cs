@@ -88,6 +88,11 @@ namespace WpfApplication1
         //adjustments
         private void tab_changed(object sender, SelectionChangedEventArgs e)
         {
+            checkAbilities();
+        }
+
+        private void checkAbilities()
+        {
             adminLessonButton.Visibility = Visibility.Hidden;
             if (logged_in)
             {
@@ -309,6 +314,7 @@ namespace WpfApplication1
                     isAdmin = bool.Parse(result[0][1]);
                     isTeacher = bool.Parse(result[0][2]);
                     studentID = int.Parse(result[0][3]);
+                    checkAbilities();
                     //show confirmation and change user screen
                 }
                 else loginError.Visibility = Visibility.Visible;
