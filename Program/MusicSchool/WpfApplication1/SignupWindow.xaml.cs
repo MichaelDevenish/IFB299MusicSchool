@@ -29,68 +29,57 @@ namespace WpfApplication1
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            bool error = false;
-            error = emailCheck(error, emailError, emailBox);
-            error = checkError(error, firstError, firstBox);
-            error = checkError(error, lastError, lastBox);
-            error = checkError(error, nameError, userBox);
+            bool error = errorChecking();
+            if (!error) RegisterUser();
+        }
 
+        /// <summary>
+        /// Registers a user and signs them in
+        /// </summary>
+        private void RegisterUser()
+        {
+            DateTime date;
+            PasswordManagment passwordGen = new PasswordManagment();
+            string salt = passwordGen.GenerateSalt();
+            byte[] hash = passwordGen.GenerateHash(passwordBox.Password, salt);
+
+            if (DateTime.TryParse(birthPicker.Text, out date))
+            {
+                parentWindow.DB.InsertUser(firstBox.Text, lastBox.Text, date, 2, hash, salt, userBox.Text);
+                MessageBox.Show("User Created");
+                parentWindow.IsTeacher = false;
+                parentWindow.IsAdmin = false;
+                parentWindow.StudentID = parentWindow.DB.GetUserID(userBox.Text);
+            }
+        }
+
+        /// <summary>
+        /// Checks if the supplied variables are correct
+        /// </summary>
+        /// <returns>true if error</returns>
+        private bool errorChecking()
+        {
+            bool error = false;
+            error = HelperFunctions.emailCheck(error, emailError, emailBox);
+            error = HelperFunctions.checkError(error, firstError, firstBox.Text);
+            error = HelperFunctions.checkError(error, lastError, lastBox.Text);
+            error = HelperFunctions.checkError(error, nameError, userBox.Text);
 
             if (birthPicker.SelectedDate == null)
-                ShowError(birthError);
+                HelperFunctions.ShowError(birthError);
             else birthError.Visibility = Visibility.Hidden;
 
             if (parentWindow.DB.CheckUsername(userBox.Text) && userBox.Text != "")
-                ShowError(nameErrorExist);
+                HelperFunctions.ShowError(nameErrorExist);
             else nameErrorExist.Visibility = Visibility.Hidden;
 
             if (passwordBox.Password == "")
-                ShowError(passwordError);
+                HelperFunctions.ShowError(passwordError);
             else passwordError.Visibility = Visibility.Hidden;
 
             if (passwordBox.Password != confirmBox.Password && passwordBox.Password != "")
-                ShowError(confirmError);
+                HelperFunctions.ShowError(confirmError);
             else confirmError.Visibility = Visibility.Hidden;
-
-            if (!error)
-            {
-                PasswordManagment passwordGen = new PasswordManagment();
-                string salt = passwordGen.GenerateSalt();
-                byte[] hash = passwordGen.GenerateHash(passwordBox.Password, salt);
-                DateTime date;
-                if (DateTime.TryParse(birthPicker.Text, out date))
-                {
-                    parentWindow.DB.InsertUser(firstBox.Text, lastBox.Text, date, 2, hash, salt, userBox.Text);
-                    MessageBox.Show("user inserted");
-                }
-
-            }
-
-        }
-
-        private bool emailCheck(bool error, Label warning, TextBox text)
-        {
-            var emailregex = new Regex(@"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?");
-
-            if (text.Text != "" && !emailregex.IsMatch(emailBox.Text))
-                error = ShowError(warning);
-
-            else warning.Visibility = Visibility.Hidden;
-            return error;
-        }
-
-        private bool checkError(bool error, Label warning, TextBox text)
-        {
-            if (text.Text == "") error = ShowError(warning);
-
-            else warning.Visibility = Visibility.Hidden;
-            return error;
-        }
-
-        private static bool ShowError(Label warning)
-        {
-            bool error = true;
-            warning.Visibility = Visibility.Visible;
             return error;
         }
     }

@@ -279,6 +279,32 @@ namespace DatabaseConnector
 
         }
 
+        /// <summary>
+        /// This query checks to see if a username already exists
+        /// </summary>
+        /// <returns>result of query</returns>
+        public int GetUserID(string username)
+        {
+            String query = "SELECT user_id FROM users WHERE username = @username;";
+
+            if (OpenConnection())
+            {
+                //Create Command, bind value, Create a data reader and Execute the command
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@username", username);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                //check if exists
+                while (dataReader.Read())
+                    return int.Parse(dataReader["user_id"].ToString());
+
+                //close everything
+                dataReader.Close();
+                CloseConnection();
+            }
+            return -1; //if cant connect return null
+
+        }
 
         public List<string[]> ReadTeacherInfo()
         {
