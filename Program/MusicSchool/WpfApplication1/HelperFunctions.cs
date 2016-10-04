@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace WpfApplication1
 {
@@ -45,7 +48,7 @@ namespace WpfApplication1
                 return true;
             else if (byte1 == null || byte2 == null)
                 return false;
-            
+
             bool hashComparison = true;
             if (byte1.Length != byte2.Length)
                 hashComparison = false;
@@ -55,6 +58,32 @@ namespace WpfApplication1
                         hashComparison = false;
 
             return hashComparison;
+        }
+
+        public static bool emailCheck(bool error, Label warning, TextBox text)
+        {
+            var emailregex = new Regex(@"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?");
+
+            if (text.Text != "" && !emailregex.IsMatch(text.Text))
+                error = ShowError(warning);
+
+            else warning.Visibility = Visibility.Hidden;
+            return error;
+        }
+
+        public static bool checkError(bool error, Label warning, string text)
+        {
+            if (text == "") error = ShowError(warning);
+
+            else warning.Visibility = Visibility.Hidden;
+            return error;
+        }
+
+        public static bool ShowError(Label warning)
+        {
+            bool error = true;
+            warning.Visibility = Visibility.Visible;
+            return error;
         }
     }
 }

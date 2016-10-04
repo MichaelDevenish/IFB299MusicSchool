@@ -26,10 +26,11 @@ namespace WpfApplication1
     /// </summary>
     public partial class MainWindow : Window
     {
-
+        #region globals
         private bool logged_in = true;
-        private bool isAdmin = true;
-        private int studentID = 11;//placeholder change this
+        private bool isAdmin = false;
+        private bool isTeacher = false;
+        private int studentID = -1;
 
         public ObservableCollection<HalfHour> allTimetables;
         public ObservableCollection<HalfHour> myTimetables;
@@ -37,11 +38,16 @@ namespace WpfApplication1
         private List<string[]> instrumentInfo;
         private DatabaseConnector.DatabaseConnector db;
         private BackgroundWorker worker;
-
+        #endregion
+        #region Properties
         public List<string[]> TeacherInfo { get { return teacherInfo; } }
         public List<string[]> InstrumentInfo { get { return instrumentInfo; } }
         public DatabaseConnector.DatabaseConnector DB { get { return db; } }
+        public int StudentID { get { return studentID; } set { studentID = value; } }
+        public bool IsAdmin { get { return isAdmin; } set { isAdmin = value; } }
+        public bool IsTeacher { get { return isTeacher; } set { isTeacher = value; } }
 
+        #endregion
         #region general
         public MainWindow()
         {
@@ -85,6 +91,11 @@ namespace WpfApplication1
         //Each time the user changes the tab, check if the login status has changes and make the appropriate
         //adjustments
         private void tab_changed(object sender, SelectionChangedEventArgs e)
+        {
+            checkAbilities();
+        }
+
+        private void checkAbilities()
         {
             adminLessonButton.Visibility = Visibility.Hidden;
             if (logged_in)
@@ -246,7 +257,7 @@ namespace WpfApplication1
 
         private void bookButton_Click(object sender, RoutedEventArgs e)
         {
-            BookWindow book = new BookWindow(this, studentID);
+            BookWindow book = new BookWindow(this);
             book.ShowDialog();
         }
 
@@ -262,7 +273,38 @@ namespace WpfApplication1
             admin.ShowDialog();
         }
         #endregion
+        #region Login
+        /// <summary>
+        /// Does the database query to log a user in and alters the global variables relating
+        /// to user information
+        /// </summary>
+        private void Login()
+        {
+            List<string[]> result = db.ReadLoginCheckValid(usernameBox.Text, passwordBox.Password);
+            if (bool.Parse(result[0][0]))
+            {
+                isAdmin = bool.Parse(result[0][1]);
+                isTeacher = bool.Parse(result[0][2]);
+                studentID = int.Parse(result[0][3]);
+                checkAbilities();
+                //show confirmation and change user screen
+            }
+            else loginError.Visibility = Visibility.Visible;
+        }
 
+        /// <summary>
+        /// Checks if the login credientials are correctly entered
+        /// </summary>
+        /// <returns>true if error</returns>
+        private bool LoginErrorCheck()
+        {
+            bool error = false;
+            error = HelperFunctions.checkError(error, usernameError, usernameBox.Text);
+            error = HelperFunctions.checkError(error, passwordError, passwordBox.Password);
+            return error;
+        }
+        #endregion
+        #region Event Handeling
         private void cmbRecipient_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int teacherID = int.Parse(teacherInfo[cmbRecipient.SelectedIndex][0]);
@@ -275,8 +317,22 @@ namespace WpfApplication1
             int instrumentID = int.Parse(instrumentInfo[cmbInstrument.SelectedIndex][0]);
             txtInstrumentInfo.Text = "Instrument Info: " + instrumentInfo[instrumentID][3] + ", " + instrumentInfo[instrumentID][1];
         }
+
+        private void signupButton_Click(object sender, RoutedEventArgs e)
+        {
+            SignupWindow admin = new SignupWindow(this);
+            admin.ShowDialog();
+        }
+
+        private void loginButton_Click(object sender, RoutedEventArgs e)
+        {
+            bool error = LoginErrorCheck();
+            if (!error) Login();
+        }
+        #endregion
     }
 
+    #region Timetable Layout
     /// <summary>
     /// An object that defines the layout of the timetables
     /// </summary>
@@ -291,4 +347,5 @@ namespace WpfApplication1
         public string Friday { get; set; }
         public string Saturday { get; set; }
     }
+    #endregion
 }

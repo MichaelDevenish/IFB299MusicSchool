@@ -2,12 +2,16 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WpfApplication1;
 using System.Diagnostics;
+using System.Windows.Controls;
 
 namespace MusicSchoolUnitTest
 {
     [TestClass]
     public class UnitTest1
     {
+        TextBox textTest = new TextBox();
+        Label labeltest = new Label();
+
         #region hashing Tests
         [TestMethod]
         public void SaltGeneratorTest()
@@ -159,6 +163,130 @@ namespace MusicSchoolUnitTest
             DatabaseConnector.DatabaseConnector db = new DatabaseConnector.DatabaseConnector();
             Assert.IsFalse(db.CheckUsername("asdfwefawgrewagasrghdtrhdsargsarhgasrhdthgyadsgehgehgdetrghegerg"));
         }
+        #endregion
+        #region Login Tests
+        #region Email
+        [TestMethod]
+        public void EmailCheck()
+        {
+            labeltest.Visibility = System.Windows.Visibility.Hidden;
+            textTest.Text = "Test";
+            Assert.IsTrue(HelperFunctions.emailCheck(false, labeltest, textTest));
+        }
+        [TestMethod]
+        public void EmailCheckReal()
+        {
+            labeltest.Visibility = System.Windows.Visibility.Hidden;
+            textTest.Text = "test@test.com";
+            Assert.IsFalse(HelperFunctions.emailCheck(false, labeltest, textTest));
+        }
+        [TestMethod]
+        public void EmailCheckReal2()
+        {
+            labeltest.Visibility = System.Windows.Visibility.Hidden;
+            textTest.Text = "st@tt.co";
+            Assert.IsFalse(HelperFunctions.emailCheck(false, labeltest, textTest));
+        }
+        [TestMethod]
+        public void EmailCheck2()
+        {
+            labeltest.Visibility = System.Windows.Visibility.Hidden;
+            textTest.Text = "s@t.o";
+            Assert.IsFalse(HelperFunctions.emailCheck(false, labeltest, textTest));
+        }
+        [TestMethod]
+        public void EmailCheckNull()
+        {
+            labeltest.Visibility = System.Windows.Visibility.Hidden;
+            textTest.Text = "";
+            Assert.IsFalse(HelperFunctions.emailCheck(false, labeltest, textTest));
+        }
+        [TestMethod]
+        public void EmailCheckLabel()
+        {
+            labeltest.Visibility = System.Windows.Visibility.Hidden;
+            textTest.Text = "Test";
+            HelperFunctions.emailCheck(false, labeltest, textTest);
+            Assert.AreEqual(System.Windows.Visibility.Visible, labeltest.Visibility);
+        }
+        [TestMethod]
+        public void EmailCheckRealLabel()
+        {
+            labeltest.Visibility = System.Windows.Visibility.Hidden;
+            textTest.Text = "test@test.com";
+            HelperFunctions.emailCheck(false, labeltest, textTest);
+            Assert.AreEqual(System.Windows.Visibility.Hidden, labeltest.Visibility);
+        }
+        [TestMethod]
+        public void EmailCheckReal2Label()
+        {
+            labeltest.Visibility = System.Windows.Visibility.Hidden;
+            textTest.Text = "st@tt.co";
+            HelperFunctions.emailCheck(false, labeltest, textTest);
+            Assert.AreEqual(System.Windows.Visibility.Hidden, labeltest.Visibility);
+        }
+        [TestMethod]
+        public void EmailCheck2Label()
+        {
+            labeltest.Visibility = System.Windows.Visibility.Hidden;
+            textTest.Text = "s@t.o";
+            HelperFunctions.emailCheck(false, labeltest, textTest);
+            Assert.AreEqual(System.Windows.Visibility.Hidden, labeltest.Visibility);
+        }
+        [TestMethod]
+        public void EmailCheckNullLabel()
+        {
+            labeltest.Visibility = System.Windows.Visibility.Hidden;
+            textTest.Text = "";
+            HelperFunctions.emailCheck(false, labeltest, textTest);
+            Assert.AreEqual(System.Windows.Visibility.Hidden, labeltest.Visibility);
+        }
+        #endregion
+        #region NullError Tests
+        [TestMethod]
+        public void ErrorCheckNull()
+        {
+            labeltest.Visibility = System.Windows.Visibility.Hidden;
+            Assert.IsTrue(HelperFunctions.checkError(false, labeltest, ""));
+        }
+        [TestMethod]
+        public void ErrorCheckNotNull()
+        {
+            labeltest.Visibility = System.Windows.Visibility.Hidden;
+            Assert.IsFalse(HelperFunctions.checkError(false, labeltest, "Test"));
+        }
+        [TestMethod]
+        public void ErrorCheckLabel()
+        {
+            labeltest.Visibility = System.Windows.Visibility.Hidden;
+            textTest.Text = "";
+            HelperFunctions.checkError(false, labeltest, "");
+            Assert.AreEqual(System.Windows.Visibility.Visible, labeltest.Visibility);
+        }
+        [TestMethod]
+        public void ErrorCheckNotLabel()
+        {
+            labeltest.Visibility = System.Windows.Visibility.Hidden;
+            textTest.Text = "Test";
+            HelperFunctions.checkError(false, labeltest, "Test");
+            Assert.AreEqual(System.Windows.Visibility.Hidden, labeltest.Visibility);
+        }
+        #endregion
+        #region ShowError Tests
+        [TestMethod]
+        public void ErrorShowTest()
+        {
+            labeltest.Visibility = System.Windows.Visibility.Hidden;
+            HelperFunctions.ShowError(labeltest);
+            Assert.AreEqual(System.Windows.Visibility.Visible, labeltest.Visibility);
+        }
+        [TestMethod]
+        public void ErrorShowTestControl()
+        {
+            labeltest.Visibility = System.Windows.Visibility.Hidden;
+            Assert.AreEqual(System.Windows.Visibility.Hidden, labeltest.Visibility);
+        }
+        #endregion
         #endregion
     }
 }
