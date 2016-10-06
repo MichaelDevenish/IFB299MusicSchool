@@ -37,8 +37,26 @@ namespace WpfApplication1
                             "JOIN musicschool.user_skills ON users.user_id = user_skills.user_id " + 
                             "JOIN musicschool.skills ON skills.skill_id = user_skills.skill_id;";
             List<string[]> data = db.simpleConnection(false, query, null);
+            List<entry> entries = new List<entry>();
+
+            
+            foreach(string[] el in data)
+            {
+                entries.Add(new entry { FirstName = el[0], LastName = el[1], Skills = el[2]});
+            }
+            
+            dataGrid.ItemsSource = entries;
+          
 
 
+        }
+
+        public class entry
+        {
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public string Skills { get; set; }
+            
         }
     }
 }

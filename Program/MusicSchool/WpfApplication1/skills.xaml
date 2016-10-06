@@ -8,7 +8,13 @@
         Title="Skills Management" Height="300" Width="300">
     <Grid>
         <StackPanel HorizontalAlignment="Left" Height="249" Margin="10,10,0,0" VerticalAlignment="Top" Width="272">
-            <DataGrid x:Name="dataGrid" Height="186"/>
+            <DataGrid x:Name="dataGrid" Height="186">
+                <DataGrid.Columns>
+                    <DataGridTextColumn x:Name="firstname" Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="First Name"/>
+                    <DataGridTextColumn x:Name="lastname" Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Last Name"/>
+                    <DataGridTextColumn x:Name="inst_skills" Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Skill"/>
+                </DataGrid.Columns>
+            </DataGrid>
         </StackPanel>
     </Grid>
 </Window>

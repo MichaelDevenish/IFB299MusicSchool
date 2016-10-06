@@ -57,6 +57,10 @@ namespace DatabaseConnector
             {
                 return false;
             }
+            catch (System.TimeoutException)
+            {
+                return false;
+            }
         }
 
         /// <summary>
