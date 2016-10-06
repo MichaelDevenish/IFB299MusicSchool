@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		WpfApplication1\images\header.jpg = WpfApplication1\images\header.jpg
 		WpfApplication1\images\header.png = WpfApplication1\images\header.png
+		XMLFile1.xml = XMLFile1.xml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateUser", "terminalHash\CreateUser.csproj", "{6C5F3C2A-32BC-4393-AB78-437556DA3AF2}"

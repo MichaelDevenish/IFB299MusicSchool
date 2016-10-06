@@ -118,9 +118,9 @@
             </TabItem>
             <TabItem Margin="20,0,-20,0" Header="INSTRUMENTS" HorizontalAlignment="Left" Width="160">
                 <StackPanel Grid.Column="1" HorizontalAlignment="Left" Height="402" Margin="28,28,0,0" VerticalAlignment="Top" Width="734">
+                    <Button x:Name="manageSkills" Content="Manage skills" Margin="520,0,0,0" Click="open_skills_window"/>
                     <Label Content="Instrunment List" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="240" Margin="35,32,0,0"/>
-                    <ComboBox x:Name="cmbInstrument" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" FontFamily="Segoe UI" Text="Select Recipients" SelectionChanged="cmbInstrument_SelectionChanged">
-                    </ComboBox>
+                    <ComboBox x:Name="cmbInstrument" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" FontFamily="Segoe UI" Text="Select Recipients" SelectionChanged="cmbInstrument_SelectionChanged"/>
                     <TextBox x:Name="txtInstrumentInfo" HorizontalAlignment="Left" Height="260" TextWrapping="Wrap" Text="Instrument Information:" VerticalAlignment="Top" Width="608"/>
                 </StackPanel>
             </TabItem>

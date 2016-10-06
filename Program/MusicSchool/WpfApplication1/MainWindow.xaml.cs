@@ -329,7 +329,21 @@ namespace WpfApplication1
             bool error = LoginErrorCheck();
             if (!error) Login();
         }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void open_skills_window(object sender, RoutedEventArgs e)
+        {
+            skills skillsInst = new skills();
+            skillsInst.ShowDialog();
+        }
+
         #endregion
+
+
     }
 
     #region Timetable Layout
