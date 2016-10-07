@@ -63,6 +63,27 @@ namespace WpfApplication1
             worker = new BackgroundWorker();
             worker.DoWork += timetable_DoWork;
             worker.RunWorkerAsync();
+
+            List<Messages> messages = new List<Messages>();
+            Messages conversation1 = new Messages(1, 3, 4, "john doe");
+            conversation1.AddMessage("test1", DateTime.Now, "i am testing", 3);
+            conversation1.AddMessage("test2", DateTime.Now, "i am replying to the test", 4);
+            conversation1.AddMessage("test3", DateTime.Now, "cool", 3);
+            messages.Add(conversation1);
+            Messages conversation2 = new Messages(2, 3, 4, "john doe");
+            conversation2.AddMessage("test1", DateTime.Now, "i am testing", 3);
+            conversation2.AddMessage("test2", DateTime.Now, "i am replying to the test", 4);
+            conversation2.AddMessage("test3", DateTime.Now, "cool", 3);
+            messages.Add(conversation2);
+
+            listBox.ItemsSource = messages;
+
+            //List<Conversation> items = new List<Conversation>();
+            //items.Add(new Conversation() { User = "John Doe", Age = 42 });
+            //items.Add(new Conversation() { User = "Jane Doe", Age = 39 });
+            //items.Add(new Conversation() { User = "Sammy Doe", Age = 13 });
+            //listBox.ItemsSource = items;
+
         }
 
         /// <summary>
@@ -79,8 +100,8 @@ namespace WpfApplication1
             {
                 teacherInfo = teacherThread;
                 instrumentInfo = instrumentThread;
-                for (int i = 0; i < teacherInfo.Count; i++)
-                    cmbRecipient.Items.Add(teacherInfo[i][1] + " " + teacherInfo[i][2]);
+                //for (int i = 0; i < teacherInfo.Count; i++)
+                //    cmbRecipient.Items.Add(teacherInfo[i][1] + " " + teacherInfo[i][2]);
                 for (int i = 0; i < instrumentInfo.Count; i++)
                     cmbInstrument.Items.Add(instrumentInfo[i][1]);
                 if (isAdmin)
@@ -288,6 +309,8 @@ namespace WpfApplication1
                 studentID = int.Parse(result[0][3]);
                 checkAbilities();
                 //show confirmation and change user screen
+                //load relavant Info
+
             }
             else loginError.Visibility = Visibility.Visible;
         }
@@ -307,9 +330,9 @@ namespace WpfApplication1
         #region Event Handeling
         private void cmbRecipient_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            int teacherID = int.Parse(teacherInfo[cmbRecipient.SelectedIndex][0]);
-            txtTeacherName.Text = "Teacher Name: " + teacherInfo[teacherID - 1][1] + " " + teacherInfo[teacherID - 1][2];
-            txtTeacherSkill.Text = "Teacher's Instruments: " + "Example";
+            //int teacherID = int.Parse(teacherInfo[cmbRecipient.SelectedIndex][0]);
+            //txtTeacherName.Text = "Teacher Name: " + teacherInfo[teacherID - 1][1] + " " + teacherInfo[teacherID - 1][2];
+            //txtTeacherSkill.Text = "Teacher's Instruments: " + "Example";
         }
 
         private void cmbInstrument_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -341,9 +364,63 @@ namespace WpfApplication1
             skillsInst.ShowDialog();
         }
 
+
+
         #endregion
 
+        private void listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ListBox list = (ListBox)sender;
+            Messages message = (Messages)list.SelectedItem;
+            richTextBox = message.formatMessage(richTextBox);
+        }
 
+        private void button_Copy1_Click(object sender, RoutedEventArgs e)
+        {
+            if (listBox.SelectedItem != null)
+            {
+                BackgroundWorker sendMessage = new BackgroundWorker();
+                sendMessage.DoWork += replyMessage_DoWork;
+                sendMessage.RunWorkerAsync();
+            }
+        }
+
+        /// <summary>
+        /// Sends a reply message
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void replyMessage_DoWork(object sender, DoWorkEventArgs e)
+        {
+            int role = 2;
+            if (isAdmin) role = 0;
+            if (IsTeacher) role = 1;
+
+            Messages message = null;
+            string title = "";
+            string content = "";
+            this.Dispatcher.Invoke((Action)(() =>
+            {
+                title = titleBox.Text;
+                content = replyBox.Text;
+                message = (Messages)listBox.SelectedItem;
+            }));
+            DatabaseConnector.DatabaseConnector data = new DatabaseConnector.DatabaseConnector();
+            data.SendMessage(message.TeacherID, message.StudentID, DateTime.Now, title, content, role);
+            LoadMessages(data);
+        }
+
+        /// <summary>
+        /// Loads the messages corresponding to the current user
+        /// </summary>
+        private void LoadMessages(DatabaseConnector.DatabaseConnector data)
+        {
+            //do data processing 
+            this.Dispatcher.Invoke((Action)(() =>
+            {
+                MessageBox.Show("success");
+            }));
+        }
     }
 
     #region Timetable Layout

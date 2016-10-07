@@ -310,6 +310,33 @@ namespace DatabaseConnector
 
         }
 
+        /// <summary>
+        /// This query returns the username related to a userid
+        /// </summary>
+        /// <returns>result of query</returns>
+        public string GetUserName(int userID)
+        {
+            String query = "SELECT username FROM users WHERE user_id = @userID;";
+
+            if (OpenConnection())
+            {
+                //Create Command, bind value, Create a data reader and Execute the command
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@userID", userID);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                //check if exists
+                while (dataReader.Read())
+                    return dataReader["username"].ToString();
+
+                //close everything
+                dataReader.Close();
+                CloseConnection();
+            }
+            return ""; //if cant connect return null
+
+        }
+
         public List<string[]> ReadTeacherInfo()
         {
             String query = "SELECT user_id, first_name, last_name FROM users WHERE role=1";
@@ -509,6 +536,40 @@ namespace DatabaseConnector
 
 
         }
+
+        /// <summary>
+        /// This is an example class that outlines data insertion into the instruments table
+        /// </summary>
+        public void SendMessage(int teacherID, int studentID, DateTime date, string title, string message, int role)
+        {
+            int sender = -1;
+
+            if (role == 1 || role == 0) sender = teacherID;
+            if (role == 2) sender = studentID;
+
+            String query = "INSERT INTO messages (student_id, teacher_id,sent_time,message,title,sender) VALUES (@student, @teacher, @date,@message,@title,@sender);";
+
+            if (OpenConnection())
+            {
+
+                //Create Command bind values and execute
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                cmd.Parameters.AddWithValue("@student", studentID);
+                cmd.Parameters.AddWithValue("@teacher", teacherID);
+                cmd.Parameters.AddWithValue("@date", date.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("@message", message);
+                cmd.Parameters.AddWithValue("@title", title);
+                cmd.Parameters.AddWithValue("@sender", sender);
+                cmd.ExecuteNonQuery();
+
+                //close everything
+                CloseConnection();
+            }
+
+
+        }
+
 
         /// <summary>
         /// Inserts a lesson into the database

@@ -36,6 +36,14 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <DataTemplate x:Key="MessageTemplate">
+            <StackPanel>
+                <TextBlock Text="{Binding Path=User}" FontWeight="Bold" />
+                <TextBlock Text="{Binding Path=RecentMessage}"/>
+                <TextBlock Text="{Binding Path=Date}"/>
+            </StackPanel>
+        </DataTemplate>
+
     </Window.Resources>
     <Grid>
         <Image HorizontalAlignment="Left" Height="152" VerticalAlignment="Top" Width="790"/>
@@ -94,25 +102,27 @@
                     </TabControl>
                 </Grid>
             </TabItem>
-            <TabItem Margin="12,0,-12,0" Header="CONTACTS" HorizontalAlignment="Left" Width="150">
+            <TabItem Margin="12,0,-12,0" Header="MESSAGING" HorizontalAlignment="Left" Width="150">
                 <Grid Background="White">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="250*"/>
                         <ColumnDefinition Width="550*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Content="Contact Information" HorizontalAlignment="Left" Height="50" Margin="10,10,0,0" VerticalAlignment="Top" Width="215" Style="{StaticResource Page_header}"/>
-                    <StackPanel Grid.Column="1" HorizontalAlignment="Left" Height="500" Margin="28,28,0,0" VerticalAlignment="Top" Width="500">
-                        <Label Content="Messenger" HorizontalAlignment="Left" VerticalAlignment="Top" Width="167" Height="30"/>
-                        <ComboBox x:Name="cmbRecipient" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" FontFamily="Segoe UI" Text="Select Recipients" SelectionChanged="cmbRecipient_SelectionChanged">
-                        </ComboBox>
-                        <TextBox HorizontalAlignment="Left" Height="243" TextWrapping="Wrap" Text="Message a staff member" VerticalAlignment="Top" Width="300"/>
-                        <Button Content="Send" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="75" Margin="0,0,425,0" Height="55"/>
-                    </StackPanel>
-                    <Label VerticalAlignment="Top" HorizontalAlignment="Left" Height="209" Width="229" Margin="10,281,0,0" >
-                        <TextBlock Height="184" Width="189"><Run Text="Administrator:"/><LineBreak/><Run Text="Jenny Pinelands"/><LineBreak/><Run/><LineBreak/><Run Text="Phone Number:"/><LineBreak/><Run Text="3845 9857"/><LineBreak/><Run/><LineBreak/><Run Text="Address:"/><LineBreak/><Run Text="123 Ipsum St Brisbane"/></TextBlock>
-                    </Label>
-                    <TextBox x:Name="txtTeacherName" HorizontalAlignment="Left" Height="64" Margin="10,65,0,0" TextWrapping="Wrap" Text="Teacher Name:" VerticalAlignment="Top" Width="215" IsReadOnly="True"/>
-                    <TextBox x:Name="txtTeacherSkill" HorizontalAlignment="Left" Height="64" Margin="10,134,0,0" TextWrapping="Wrap" Text="Teacher's Instruments:" VerticalAlignment="Top" Width="215" IsReadOnly="True"/>
+                    <TextBox x:Name="replyBox" Grid.Column="1" HorizontalAlignment="Left" Height="112" Margin="0,555,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="543"/>
+
+                    <StackPanel Grid.Column="1" Margin="0,0,0,0"/>
+                    <RichTextBox x:Name="richTextBox" Grid.Column="1" Margin="0,0,0,135" FontFamily="Segoe UI" IsReadOnly="True">
+                        <FlowDocument>
+                            <Paragraph>
+                                <InlineUIContainer/>
+                            </Paragraph>
+                        </FlowDocument>
+                    </RichTextBox>
+                    <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="616" VerticalAlignment="Top" Width="247" ItemTemplate="{StaticResource MessageTemplate}" SelectionChanged="listBox_SelectionChanged" FontFamily="Segoe UI"/>
+                    <Button x:Name="button" Content="Compose" HorizontalAlignment="Left" Margin="10,625,0,0" VerticalAlignment="Top" Width="103" Height="32"/>
+                    <Button x:Name="button_Copy" Content="Refresh" HorizontalAlignment="Left" Margin="134,625,0,0" VerticalAlignment="Top" Width="103" Height="32"/>
+                    <Button x:Name="button_Copy1" Content="Reply" HorizontalAlignment="Left" Margin="430,625,0,0" VerticalAlignment="Top" Width="103" Height="32" Grid.Column="1" Click="button_Copy1_Click"/>
+                    <TextBox x:Name="titleBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="0,532,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="543"/>
 
                 </Grid>
             </TabItem>
