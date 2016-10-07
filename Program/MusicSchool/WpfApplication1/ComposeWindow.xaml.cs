@@ -26,7 +26,10 @@ namespace WpfApplication1
         public List<User> userList;
         private List<string[]> users;
 
-
+        /// <summary>
+        /// Constructor 
+        /// </summary>
+        /// <param name="parentWindow">the window that this window came from</param>
         public ComposeWindow(MainWindow parentWindow)
         {
             InitializeComponent();
@@ -38,23 +41,6 @@ namespace WpfApplication1
             loadUsers = new BackgroundWorker();
             loadUsers.DoWork += loadUsers_DoWork;
             loadUsers.RunWorkerAsync();
-
-
-        }
-
-        private void loadUsers_DoWork(object sender, DoWorkEventArgs e)
-        {
-
-            DatabaseConnector.DatabaseConnector backgroundload = new DatabaseConnector.DatabaseConnector();
-
-            if (parentWindow.IsAdmin || parentWindow.IsTeacher) users = new DatabaseConnector.DatabaseConnector().GetUsers();
-            else users = new DatabaseConnector.DatabaseConnector().ReadTeacherInfo();
-
-
-            this.Dispatcher.Invoke((Action)(() =>
-            {
-                SearchUsers();
-            }));
         }
 
         private void SearchUsers()
@@ -70,6 +56,7 @@ namespace WpfApplication1
             listBox.ItemsSource = userList;
         }
 
+        #region Event Handelers
         private void button_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -77,14 +64,58 @@ namespace WpfApplication1
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            //do database query
-            this.Close();
+            if (listBox.SelectedItem == null)
+                MessageBox.Show("you must select a recipient");
+            else {
+                BackgroundWorker sendMessageWorker = new BackgroundWorker();
+                sendMessageWorker.DoWork += sendMessage_DoWork;
+                sendMessageWorker.RunWorkerAsync();
+            }
         }
 
         private void textBox2_TextChanged(object sender, TextChangedEventArgs e)
         {
             SearchUsers();
         }
+        #endregion
+        #region Background Workers
+        private void loadUsers_DoWork(object sender, DoWorkEventArgs e)
+        {
+            DatabaseConnector.DatabaseConnector backgroundload = new DatabaseConnector.DatabaseConnector();
+
+            if (parentWindow.IsAdmin || parentWindow.IsTeacher) users = new DatabaseConnector.DatabaseConnector().GetUsers();
+            else users = new DatabaseConnector.DatabaseConnector().ReadTeacherInfo();
+
+
+            this.Dispatcher.Invoke((Action)(() =>
+            {
+                SearchUsers();
+            }));
+        }
+
+        private void sendMessage_DoWork(object sender, DoWorkEventArgs e)
+        {
+            string title = "";
+            int userID = -1;
+            string content = "";
+            this.Dispatcher.Invoke((Action)(() =>
+            {
+                title = titleBox.Text;
+                content = textBox.Text;
+                userID = ((User)listBox.SelectedItem).ID;
+
+            }));
+
+            if (parentWindow.IsAdmin || parentWindow.IsTeacher)
+                new DatabaseConnector.DatabaseConnector().SendMessage(parentWindow.StudentID, userID, DateTime.Now, title, content, 1);
+            else new DatabaseConnector.DatabaseConnector().SendMessage(userID, parentWindow.StudentID, DateTime.Now, title, content, 2);
+
+            this.Dispatcher.Invoke((Action)(() =>
+            {
+                this.Close();
+            }));
+        }
+        #endregion
     }
     public class User
     {

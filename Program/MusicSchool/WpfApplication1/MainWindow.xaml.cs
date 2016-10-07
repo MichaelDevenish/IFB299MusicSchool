@@ -38,6 +38,8 @@ namespace WpfApplication1
         private List<string[]> instrumentInfo;
         private DatabaseConnector.DatabaseConnector db;
         private BackgroundWorker worker;
+        private BackgroundWorker refreshMessage;
+
         #endregion
         #region Properties
         public List<string[]> TeacherInfo { get { return teacherInfo; } }
@@ -268,24 +270,6 @@ namespace WpfApplication1
             return Days;
         }
 
-
-        private void bookButton_Click(object sender, RoutedEventArgs e)
-        {
-            BookWindow book = new BookWindow(this);
-            book.ShowDialog();
-        }
-
-        private void refreshButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (!worker.IsBusy)
-                worker.RunWorkerAsync();
-        }
-
-        private void adminLessonButton_Click(object sender, RoutedEventArgs e)
-        {
-            AdminTimetable admin = new AdminTimetable(this);
-            admin.ShowDialog();
-        }
         #endregion
         #region Login
         /// <summary>
@@ -301,6 +285,10 @@ namespace WpfApplication1
                 isTeacher = bool.Parse(result[0][2]);
                 studentID = int.Parse(result[0][3]);
                 checkAbilities();
+
+                refreshMessage = new BackgroundWorker();
+                refreshMessage.DoWork += refreshMessage_DoWork;
+                refreshMessage.RunWorkerAsync();
                 //show confirmation and change user screen
                 //load relavant Info
 
@@ -357,10 +345,43 @@ namespace WpfApplication1
             skillsInst.ShowDialog();
         }
 
+        private void bookButton_Click(object sender, RoutedEventArgs e)
+        {
+            BookWindow book = new BookWindow(this);
+            book.ShowDialog();
+        }
 
+        private void refreshButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!worker.IsBusy)
+                worker.RunWorkerAsync();
+        }
 
-        #endregion
+        private void adminLessonButton_Click(object sender, RoutedEventArgs e)
+        {
+            AdminTimetable admin = new AdminTimetable(this);
+            admin.ShowDialog();
+        }
 
+        private void refreshbutton_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (studentID != -1)
+                if (!refreshMessage.IsBusy)
+                    refreshMessage.RunWorkerAsync();
+                else MessageBox.Show("You must be logged in to use this feature");
+
+        }
+
+        private void composebutton_Click(object sender, RoutedEventArgs e)
+        {
+            if (studentID != -1)
+            {
+                new ComposeWindow(this).ShowDialog();
+                if (!refreshMessage.IsBusy)
+                    refreshMessage.RunWorkerAsync();
+            }
+            else MessageBox.Show("You must be logged in to use this feature");
+        }
         private void listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ListBox list = (ListBox)sender;
@@ -370,14 +391,20 @@ namespace WpfApplication1
 
         private void button_Copy1_Click(object sender, RoutedEventArgs e)
         {
-            if (listBox.SelectedItem != null)
+            if (studentID != -1)
             {
-                BackgroundWorker sendMessage = new BackgroundWorker();
-                sendMessage.DoWork += replyMessage_DoWork;
-                sendMessage.RunWorkerAsync();
+                if (listBox.SelectedItem != null)
+                {
+                    BackgroundWorker sendMessage = new BackgroundWorker();
+                    sendMessage.DoWork += replyMessage_DoWork;
+                    sendMessage.RunWorkerAsync();
+                }
             }
+            else MessageBox.Show("You must be logged in to use this feature");
         }
 
+        #endregion
+        #region messaging
         /// <summary>
         /// Sends a reply message
         /// </summary>
@@ -402,6 +429,15 @@ namespace WpfApplication1
             replyConnection.SendMessage(message.TeacherID, message.StudentID, DateTime.Now, title, content, role);
             LoadMessages(replyConnection);
         }
+        /// <summary>
+        /// Sends a reply message
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void refreshMessage_DoWork(object sender, DoWorkEventArgs e)
+        {
+            LoadMessages(new DatabaseConnector.DatabaseConnector());
+        }
 
         /// <summary>
         /// Loads the messages corresponding to the current user
@@ -414,17 +450,7 @@ namespace WpfApplication1
                 MessageBox.Show("success");
             }));
         }
-
-        private void refreshbutton_Click_1(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void composebutton_Click(object sender, RoutedEventArgs e)
-        {
-            ComposeWindow compose = new ComposeWindow(this);
-            compose.ShowDialog();
-        }
+        #endregion
     }
 
     #region Timetable Layout
