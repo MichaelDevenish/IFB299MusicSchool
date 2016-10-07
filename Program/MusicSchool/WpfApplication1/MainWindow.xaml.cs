@@ -77,13 +77,6 @@ namespace WpfApplication1
             messages.Add(conversation2);
 
             listBox.ItemsSource = messages;
-
-            //List<Conversation> items = new List<Conversation>();
-            //items.Add(new Conversation() { User = "John Doe", Age = 42 });
-            //items.Add(new Conversation() { User = "Jane Doe", Age = 39 });
-            //items.Add(new Conversation() { User = "Sammy Doe", Age = 13 });
-            //listBox.ItemsSource = items;
-
         }
 
         /// <summary>
@@ -343,8 +336,8 @@ namespace WpfApplication1
 
         private void signupButton_Click(object sender, RoutedEventArgs e)
         {
-            SignupWindow admin = new SignupWindow(this);
-            admin.ShowDialog();
+            SignupWindow signup = new SignupWindow(this);
+            signup.ShowDialog();
         }
 
         private void loginButton_Click(object sender, RoutedEventArgs e)
@@ -405,9 +398,9 @@ namespace WpfApplication1
                 content = replyBox.Text;
                 message = (Messages)listBox.SelectedItem;
             }));
-            DatabaseConnector.DatabaseConnector data = new DatabaseConnector.DatabaseConnector();
-            data.SendMessage(message.TeacherID, message.StudentID, DateTime.Now, title, content, role);
-            LoadMessages(data);
+            DatabaseConnector.DatabaseConnector replyConnection = new DatabaseConnector.DatabaseConnector();
+            replyConnection.SendMessage(message.TeacherID, message.StudentID, DateTime.Now, title, content, role);
+            LoadMessages(replyConnection);
         }
 
         /// <summary>
@@ -420,6 +413,17 @@ namespace WpfApplication1
             {
                 MessageBox.Show("success");
             }));
+        }
+
+        private void refreshbutton_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void composebutton_Click(object sender, RoutedEventArgs e)
+        {
+            ComposeWindow compose = new ComposeWindow(this);
+            compose.ShowDialog();
         }
     }
 

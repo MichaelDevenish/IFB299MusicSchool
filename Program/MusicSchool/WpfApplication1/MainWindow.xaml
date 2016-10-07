@@ -119,8 +119,8 @@
                         </FlowDocument>
                     </RichTextBox>
                     <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="616" VerticalAlignment="Top" Width="247" ItemTemplate="{StaticResource MessageTemplate}" SelectionChanged="listBox_SelectionChanged" FontFamily="Segoe UI"/>
-                    <Button x:Name="button" Content="Compose" HorizontalAlignment="Left" Margin="10,625,0,0" VerticalAlignment="Top" Width="103" Height="32"/>
-                    <Button x:Name="button_Copy" Content="Refresh" HorizontalAlignment="Left" Margin="134,625,0,0" VerticalAlignment="Top" Width="103" Height="32"/>
+                    <Button x:Name="composebutton" Content="Compose" HorizontalAlignment="Left" Margin="10,625,0,0" VerticalAlignment="Top" Width="103" Height="32" Click="composebutton_Click"/>
+                    <Button x:Name="refreshbutton" Content="Refresh" HorizontalAlignment="Left" Margin="134,625,0,0" VerticalAlignment="Top" Width="103" Height="32" Click="refreshbutton_Click_1"/>
                     <Button x:Name="button_Copy1" Content="Reply" HorizontalAlignment="Left" Margin="430,625,0,0" VerticalAlignment="Top" Width="103" Height="32" Grid.Column="1" Click="button_Copy1_Click"/>
                     <TextBox x:Name="titleBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="0,532,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="543"/>
 

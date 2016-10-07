@@ -365,6 +365,32 @@ namespace DatabaseConnector
         }
 
 
+        public List<string[]> GetUsers()
+        {
+            String query = "SELECT user_id, first_name, last_name FROM users";
+
+            List<string[]> list = new List<string[]>();
+
+            if (OpenConnection())
+            {
+                //Create Command, bind value, Create a data reader and Execute the command
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                //Read the data and store it
+                while (dataReader.Read())
+                    list.Add(new string[] { dataReader["user_id"] + "", dataReader["first_name"] + "", dataReader["last_name"] + "" });
+
+                //close everything
+                dataReader.Close();
+                CloseConnection();
+
+                //return result
+                return list;
+            }
+            else return null; //if cant connect return null
+        }
+
         public List<string[]> ReadInstrumentInfo()
         {
             String query = "SELECT instrument_id, instrument_name, instrument_type, quality FROM instruments;";
@@ -533,8 +559,6 @@ namespace DatabaseConnector
                 //close everything
                 CloseConnection();
             }
-
-
         }
 
         /// <summary>
