@@ -590,8 +590,71 @@ namespace DatabaseConnector
                 //close everything
                 CloseConnection();
             }
+        }
+
+        public List<Messages> ReceiveMessages(bool teacher, int userID)
+        {
+            List<Messages> messages = new List<Messages>();
+            String query = "";
+            if (teacher) query = "SELECT messages.student_id, messages.teacher_id, messages.sent_time, messages.message, messages.title, messages.sender, users.first_name, users.last_name" +
+                             " FROM messages LEFT JOIN users ON messages.student_id = users.user_id" +
+                             " WHERE teacher_id = @userID;";
+            else query = "SELECT messages.student_id, messages.teacher_id, messages.sent_time, messages.message, messages.title, messages.sender, users.first_name, users.last_name" +
+                          " FROM messages LEFT JOIN users ON messages.teacher_id = users.user_id" +
+                          " WHERE student_id = @userID;";
+
+            if (OpenConnection())
+            {
+                //Create Command, bind value, Create a data reader and Execute the command
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@userID", userID);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                //Read the data and store it
+                while (dataReader.Read())
+                {
+                    bool isNew = true;
+                    Messages tempMessage = null;
+
+                    foreach (Messages messageGroup in messages)
+                    {
+                        if (teacher && messageGroup.StudentID == int.Parse(dataReader["student_id"].ToString()))
+                            isNew = false;
+                        else if (!teacher && messageGroup.TeacherID == int.Parse(dataReader["teacher_id"].ToString()))
+                            isNew = false;
+
+                        if (!isNew) tempMessage = messageGroup;
+                    }
+                    if (isNew)
+                    {
+                        if (teacher) tempMessage = new Messages(1,
+                            int.Parse(dataReader["teacher_id"].ToString()),
+                            int.Parse(dataReader["student_id"].ToString()),
+                            dataReader["first_name"] + " " + dataReader["last_name"]);
+                        else tempMessage = new Messages(2,
+                            int.Parse(dataReader["teacher_id"].ToString()),
+                            int.Parse(dataReader["student_id"].ToString()),
+                            dataReader["first_name"] + " " + dataReader["last_name"]);
 
 
+                        messages.Add(tempMessage);
+
+                    }
+
+                    tempMessage.AddMessage(dataReader["title"].ToString(),
+                        dataReader.GetDateTime("sent_time"),
+                        dataReader["message"].ToString(),
+                        dataReader.GetInt16("sender"));
+                }
+
+                //close everything
+                dataReader.Close();
+                CloseConnection();
+
+                //return result
+                return messages;
+            }
+            else return null; //if cant connect return null
         }
 
 

@@ -39,6 +39,7 @@ namespace WpfApplication1
         private DatabaseConnector.DatabaseConnector db;
         private BackgroundWorker worker;
         private BackgroundWorker refreshMessage;
+        private List<Messages> messages;
 
         #endregion
         #region Properties
@@ -66,19 +67,6 @@ namespace WpfApplication1
             worker.DoWork += timetable_DoWork;
             worker.RunWorkerAsync();
 
-            List<Messages> messages = new List<Messages>();
-            Messages conversation1 = new Messages(1, 3, 4, "john doe");
-            conversation1.AddMessage("test1", DateTime.Now, "i am testing", 3);
-            conversation1.AddMessage("test2", DateTime.Now, "i am replying to the test", 4);
-            conversation1.AddMessage("test3", DateTime.Now, "cool", 3);
-            messages.Add(conversation1);
-            Messages conversation2 = new Messages(2, 3, 4, "john doe");
-            conversation2.AddMessage("test1", DateTime.Now, "i am testing", 3);
-            conversation2.AddMessage("test2", DateTime.Now, "i am replying to the test", 4);
-            conversation2.AddMessage("test3", DateTime.Now, "cool", 3);
-            messages.Add(conversation2);
-
-            listBox.ItemsSource = messages;
         }
 
         /// <summary>
@@ -149,11 +137,10 @@ namespace WpfApplication1
         /// </summary>
         void timetable_DoWork(object sender, DoWorkEventArgs e)
         {
-            DatabaseConnector.DatabaseConnector data = new DatabaseConnector.DatabaseConnector();
             allTimetables = GenerateTimetableDataBindings();
-            LoadTimetableData(data.ReadEmptyLessons(), allTimetables);
+            LoadTimetableData(new DatabaseConnector.DatabaseConnector().ReadEmptyLessons(), allTimetables);
             myTimetables = GenerateTimetableDataBindings();
-            LoadTimetableData(data.ReadUserLessons(studentID), myTimetables);
+            LoadTimetableData(new DatabaseConnector.DatabaseConnector().ReadUserLessons(studentID), myTimetables);
 
             this.Dispatcher.Invoke((Action)(() =>
             {
@@ -289,6 +276,7 @@ namespace WpfApplication1
                 refreshMessage = new BackgroundWorker();
                 refreshMessage.DoWork += refreshMessage_DoWork;
                 refreshMessage.RunWorkerAsync();
+                MessageBox.Show("You have logged in successfuly");
                 //show confirmation and change user screen
                 //load relavant Info
 
@@ -384,9 +372,12 @@ namespace WpfApplication1
         }
         private void listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ListBox list = (ListBox)sender;
-            Messages message = (Messages)list.SelectedItem;
-            richTextBox = message.formatMessage(richTextBox);
+            if (listBox.SelectedIndex <= listBox.Items.Count && listBox.SelectedItem != null)
+            {
+                ListBox list = (ListBox)sender;
+                Messages message = (Messages)list.SelectedItem;
+                richTextBox = message.formatMessage(richTextBox);
+            }
         }
 
         private void button_Copy1_Click(object sender, RoutedEventArgs e)
@@ -419,15 +410,23 @@ namespace WpfApplication1
             Messages message = null;
             string title = "";
             string content = "";
+            DateTime time = DateTime.Now;
             this.Dispatcher.Invoke((Action)(() =>
             {
                 title = titleBox.Text;
                 content = replyBox.Text;
                 message = (Messages)listBox.SelectedItem;
+                message.AddMessage(title, time, content, studentID);
+                richTextBox = message.formatMessage(richTextBox);
+                replyBox.Text = "";
+                titleBox.Text = "";
+
             }));
             DatabaseConnector.DatabaseConnector replyConnection = new DatabaseConnector.DatabaseConnector();
-            replyConnection.SendMessage(message.TeacherID, message.StudentID, DateTime.Now, title, content, role);
+            replyConnection.SendMessage(message.TeacherID, message.StudentID, time, title, content, role);
+
             LoadMessages(replyConnection);
+
         }
         /// <summary>
         /// Sends a reply message
@@ -445,11 +444,39 @@ namespace WpfApplication1
         private void LoadMessages(DatabaseConnector.DatabaseConnector data)
         {
             //do data processing 
+            int remember = -1;
+            bool selected = false;
             this.Dispatcher.Invoke((Action)(() =>
             {
-                //TODO work on this
-                //search for messages using teacher column if teacher and student colunm if student
-                MessageBox.Show("success");
+                selected = listBox.SelectedItem != null;
+                if (selected)
+                {
+                    if (((Messages)listBox.SelectedItem).UserType == 2)
+                    {
+                        remember = ((Messages)listBox.SelectedItem).TeacherID;
+                    }
+                    else
+                    {
+                        remember = ((Messages)listBox.SelectedItem).StudentID;
+                    }
+                }
+            }));
+            messages = new DatabaseConnector.DatabaseConnector().ReceiveMessages((IsTeacher || isAdmin), studentID);
+            int selectIndex = -1;
+            if (selected)
+            {
+                foreach (Messages message in messages)
+                {
+                    if (message.UserType == 2 && message.TeacherID == remember)
+                        selectIndex = messages.IndexOf(message);
+                    else if (message.UserType != 2 && message.StudentID == remember)
+                        selectIndex = messages.IndexOf(message);
+                }
+            }
+            this.Dispatcher.Invoke((Action)(() =>
+            {
+                listBox.ItemsSource = messages;
+                listBox.SelectedIndex = selectIndex;
             }));
         }
         #endregion

@@ -85,7 +85,10 @@ namespace WpfApplication1
                    , "dd/MM/yyyy hh:mm:ss tt", System.Globalization.CultureInfo.InvariantCulture);
 
                 parentWindow.DB.InsertLesson(userID, dateof, length, repeatBox.SelectedIndex);
-                MessageBox.Show("Insertion Complete");
+                if (length)
+                    MessageBox.Show("You have successfully created an hour long lesson for " + (string)teacherBox.SelectedItem + " at " + dateof.ToString() + " which will repeat " + (repeatBox.SelectedIndex + 1) + " times");
+                else
+                    MessageBox.Show("You have successfully created a half hour lesson for " + (string)teacherBox.SelectedItem + " at " + dateof.ToString() + " which will repeat " + (repeatBox.SelectedIndex + 1) + " times");
             }
             else MessageBox.Show("The date entered was invalid");
         }

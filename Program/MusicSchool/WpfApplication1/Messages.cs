@@ -9,7 +9,7 @@ using System.Windows.Documents;
 
 namespace WpfApplication1
 {
-    class Messages
+    public class Messages
     {
         private int currentUserType;
         private int teacherID;
@@ -20,6 +20,7 @@ namespace WpfApplication1
         public string User { get { return otherPartyName; } }
         public int TeacherID { get { return teacherID; } }
         public int StudentID { get { return studentID; } }
+        public int UserType { get { return currentUserType; } }
 
         public string RecentMessage
         {
@@ -81,7 +82,7 @@ namespace WpfApplication1
         }
 
     }
-    class Message
+    public class Message
     {
         private string title;
         private DateTime date;
