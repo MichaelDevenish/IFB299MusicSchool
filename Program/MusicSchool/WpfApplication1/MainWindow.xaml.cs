@@ -137,10 +137,14 @@ namespace WpfApplication1
         /// </summary>
         void timetable_DoWork(object sender, DoWorkEventArgs e)
         {
+            bool executedFirst = false;
+            bool executedSecond = false;
+
             allTimetables = GenerateTimetableDataBindings();
-            LoadTimetableData(new DatabaseConnector.DatabaseConnector().ReadEmptyLessons(), allTimetables);
             myTimetables = GenerateTimetableDataBindings();
-            LoadTimetableData(new DatabaseConnector.DatabaseConnector().ReadUserLessons(studentID), myTimetables);
+
+            while (!executedFirst) executedFirst = LoadTimetableData(new DatabaseConnector.DatabaseConnector().ReadEmptyLessons(), allTimetables);
+            while (!executedSecond) executedSecond = LoadTimetableData(new DatabaseConnector.DatabaseConnector().ReadUserLessons(studentID), myTimetables);
 
             this.Dispatcher.Invoke((Action)(() =>
             {
@@ -157,31 +161,43 @@ namespace WpfApplication1
         /// </summary>
         /// <param name="results">the results that are to be added</param>
         /// <param name="timetable">the table databinding that is to be added to</param>
-        private void LoadTimetableData(List<string[]> results, ObservableCollection<HalfHour> timetable)
+        private bool LoadTimetableData(List<string[]> results, ObservableCollection<HalfHour> timetable)
         {
-            foreach (string[] result in results)
+            bool executed = true;
+            if (results != null)
             {
-                DateTimeFormatInfo dfi = DateTimeFormatInfo.CurrentInfo;
-                System.Globalization.Calendar cal = dfi.Calendar;
-
-                DateTime lessonDate = DateTime.Parse(result[2]);
-                DateTime today = DateTime.Today;
-
-                int hours = (lessonDate.Hour * 2) - 18;
-                if (lessonDate.Minute == 30)
-                    hours++;
-
-                bool length = bool.Parse(result[3]);
-
-                if (cal.GetWeekOfYear(today, dfi.CalendarWeekRule, dfi.FirstDayOfWeek)
-                    == cal.GetWeekOfYear(lessonDate, dfi.CalendarWeekRule, dfi.FirstDayOfWeek)
-                    && lessonDate.Year == today.Year)
+                foreach (string[] result in results)
                 {
-                    ShowLessonOnTimetable(result, timetable[hours]);
-                    if (length) ShowLessonOnTimetable(result, timetable[hours + 1]);
+                    DateTimeFormatInfo dfi = DateTimeFormatInfo.CurrentInfo;
+                    System.Globalization.Calendar cal = dfi.Calendar;
+
+                    DateTime lessonDate = DateTime.Parse(result[2]);
+                    DateTime today = DateTime.Today;
+
+                    int hours = (lessonDate.Hour * 2) - 18;
+                    if (lessonDate.Minute == 30)
+                        hours++;
+
+                    bool length = bool.Parse(result[3]);
+
+                    if (cal.GetWeekOfYear(today, dfi.CalendarWeekRule, dfi.FirstDayOfWeek)
+                        == cal.GetWeekOfYear(lessonDate, dfi.CalendarWeekRule, dfi.FirstDayOfWeek)
+                        && lessonDate.Year == today.Year)
+                    {
+                        ShowLessonOnTimetable(result, timetable[hours]);
+                        if (length) ShowLessonOnTimetable(result, timetable[hours + 1]);
+                    }
+                    //possible ways to reduce data use, get only the lessons within a timespan
                 }
-                //possible ways to reduce data use, get only the lessons within a timespan
             }
+            else this.Dispatcher.Invoke((() =>
+            {
+                if (MessageBox.Show("There was an error when loading the timetable, Do you wish to retry?",
+                "Error", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                    executed = false;
+            }));
+
+            return executed;
         }
 
         /// <summary>

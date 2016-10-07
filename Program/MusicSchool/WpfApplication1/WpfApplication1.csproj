@@ -59,25 +59,25 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ComposeWindow.xaml.cs">
+    <Compile Include="Secondary Windows\ComposeWindow.xaml.cs">
       <DependentUpon>ComposeWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Messages.cs" />
-    <Compile Include="SignupWindow.xaml.cs">
+    <Compile Include="Helper Libraries\Messages.cs" />
+    <Compile Include="Secondary Windows\SignupWindow.xaml.cs">
       <DependentUpon>SignupWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="skills.xaml.cs">
+    <Compile Include="Secondary Windows\skills.xaml.cs">
       <DependentUpon>skills.xaml</DependentUpon>
     </Compile>
-    <Page Include="AdminTimetable.xaml">
+    <Page Include="Secondary Windows\AdminTimetable.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="BookWindow.xaml">
+    <Page Include="Secondary Windows\BookWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ComposeWindow.xaml">
+    <Page Include="Secondary Windows\ComposeWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -85,33 +85,33 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="AdminTimetable.xaml.cs">
+    <Compile Include="Secondary Windows\AdminTimetable.xaml.cs">
       <DependentUpon>AdminTimetable.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BookWindow.xaml.cs">
+    <Compile Include="Secondary Windows\BookWindow.xaml.cs">
       <DependentUpon>BookWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DatabaseConnector.cs" />
-    <Compile Include="HelperFunctions.cs" />
+    <Compile Include="Helper Libraries\DatabaseConnector.cs" />
+    <Compile Include="Helper Libraries\HelperFunctions.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="SignupWindow.xaml">
+    <Page Include="Secondary Windows\SignupWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="skills.xaml">
+    <Page Include="Secondary Windows\skills.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PasswordManagment.cs" />
+    <Compile Include="Helper Libraries\PasswordManagment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
