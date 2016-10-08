@@ -288,5 +288,8 @@ namespace MusicSchoolUnitTest
         }
         #endregion
         #endregion
+        #region Messages Tests
+
+        #endregion
     }
 }
