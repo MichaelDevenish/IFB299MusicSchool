@@ -27,7 +27,7 @@ namespace WpfApplication1
             get
             {
                 for (int i = messages.Count - 1; i >= 0; i--)
-                    if (messages[i].Sender != false)
+                    if (messages[i].Sender == false)
                         return messages[i].Title;
                 return messages[messages.Count - 1].Title;
             }
@@ -37,7 +37,7 @@ namespace WpfApplication1
             get
             {
                 for (int i = messages.Count - 1; i >= 0; i--)
-                    if (messages[i].Sender != false)
+                    if (messages[i].Sender == false)
                         return messages[i].Date.ToString("dd/MM/yyyy HH:mm tt", CultureInfo.InvariantCulture);
                 return messages[messages.Count - 1].Date.ToString("dd/MM/yyyy HH:mm tt", CultureInfo.InvariantCulture);
             }
@@ -54,9 +54,12 @@ namespace WpfApplication1
 
         public void AddMessage(string title, DateTime date, string message, int sender)
         {
-            bool sent = false;
-            sent = ((sender == teacherID && (currentUserType == 1 || currentUserType == 0)) || (sender == studentID && currentUserType == 2));
-            messages.Add(new Message(title, date, message, sent));
+            if (sender == teacherID || sender == studentID)
+            {
+                bool sent = false;
+                sent = ((sender == teacherID && (currentUserType == 1 || currentUserType == 0)) || (sender == studentID && currentUserType == 2));
+                messages.Add(new Message(title, date, message, sent));
+            }
         }
 
         public RichTextBox formatMessage(RichTextBox textbox)
@@ -87,7 +90,7 @@ namespace WpfApplication1
         private string title;
         private DateTime date;
         private string message;
-        private bool sender;//false if current user
+        private bool sender;//false if not current user
 
         public string Title { get { return title; } }
         public DateTime Date { get { return date; } }
