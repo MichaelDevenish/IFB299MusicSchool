@@ -9,19 +9,32 @@ using System.Windows.Documents;
 
 namespace WpfApplication1
 {
+    /// <summary>
+    /// A class that acts as a grouping of a chat log between two people and contains functions
+    /// that can format the log to be viewable in a richtextbox
+    /// </summary>
     public class Messages
     {
+        #region globals
         private int currentUserType;
         private int teacherID;
         private int studentID;
         private List<Message> messages;
         private string otherPartyName;
 
+        public const int ADMIN = 0;
+        public const int TEACHER = 1;
+        public const int STUDENT = 2;
+        #endregion
+        #region properties
         public string User { get { return otherPartyName; } }
         public int TeacherID { get { return teacherID; } }
         public int StudentID { get { return studentID; } }
         public int UserType { get { return currentUserType; } }
 
+        /// <summary>
+        /// gets the title of the most recent message sent to you
+        /// </summary>
         public string RecentMessage
         {
             get
@@ -32,6 +45,9 @@ namespace WpfApplication1
                 return messages[messages.Count - 1].Title;
             }
         }
+        /// <summary>
+        /// Gets the most recent date of a message that was sent to you
+        /// </summary>
         public string Date
         {
             get
@@ -42,7 +58,15 @@ namespace WpfApplication1
                 return messages[messages.Count - 1].Date.ToString("dd/MM/yyyy HH:mm tt", CultureInfo.InvariantCulture);
             }
         }
+        #endregion
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="currentUserType">0 = admin, 1 = teacher, 2 = student</param>
+        /// <param name="teacherID">the id of the teacher</param>
+        /// <param name="studentID">the id of the student</param>
+        /// <param name="otherPartyName">the name of the other person</param>
         public Messages(int currentUserType, int teacherID, int studentID, string otherPartyName)
         {
             this.currentUserType = currentUserType;
@@ -52,6 +76,13 @@ namespace WpfApplication1
             messages = new List<Message>();
         }
 
+        /// <summary>
+        /// creates a Message object and adds it to an internal message list
+        /// </summary>
+        /// <param name="title">the title of the message</param>
+        /// <param name="date">the date the message was sent</param>
+        /// <param name="message">the content of the message</param>
+        /// <param name="sender">the id of the sender</param>
         public void AddMessage(string title, DateTime date, string message, int sender)
         {
             if (sender == teacherID || sender == studentID)
@@ -62,6 +93,11 @@ namespace WpfApplication1
             }
         }
 
+        /// <summary>
+        /// Formats the conversation to be readable in a RichTextBox
+        /// </summary>
+        /// <param name="textbox">the richtextbox to be cleared and formatted</param>
+        /// <returns></returns>
         public RichTextBox formatMessage(RichTextBox textbox)
         {
             textbox.Document.Blocks.Clear();
@@ -85,6 +121,9 @@ namespace WpfApplication1
         }
 
     }
+    /// <summary>
+    /// An individual message
+    /// </summary>
     public class Message
     {
         private string title;
@@ -96,6 +135,7 @@ namespace WpfApplication1
         public DateTime Date { get { return date; } }
         public bool Sender { get { return sender; } }
         public string Contents { get { return message; } }
+
 
         public Message(string title, DateTime date, string message, bool sender)
         {
