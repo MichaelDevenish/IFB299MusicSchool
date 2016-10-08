@@ -647,6 +647,49 @@ namespace DatabaseConnector
                         dataReader.GetInt16("sender"));
                 }
 
+
+                if (teacher)
+                {
+                    dataReader.Close();
+                    query = "SELECT messages.student_id, messages.teacher_id, messages.sent_time, messages.message, messages.title, messages.sender, users.first_name, users.last_name" +
+                          " FROM messages LEFT JOIN users ON messages.teacher_id = users.user_id" +
+                          " WHERE student_id = @userID;";
+                    cmd = new MySqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("@userID", userID);
+                    dataReader = cmd.ExecuteReader();
+
+                    //Read the data and store it
+                    while (dataReader.Read())
+                    {
+                        bool isNew = true;
+                        Messages tempMessage = null;
+
+                        foreach (Messages messageGroup in messages)
+                        {
+                            if (messageGroup.StudentID == int.Parse(dataReader["teacher_id"].ToString()))
+                            {
+                                isNew = false;
+                                tempMessage = messageGroup;
+                            }
+                        }
+                        if (isNew)
+                        {
+                             tempMessage = new Messages(1,
+                                int.Parse(dataReader["student_id"].ToString()),
+                                int.Parse(dataReader["teacher_id"].ToString()),
+                                dataReader["first_name"] + " " + dataReader["last_name"]);
+
+                            messages.Add(tempMessage);
+
+                        }
+
+                        tempMessage.AddMessage(dataReader["title"].ToString(),
+                            dataReader.GetDateTime("sent_time"),
+                            dataReader["message"].ToString(),
+                            dataReader.GetInt16("sender"));
+                    }
+
+                }
                 //close everything
                 dataReader.Close();
                 CloseConnection();
