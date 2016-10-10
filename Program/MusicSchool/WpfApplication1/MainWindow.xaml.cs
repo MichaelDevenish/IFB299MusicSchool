@@ -315,13 +315,15 @@ namespace WpfApplication1
         #region Event Handeling
         private void cmbRecipient_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //int teacherID = int.Parse(teacherInfo[cmbRecipient.SelectedIndex][0]);
-            //txtTeacherName.Text = "Teacher Name: " + teacherInfo[teacherID - 1][1] + " " + teacherInfo[teacherID - 1][2];
-            //txtTeacherSkill.Text = "Teacher's Instruments: " + "Example";
+            txtTeacherInfo.Text = String.Empty;
+            int teacherID = int.Parse(teacherInfo[cmbRecipient.SelectedIndex][0]);
+            txtTeacherInfo.Text = "Teacher Name: " + teacherInfo[teacherID - 1][1] + " " + teacherInfo[teacherID - 1][2];
+            //txtTaecherSkill.Text = "Teacher's Instruments: " + "Example";
         }
 
         private void cmbInstrument_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            txtInstrumentInfo.Text = String.Empty;
             int instrumentID = int.Parse(instrumentInfo[cmbInstrument.SelectedIndex][0]);
             txtInstrumentInfo.Text = "Instrument Info: " + instrumentInfo[instrumentID][3] + ", " + instrumentInfo[instrumentID][1];
         }

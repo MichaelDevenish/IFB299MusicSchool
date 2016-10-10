@@ -141,6 +141,14 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Resource Include="Teacher Img.jpg" />
+    <Resource Include="Music School Img.png" />
+    <Resource Include="Music School.png" />
+    <Resource Include="header.png" />
+    <Resource Include="header1.png" />
+    <Resource Include="Best-Drum-Set-Main.jpg" />
+    <Resource Include="0960270221_gtr_frt_001_rr.jpg" />
+    <Resource Include="header2.png" />
     <Content Include="images\header.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
