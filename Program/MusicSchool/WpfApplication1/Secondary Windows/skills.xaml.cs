@@ -25,6 +25,7 @@ namespace WpfApplication1
         public skills()
         {
             InitializeComponent();
+            fillComboBox();
             update();
 
         }
@@ -57,6 +58,37 @@ namespace WpfApplication1
             public string LastName { get; set; }
             public string Skills { get; set; }
             
+        }
+
+        public void fillComboBox()
+        {
+            string query = "SELECT  user_ID, first_name, last_name FROM users WHERE role=1";
+            List<string[]> teachers = db.simpleConnection(false, query, null);
+            List<string> teacherNames = new List<string>();
+            foreach(string[] teach in teachers)
+            {
+                teacherNames.Add(teach[1] + " " + teach[2]);
+            }
+            teacherSelect.ItemsSource = teacherNames;
+
+            query = "SELECT  skill_ID, skill_name FROM skills";
+            List<string[]> skills = db.simpleConnection(false, query, null);
+            List<string> skillnames = new List<string>();
+            foreach (string[] sk in skills)
+            {
+                skillnames.Add(sk[1]);
+            }
+            skillSelect.ItemsSource = skillnames;
+        }
+
+        private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void addskill_Click(object sender, RoutedEventArgs e)
+        {
+            string query = "DELETE FROM user_skills WHERE ";
         }
     }
 }
