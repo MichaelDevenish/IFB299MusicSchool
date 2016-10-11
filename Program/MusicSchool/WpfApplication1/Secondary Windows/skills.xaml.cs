@@ -88,7 +88,18 @@ namespace WpfApplication1
 
         private void addskill_Click(object sender, RoutedEventArgs e)
         {
-            string query = "DELETE FROM user_skills WHERE ";
+
+        }
+
+        private void delete_Click(object sender, RoutedEventArgs e)
+        {
+            string query = "DELETE FROM user_skills WHERE skill_ID = @skillID AND user_ID = @userID";
+            Dictionary<string, object> param = new Dictionary<string, object>()
+            {
+                {"skillID", 1 },
+                {"userID", 1 }
+            };
+            db.simpleConnection(true, query, param);
         }
     }
 }
