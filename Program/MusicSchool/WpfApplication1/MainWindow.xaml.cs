@@ -83,8 +83,8 @@ namespace WpfApplication1
             {
                 teacherInfo = teacherThread;
                 instrumentInfo = instrumentThread;
-                //for (int i = 0; i < teacherInfo.Count; i++)
-                //    cmbRecipient.Items.Add(teacherInfo[i][1] + " " + teacherInfo[i][2]);
+                for (int i = 0; i < teacherInfo.Count; i++)
+                    cmbRecipient.Items.Add(teacherInfo[i][1] + " " + teacherInfo[i][2]);
                 for (int i = 0; i < instrumentInfo.Count; i++)
                     cmbInstrument.Items.Add(instrumentInfo[i][1]);
                 if (isAdmin)
@@ -102,6 +102,7 @@ namespace WpfApplication1
         private void checkAbilities()
         {
             adminLessonButton.Visibility = Visibility.Hidden;
+            manageSkills.Visibility = Visibility.Hidden;
             if (logged_in)
             {
                 //get data for timetable info
@@ -115,6 +116,7 @@ namespace WpfApplication1
                 if (isAdmin && teacherInfo != null)
                 {
                     adminLessonButton.Visibility = Visibility.Visible;
+                    manageSkills.Visibility = Visibility.Visible;
                 }
 
                 errorMessage.Visibility = System.Windows.Visibility.Hidden;
@@ -317,7 +319,7 @@ namespace WpfApplication1
         {
             txtTeacherInfo.Text = String.Empty;
             int teacherID = int.Parse(teacherInfo[cmbRecipient.SelectedIndex][0]);
-            txtTeacherInfo.Text = "Teacher Name: " + teacherInfo[teacherID - 1][1] + " " + teacherInfo[teacherID - 1][2];
+            txtTeacherInfo.Text = "Teacher Name: " + teacherInfo[teacherID][1] + " " + teacherInfo[teacherID][2];
             //txtTaecherSkill.Text = "Teacher's Instruments: " + "Example";
         }
 

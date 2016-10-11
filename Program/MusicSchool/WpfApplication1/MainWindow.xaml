@@ -49,7 +49,7 @@
         <Image HorizontalAlignment="Left" Height="152" VerticalAlignment="Top" Width="790"/>
         <TabControl Margin="0,100,0,-7" VerticalAlignment="Top" Padding="0" SelectionChanged="tab_changed" Height="702">
             <TabItem Header="ACCOUNT" Margin="0" IsTabStop="False" Padding="0,-2,4,0" HorizontalAlignment="Left" Width="150">
-                <Grid Background="White">
+                <Grid Background="White" Margin="0,8,0,-7">
                     <TextBox x:Name="usernameBox" Height="24" TextWrapping="Wrap"  VerticalAlignment="Top" Width="262" Margin="0,92,0,0" HorizontalAlignment="Center" />
                     <Button x:Name="loginButton" Style="{StaticResource loginButton}" Content="Login" VerticalAlignment="Top" Width="260" Margin="0,184,0,0" Click="loginButton_Click" Height="32" HorizontalAlignment="Center"/>
                     <Button x:Name="signupButton" Style="{StaticResource loginButton}" Content="Sign Up" VerticalAlignment="Top" Width="100" Margin="160,220,0,0" Click="signupButton_Click" Height="32" HorizontalAlignment="Center"/>
@@ -60,6 +60,7 @@
                     <Label x:Name="passwordError" Content="Password must not be null" HorizontalAlignment="Center" Height="34" Margin="100,125,0,0" VerticalAlignment="Top" Width="176" FontSize="14.667" FontFamily="Corbel" Foreground="Red" Visibility="Hidden"/>
                     <Label x:Name="usernameError" Content="Username must not be null" HorizontalAlignment="Center" Height="33" Margin="100,66,0,0" VerticalAlignment="Top" Width="176" FontSize="14.667" FontFamily="Corbel" Foreground="Red" IsHitTestVisible="True" Visibility="Hidden"/>
                     <Label x:Name="loginError" Content="Username or Password is incorrect" HorizontalAlignment="Center" Height="33" Margin="0,252,0,0" VerticalAlignment="Top" Width="224" FontSize="14.667" FontFamily="Corbel" Foreground="Red" IsHitTestVisible="True" Visibility="Hidden"/>
+                    <Button x:Name="manageSkills" Style="{StaticResource loginButton}" Content="Manage skills" VerticalAlignment="Top" Width="260" Margin="520,10,10,0" Click="open_skills_window" Height="32" HorizontalAlignment="Center"/>
 
 
 
@@ -102,7 +103,7 @@
                     </TabControl>
                 </Grid>
             </TabItem>
-            <TabItem Margin="12,0,-12,0" Header="MESSAGING" HorizontalAlignment="Left" Width="150">
+            <TabItem Margin="10,0,-10,0" Header="MESSAGING" HorizontalAlignment="Left" Width="150">
                 <Grid Background="White">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="250*"/>
@@ -123,7 +124,7 @@
                     <Button x:Name="refreshbutton" Style="{StaticResource loginButton}" Content="Refresh" HorizontalAlignment="Left" Margin="134,625,0,0" VerticalAlignment="Top" Width="103" Height="32" Click="refreshbutton_Click_1"/>
                     <Button x:Name="button_Copy1" Style="{StaticResource loginButton}" Content="Reply" HorizontalAlignment="Left" Margin="430,625,0,0" VerticalAlignment="Top" Width="103" Height="32" Grid.Column="1" Click="button_Copy1_Click"/>
                     <TextBox x:Name="titleBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="0,532,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="543"/>
-                    <ComboBox x:Name="cmbRecipient" HorizontalAlignment="Left" VerticalAlignment="Top" Width="227" FontFamily="Segoe UI" Text="Select Recipients" SelectionChanged="cmbInstrument_SelectionChanged" Margin="10,40,0,0"/>
+                    <ComboBox x:Name="cmbRecipient" HorizontalAlignment="Left" VerticalAlignment="Top" Width="227" FontFamily="Segoe UI" Text="Select Recipients" SelectionChanged="cmbRecipient_SelectionChanged" Margin="10,40,0,0"/>
                     <Label x:Name="lblContacts" Content="Contacts List" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="240" Margin="10,0,0,0" Grid.ColumnSpan="2"/>
                     <TextBox x:Name="txtTeacherInfo" HorizontalAlignment="Left" Height="195" TextWrapping="Wrap" Text="Teacher Information:" VerticalAlignment="Top" Width="227" Margin="10,78,0,0"/>
 
@@ -131,7 +132,6 @@
             </TabItem>
             <TabItem Margin="20,0,-20,0" Header="INSTRUMENTS" HorizontalAlignment="Left" Width="160">
                 <StackPanel Grid.Column="1" HorizontalAlignment="Left" Height="606" Margin="28,28,0,0" VerticalAlignment="Top" Width="734">
-                    <Button x:Name="manageSkills" Style="{StaticResource loginButton}" Content="Manage skills" VerticalAlignment="Top" Width="260" Margin="520,0,0,0" Click="open_skills_window" Height="32" HorizontalAlignment="Center"/>
                     <Label Content="Instrunment List" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="240" Margin="35,32,0,0"/>
                     <ComboBox x:Name="cmbInstrument" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" FontFamily="Segoe UI" Text="Select Recipients" SelectionChanged="cmbInstrument_SelectionChanged"/>
                     <TextBox x:Name="txtInstrumentInfo" HorizontalAlignment="Left" Height="144" TextWrapping="Wrap" Text="Instrument Information:" VerticalAlignment="Top" Width="724"/>
