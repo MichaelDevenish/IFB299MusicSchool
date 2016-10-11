@@ -92,6 +92,7 @@ namespace DatabaseConnector
         {
             if (this.OpenConnection())
             {
+                
                 MySqlCommand cmd = new MySqlCommand(query, this.connection);
                 //Get the values from the parameter dictionary and use it to bind variables in the query statement
                 if (parameters != null)

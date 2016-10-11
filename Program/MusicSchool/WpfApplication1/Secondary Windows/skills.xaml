@@ -8,13 +8,7 @@
         Title="Skills Management" Height="354" Width="300">
     <Grid Margin="0,0,0,13">
         <StackPanel HorizontalAlignment="Left" Margin="10,10,0,10" Width="272">
-            <DataGrid x:Name="dataGrid" Height="186">
-                <DataGrid.Columns>
-                    <DataGridTextColumn x:Name="firstname" Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="First Name"/>
-                    <DataGridTextColumn x:Name="lastname" Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Last Name"/>
-                    <DataGridTextColumn x:Name="inst_skills" Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Skill"/>
-                </DataGrid.Columns>
-            </DataGrid>
+            <DataGrid x:Name="dataGrid" Height="186"/>
             <Button x:Name="delete" Content="Delete skill" Click="delete_Click"/>
             <ComboBox x:Name="teacherSelect" SelectionChanged="comboBox_SelectionChanged" SelectedIndex="1"/>
             <ComboBox x:Name="skillSelect" SelectedIndex="1"/>
