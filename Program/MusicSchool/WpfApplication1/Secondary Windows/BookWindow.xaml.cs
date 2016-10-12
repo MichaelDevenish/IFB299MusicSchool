@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,28 +22,42 @@ namespace WpfApplication1
     {
         private MainWindow parentWindow;
         List<string[]> teacherinfo;
+        DatabaseConnector.DatabaseConnector db = new DatabaseConnector.DatabaseConnector();
+
+        List<string> teacherNames = new List<string>();
+        List<string> teacherIDs = new List<string>();
 
         int[,] bookArray = new int[90, 13];
 
 
         public BookWindow(MainWindow parentWindow)
         {
-            DatabaseConnector.DatabaseConnector db = new DatabaseConnector.DatabaseConnector();
+
             InitializeComponent();
             this.parentWindow = parentWindow;
 
             selectDate.SelectedDate = DateTime.Now.Date;
 
+            ThreadStart updateTS = new ThreadStart(update);
+            Thread initialThread = new Thread(updateTS);
+            initialThread.Start();
 
+        }
 
+        private void update()
+        {
             //Get the names of the teachers and populate the teacher combobox
             teacherinfo = db.ReadTeacherInfo();
-            List<string> teacherNames = new List<string>();
+
+            //get user skills from database so we can display skills next to name
+            string query = "SELECT lesson_date, lesson_length FROM lessons";
             foreach (string[] name in teacherinfo)
             {
                 teacherNames.Add(name[1] + " " + name[2]);
+                teacherIDs.Add(name[0]);
             }
-            selectTeacher.ItemsSource = teacherNames;
+            ;
+            this.Dispatcher.Invoke(() => selectTeacher.ItemsSource = teacherNames);
 
 
             //Access the databse and determine which timeslots for the next 90 days are
@@ -71,12 +86,9 @@ namespace WpfApplication1
                     validTimes.Add(new TimeSpan(i / 2 + 9, (i % 2) * 30, 0));
                 }
             }
-            /*
-            string[] validTimes = new string[13] { "9:00am", "9:30am", "10:00am",
-                                                     "10:30am", "11:00am", "11:30am", "12:00pm", "12:30pm",
-                                                      "1:00pm", "1:30pm", "2:00pm", "2:30pm", "3:00pm"};
-                                                      */
-            selectTime.ItemsSource = validTimes;
+
+            
+            this.Dispatcher.Invoke(() => selectTime.ItemsSource = validTimes);
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
