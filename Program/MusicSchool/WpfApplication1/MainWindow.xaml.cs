@@ -297,6 +297,7 @@ namespace WpfApplication1
                 MessageBox.Show("You have logged in successfuly");
                 //show confirmation and change user screen
                 //load relavant Info
+                loginPrompt.Visibility = Visibility.Hidden;
 
             }
             else loginError.Visibility = Visibility.Visible;

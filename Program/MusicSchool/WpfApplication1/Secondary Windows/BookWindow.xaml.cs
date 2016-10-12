@@ -50,7 +50,7 @@ namespace WpfApplication1
             teacherinfo = db.ReadTeacherInfo();
 
             //get user skills from database so we can display skills next to name
-            string query = "SELECT lesson_date, lesson_length FROM lessons";
+            //string query = "SELECT lesson_date, lesson_length FROM lessons";
             foreach (string[] name in teacherinfo)
             {
                 teacherNames.Add(name[1] + " " + name[2]);

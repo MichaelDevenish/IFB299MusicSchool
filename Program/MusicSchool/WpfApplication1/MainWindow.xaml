@@ -50,17 +50,19 @@
         <TabControl Margin="0,100,0,-7" VerticalAlignment="Top" Padding="0" SelectionChanged="tab_changed" Height="702">
             <TabItem Header="ACCOUNT" Margin="0" IsTabStop="False" Padding="0,-2,4,0" HorizontalAlignment="Left" Width="150">
                 <Grid Background="White" Margin="0,8,0,-7">
-                    <TextBox x:Name="usernameBox" Height="24" TextWrapping="Wrap"  VerticalAlignment="Top" Width="262" Margin="0,92,0,0" HorizontalAlignment="Center" />
-                    <Button x:Name="loginButton" Style="{StaticResource loginButton}" Content="Login" VerticalAlignment="Top" Width="260" Margin="0,184,0,0" Click="loginButton_Click" Height="32" HorizontalAlignment="Center"/>
-                    <Button x:Name="signupButton" Style="{StaticResource loginButton}" Content="Sign Up" VerticalAlignment="Top" Width="100" Margin="160,220,0,0" Click="signupButton_Click" Height="32" HorizontalAlignment="Center"/>
-                    <Label x:Name="label" FontSize="14.667" Content="Don't have an account?" Margin="0,224,90,0" VerticalAlignment="Top" FontFamily="Corbel" HorizontalAlignment="Center" Width="161"/>
-                    <PasswordBox x:Name="passwordBox" Height="24" Margin="0,152,0,0" VerticalAlignment="Top" Width="262" HorizontalAlignment="Center"/>
-                    <Label x:Name="label1" Content="Password" Margin="0,121,155,0" VerticalAlignment="Top" FontFamily="Corbel" FontSize="18.667" HorizontalAlignment="Center" Width="105"/>
-                    <Label x:Name="label2_Copy" Content="Username" Margin="0,62,170,0" VerticalAlignment="Top" FontFamily="Corbel" FontSize="18.667" HorizontalAlignment="Center" Width="91"/>
                     <Label x:Name="passwordError" Content="Password must not be null" HorizontalAlignment="Center" Height="34" Margin="100,125,0,0" VerticalAlignment="Top" Width="176" FontSize="14.667" FontFamily="Corbel" Foreground="Red" Visibility="Hidden"/>
                     <Label x:Name="usernameError" Content="Username must not be null" HorizontalAlignment="Center" Height="33" Margin="100,66,0,0" VerticalAlignment="Top" Width="176" FontSize="14.667" FontFamily="Corbel" Foreground="Red" IsHitTestVisible="True" Visibility="Hidden"/>
-                    <Label x:Name="loginError" Content="Username or Password is incorrect" HorizontalAlignment="Center" Height="33" Margin="0,252,0,0" VerticalAlignment="Top" Width="224" FontSize="14.667" FontFamily="Corbel" Foreground="Red" IsHitTestVisible="True" Visibility="Hidden"/>
                     <Button x:Name="manageSkills" Style="{StaticResource loginButton}" Content="Manage skills" VerticalAlignment="Top" Width="260" Margin="520,10,10,0" Click="open_skills_window" Height="32" HorizontalAlignment="Center"/>
+                    <Grid x:Name ="loginPrompt" HorizontalAlignment="Left" Height="231" Margin="247,62,0,0" VerticalAlignment="Top" Width="261">
+                        <Label x:Name="label2_Copy" Content="Username" Margin="-1,0,171,0" VerticalAlignment="Top" FontFamily="Corbel" FontSize="18.667" HorizontalAlignment="Center" Width="91"/>
+                        <TextBox x:Name="usernameBox" Height="24" TextWrapping="Wrap"  VerticalAlignment="Top" Width="262" Margin="0,37,-1,0" HorizontalAlignment="Center" />
+                        <Label x:Name="label1" Content="Password" Margin="0,66,155,0" VerticalAlignment="Top" FontFamily="Corbel" FontSize="18.667" HorizontalAlignment="Center" Width="106"/>
+                        <PasswordBox x:Name="passwordBox" Height="24" Margin="0,99,-1,0" VerticalAlignment="Top" Width="262" HorizontalAlignment="Center"/>
+                        <Button x:Name="loginButton" Style="{StaticResource loginButton}" Content="Login" VerticalAlignment="Top" Width="260" Margin="0,128,1,0" Click="loginButton_Click" Height="32" HorizontalAlignment="Center"/>
+                        <Button x:Name="signupButton" Style="{StaticResource loginButton}" Content="Sign Up" VerticalAlignment="Top" Width="100" Margin="160,177,1,0" Click="signupButton_Click" Height="32" HorizontalAlignment="Center"/>
+                        <Label x:Name="label" FontSize="14.667" Content="Don't have an account?" Margin="10,181,90,0" VerticalAlignment="Top" FontFamily="Corbel" HorizontalAlignment="Center" Width="161"/>
+                        <Label x:Name="loginError" Content="Username or Password is incorrect" HorizontalAlignment="Center" Height="33" Margin="8,200,29,-14" VerticalAlignment="Top" Width="224" FontSize="14.667" FontFamily="Corbel" Foreground="Red" IsHitTestVisible="True" RenderTransformOrigin="0.469,0.939" Visibility="Hidden"/>
+                    </Grid>
 
 
 
