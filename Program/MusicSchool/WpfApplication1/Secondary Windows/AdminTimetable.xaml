@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApplication1"
         mc:Ignorable="d"
-        Title="AdminTimetable" Height="230.847" Width="302.034">
+        Title="AdminTimetable" Height="230" Width="300" MinWidth="300" MinHeight="230" MaxWidth="300" MaxHeight="230">
     <Grid>
         <ComboBox x:Name="teacherBox" HorizontalAlignment="Left" Margin="80,14,0,0" VerticalAlignment="Top" Width="205"/>
         <Label x:Name="label" Content="Teacher:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>

@@ -87,7 +87,7 @@ namespace WpfApplication1
                 }
             }
 
-            
+
             this.Dispatcher.Invoke(() => selectTime.ItemsSource = validTimes);
         }
 
@@ -129,6 +129,11 @@ namespace WpfApplication1
                 }
             }
             selectTime.ItemsSource = validTimes;
+        }
+
+        private void cancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

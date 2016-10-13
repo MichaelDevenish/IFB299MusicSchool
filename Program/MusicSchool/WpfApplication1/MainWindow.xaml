@@ -1,7 +1,7 @@
 ﻿<Window x:Class="WpfApplication1.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="826.5" Width="800" >
+        Title="MainWindow" Height="800" Width="800" MinWidth="807" MinHeight="800" >
     <Window.Resources>
         <Style TargetType="Button" x:Key="loginButton">
 
@@ -47,7 +47,7 @@
     </Window.Resources>
     <Grid>
         <Image HorizontalAlignment="Left" Height="152" VerticalAlignment="Top" Width="790"/>
-        <TabControl Margin="0,100,0,-7" VerticalAlignment="Top" Padding="0" SelectionChanged="tab_changed" Height="702">
+        <TabControl Margin="0,100,0,-7" Padding="0" SelectionChanged="tab_changed">
             <TabItem Header="ACCOUNT" Margin="0" IsTabStop="False" Padding="0,-2,4,0" HorizontalAlignment="Left" Width="150">
                 <Grid Background="White" Margin="0,8,0,-7">
                     <Label x:Name="passwordError" Content="Password must not be null" HorizontalAlignment="Center" Height="34" Margin="100,125,0,0" VerticalAlignment="Top" Width="176" FontSize="14.667" FontFamily="Corbel" Foreground="Red" Visibility="Hidden"/>
@@ -89,11 +89,11 @@
                                     <RowDefinition Height="10"/>
                                 </Grid.RowDefinitions>
 
-                                <DataGrid x:Name="allClassesTable" Height="575" VerticalAlignment="Center" Margin="10,35,10,-558" IsReadOnly="True" Grid.RowSpan="2"/>
+                                <DataGrid x:Name="allClassesTable"  Margin="10,10,10,-560" IsReadOnly="True" Grid.Row="1"/>
                                 <Button x:Name="bookButton" Content="Book Lesson" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="102" Click="bookButton_Click" />
-                                <Button x:Name="refreshButton" Content="Refresh" HorizontalAlignment="Left" Margin="703,10,0,0" VerticalAlignment="Top" Width="75" Click="refreshButton_Click" />
+                                <Button x:Name="refreshButton" Content="Refresh" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="75" Click="refreshButton_Click" />
                                 <Label x:Name="errorMessage" Content="You must be logged in to Book a lesson" HorizontalAlignment="Left" Height="31" Margin="117,7,0,0" VerticalAlignment="Top" Width="294" Foreground="Red"/>
-                                <Button x:Name="adminLessonButton" Content="Add Lessons" HorizontalAlignment="Left" Height="25" Margin="599,10,0,0" VerticalAlignment="Top" Width="99" Click="adminLessonButton_Click"/>
+                                <Button x:Name="adminLessonButton" Content="Add Lessons" HorizontalAlignment="Right" Height="25" Margin="0,10,90,0" VerticalAlignment="Top" Width="99" Click="adminLessonButton_Click"/>
                             </Grid>
 
                         </TabItem>
@@ -108,27 +108,27 @@
             <TabItem Margin="10,0,-10,0" Header="MESSAGING" HorizontalAlignment="Left" Width="150">
                 <Grid Background="White">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="250*"/>
-                        <ColumnDefinition Width="550*"/>
+                        <ColumnDefinition Width="249"/>
+                        <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <TextBox x:Name="replyBox" Grid.Column="1" HorizontalAlignment="Left" Height="112" Margin="0,555,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="543"/>
+                    <TextBox x:Name="replyBox" Height="110" TextWrapping="Wrap" VerticalAlignment="Bottom" Grid.ColumnSpan="2" Margin="247,0,0,0"/>
 
                     <StackPanel Grid.Column="1" Margin="0,0,0,0"/>
-                    <RichTextBox x:Name="richTextBox" Grid.Column="1" Margin="0,0,0,135" FontFamily="Segoe UI" IsReadOnly="True">
+                    <RichTextBox x:Name="richTextBox" Margin="247,0,0,133" FontFamily="Segoe UI" IsReadOnly="True" Grid.ColumnSpan="2">
                         <FlowDocument>
                             <Paragraph>
                                 <InlineUIContainer/>
                             </Paragraph>
                         </FlowDocument>
                     </RichTextBox>
-                    <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="338" VerticalAlignment="Top" Width="247" ItemTemplate="{StaticResource MessageTemplate}" SelectionChanged="listBox_SelectionChanged" FontFamily="Segoe UI" Margin="0,278,0,0"/>
-                    <Button x:Name="composebutton" Style="{StaticResource loginButton}" Content="Compose" HorizontalAlignment="Left" Margin="10,625,0,0" VerticalAlignment="Top" Width="103" Height="32" Click="composebutton_Click"/>
-                    <Button x:Name="refreshbutton" Style="{StaticResource loginButton}" Content="Refresh" HorizontalAlignment="Left" Margin="134,625,0,0" VerticalAlignment="Top" Width="103" Height="32" Click="refreshbutton_Click_1"/>
-                    <Button x:Name="button_Copy1" Style="{StaticResource loginButton}" Content="Reply" HorizontalAlignment="Left" Margin="430,625,0,0" VerticalAlignment="Top" Width="103" Height="32" Grid.Column="1" Click="button_Copy1_Click"/>
-                    <TextBox x:Name="titleBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="0,532,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="543"/>
-                    <ComboBox x:Name="cmbRecipient" HorizontalAlignment="Left" VerticalAlignment="Top" Width="227" FontFamily="Segoe UI" Text="Select Recipients" SelectionChanged="cmbRecipient_SelectionChanged" Margin="10,40,0,0"/>
+                    <ListBox x:Name="listBox" HorizontalAlignment="Left" Width="247" ItemTemplate="{StaticResource MessageTemplate}" SelectionChanged="listBox_SelectionChanged" FontFamily="Segoe UI" Margin="0,259,0,52"/>
+                    <Button x:Name="composebutton" Style="{StaticResource loginButton}" Content="Compose" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="103" Height="32" Click="composebutton_Click"/>
+                    <Button x:Name="refreshbutton" Style="{StaticResource loginButton}" Content="Refresh" HorizontalAlignment="Left" Margin="134,0,0,10" VerticalAlignment="Bottom" Width="103" Height="32" Click="refreshbutton_Click_1"/>
+                    <Button x:Name="button_Copy1" Style="{StaticResource loginButton}" Content="Reply" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="103" Height="32" Grid.Column="1" Click="button_Copy1_Click"/>
+                    <TextBox x:Name="titleBox" Height="23" Margin="247,0,0,110" TextWrapping="Wrap" VerticalAlignment="Bottom" IsReadOnly="True" Grid.ColumnSpan="2"/>
+                    <ComboBox x:Name="cmbRecipient" HorizontalAlignment="Left" VerticalAlignment="Top" Width="227" FontFamily="Segoe UI" Text="Select Recipients" SelectionChanged="cmbRecipient_SelectionChanged" Margin="10,28,0,0" Height="26"/>
                     <Label x:Name="lblContacts" Content="Contacts List" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="240" Margin="10,0,0,0" Grid.ColumnSpan="2"/>
-                    <TextBox x:Name="txtTeacherInfo" HorizontalAlignment="Left" Height="195" TextWrapping="Wrap" Text="Teacher Information:" VerticalAlignment="Top" Width="227" Margin="10,78,0,0"/>
+                    <TextBox x:Name="txtTeacherInfo" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Teacher Information:" Width="247" Margin="0,59,0,0" VerticalAlignment="Top" Height="200"/>
 
                 </Grid>
             </TabItem>
@@ -159,7 +159,7 @@
 
         </TabControl>
         <Image x:Name="imgMusicSchool" HorizontalAlignment="Left" Height="100" Stretch="Fill" VerticalAlignment="Top" Width="792"/>
-        <Image Source="Images/header.png" VerticalAlignment ="Top" Height="100"/>
+        <Image Source="Images/header.png" VerticalAlignment ="Top" Height="100" HorizontalAlignment="Center"/>
         <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Height="1" Margin="-400,320,0,0" VerticalAlignment="Top" Width="14"/>
     </Grid>
 </Window>
