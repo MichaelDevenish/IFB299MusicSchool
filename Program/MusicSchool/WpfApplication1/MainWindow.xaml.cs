@@ -81,8 +81,11 @@ namespace WpfApplication1
             List<string[]> instrumentThread = data.ReadInstrumentInfo();
             this.Dispatcher.Invoke((Action)(() =>
             {
-                teacherInfo = teacherThread;
-                instrumentInfo = instrumentThread;
+
+                if (teacherThread != null) teacherInfo = teacherThread;
+                else teacherInfo = new List<string[]>();
+                if (instrumentThread != null) instrumentInfo = instrumentThread;
+                else instrumentInfo = new List<string[]>();
                 for (int i = 0; i < teacherInfo.Count; i++)
                     cmbRecipient.Items.Add(teacherInfo[i][1] + " " + teacherInfo[i][2]);
                 for (int i = 0; i < instrumentInfo.Count; i++)

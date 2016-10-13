@@ -53,11 +53,7 @@ namespace DatabaseConnector
                 connection.Open();
                 return true;
             }
-            catch (MySqlException)
-            {
-                return false;
-            }
-            catch (System.TimeoutException)
+            catch (Exception)
             {
                 return false;
             }
@@ -75,7 +71,7 @@ namespace DatabaseConnector
                 connection.Close();
                 return true;
             }
-            catch (MySqlException)
+            catch (Exception)
             {
                 return false;
             }
@@ -92,7 +88,7 @@ namespace DatabaseConnector
         {
             if (this.OpenConnection())
             {
-                
+
                 MySqlCommand cmd = new MySqlCommand(query, this.connection);
                 //Get the values from the parameter dictionary and use it to bind variables in the query statement
                 if (parameters != null)
@@ -675,10 +671,10 @@ namespace DatabaseConnector
                         }
                         if (isNew)
                         {
-                             tempMessage = new Messages(1,
-                                int.Parse(dataReader["student_id"].ToString()),
-                                int.Parse(dataReader["teacher_id"].ToString()),
-                                dataReader["first_name"] + " " + dataReader["last_name"]);
+                            tempMessage = new Messages(1,
+                               int.Parse(dataReader["student_id"].ToString()),
+                               int.Parse(dataReader["teacher_id"].ToString()),
+                               dataReader["first_name"] + " " + dataReader["last_name"]);
 
                             messages.Add(tempMessage);
 
