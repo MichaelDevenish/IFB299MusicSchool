@@ -301,6 +301,7 @@ namespace WpfApplication1
                 //show confirmation and change user screen
                 //load relavant Info
                 loginPrompt.Visibility = Visibility.Hidden;
+                accountInfo.Visibility = Visibility.Visible;
 
             }
             else loginError.Visibility = Visibility.Visible;
@@ -504,6 +505,21 @@ namespace WpfApplication1
             }));
         }
         #endregion
+
+        private void button_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void logOut_btn_Click(object sender, RoutedEventArgs e)
+        {
+            checkAbilities();
+            isAdmin = false;
+            isTeacher = false;
+            studentID = -1;
+            loginPrompt.Visibility = Visibility.Visible;
+            accountInfo.Visibility = Visibility.Hidden;
+        }
     }
 
     #region Timetable Layout
