@@ -6,10 +6,53 @@
         xmlns:local="clr-namespace:WpfApplication1"
         mc:Ignorable="d"
         Title="ComposeWindow" Height="500" Width="400" MinWidth="400" MinHeight="500" MaxWidth="400" MaxHeight="500">
+    <Window.Resources>
+        <Style TargetType="Button" x:Key="loginButton">
+
+            <Setter Property="FontFamily" Value="Corbel"/>
+            <Setter Property="FontSize" Value="16px"/>
+            <Setter Property="BorderBrush" Value="#1FA3FF"/>
+            <Setter Property="Background" Value="#0073e6"/>
+            <Setter Property="Foreground" Value="#FFFFFF"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="5" Background="{TemplateBinding Background}"
+                                BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                            </ContentPresenter>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#1a8cff"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="LightGray" />
+                    <Setter Property="Background" Value="#a3b3c2"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="FontSize" Value="15px"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <DataTemplate x:Key="MessageTemplate">
+            <StackPanel>
+                <TextBlock Text="{Binding Path=User}" FontWeight="Bold" />
+                <TextBlock Text="{Binding Path=RecentMessage}"/>
+                <TextBlock Text="{Binding Path=Date}"/>
+            </StackPanel>
+        </DataTemplate>
+
+    </Window.Resources>
     <Grid>
-        <Button x:Name="button" Content="Cancel" HorizontalAlignment="Left" Margin="10,434,0,0" VerticalAlignment="Top" Width="75" Click="button_Click"/>
-        <Button x:Name="button1" Content="Send" HorizontalAlignment="Left" Margin="307,434,0,0" VerticalAlignment="Top" Width="75" Click="button1_Click"/>
-        <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="336" Margin="10,93,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="372"/>
+        <Button Style="{StaticResource loginButton}" x:Name="button" Content="Cancel" HorizontalAlignment="Left" Margin="10,427,0,0" VerticalAlignment="Top" Width="75" Click="button_Click" Height="32"/>
+        <Button Style="{StaticResource loginButton}" x:Name="button1" Content="Send" HorizontalAlignment="Left" Margin="306,427,0,0" VerticalAlignment="Top" Width="75" Click="button1_Click" Height="32"/>
+        <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="329" Margin="10,93,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="372"/>
         <TextBox x:Name="titleBox" HorizontalAlignment="Left" Height="23" Margin="9,42,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="229"/>
         <TextBox x:Name="searchBox" HorizontalAlignment="Left" Height="23" Margin="243,14,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="138" TextChanged="textBox2_TextChanged"/>
         <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="46" Margin="243,42,0,0" VerticalAlignment="Top" Width="138"/>
