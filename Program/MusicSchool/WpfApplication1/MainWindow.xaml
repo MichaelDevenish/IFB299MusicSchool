@@ -69,7 +69,9 @@
                             <ColumnDefinition Width="138*"/>
                         </Grid.ColumnDefinitions>
                         <Button x:Name="manageSkills" Style="{StaticResource loginButton}" Content="Manage skills" VerticalAlignment="Top" Width="260" Margin="277,10,15,0" Click="open_skills_window" Height="32" HorizontalAlignment="Center" Grid.Column="2"/>
-                        <Button x:Name="logOut_btn" Content="Sign Out" Grid.Column="2" HorizontalAlignment="Left" Margin="165,332,0,0" VerticalAlignment="Top" Width="120" Height="40" Click="logOut_btn_Click"/>
+                        <Button x:Name="logOut_btn" Content="Sign Out" Grid.Column="2" HorizontalAlignment="Left" Margin="417,329,0,0" VerticalAlignment="Top" Width="120" Height="40" Click="logOut_btn_Click"/>
+                        <Label x:Name="username_label" Content="Username" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="32" FontWeight="Bold"/>
+                        <Label x:Name="name_label" Content="Full name" HorizontalAlignment="Left" Margin="10,63,0,0" VerticalAlignment="Top" FontStyle="Italic"/>
                     </Grid>
                 </Grid>
             </TabItem>

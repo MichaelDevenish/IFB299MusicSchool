@@ -302,7 +302,7 @@ namespace WpfApplication1
                 //load relavant Info
                 loginPrompt.Visibility = Visibility.Hidden;
                 accountInfo.Visibility = Visibility.Visible;
-
+                update_loginscreen();
             }
             else loginError.Visibility = Visibility.Visible;
         }
@@ -318,6 +318,35 @@ namespace WpfApplication1
             error = HelperFunctions.checkError(error, passwordError, passwordBox.Password);
             return error;
         }
+
+        private void update_loginscreen()
+        {
+            //Get basic name info
+            string query = "SELECT users.username, users.first_name, users.last_name FROM users WHERE user_id = @student_id";
+            Dictionary<string, object> param = new Dictionary<string, object>();
+            param.Add("@student_id", studentID + "");
+            List<string[]> result = db.simpleConnection(false, query, param);
+            username_label.Content = result[0][0];
+            name_label.Content = result[0][1] + " " + result[0][2];
+
+        }
+
+        /// <summary>
+        /// What to do when the user clicks the logout button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void logOut_btn_Click(object sender, RoutedEventArgs e)
+        {
+            checkAbilities();
+            isAdmin = false;
+            isTeacher = false;
+            studentID = -1;
+            loginPrompt.Visibility = Visibility.Visible;
+            accountInfo.Visibility = Visibility.Hidden;
+        }
+
+
         #endregion
         #region Event Handeling
         private void cmbRecipient_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -511,15 +540,6 @@ namespace WpfApplication1
 
         }
 
-        private void logOut_btn_Click(object sender, RoutedEventArgs e)
-        {
-            checkAbilities();
-            isAdmin = false;
-            isTeacher = false;
-            studentID = -1;
-            loginPrompt.Visibility = Visibility.Visible;
-            accountInfo.Visibility = Visibility.Hidden;
-        }
     }
 
     #region Timetable Layout
