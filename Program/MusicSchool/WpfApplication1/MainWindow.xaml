@@ -62,16 +62,22 @@
                         <Label x:Name="label" FontSize="14.667" Content="Don't have an account?" Margin="10,181,90,0" VerticalAlignment="Top" FontFamily="Corbel" HorizontalAlignment="Center" Width="161"/>
                         <Label x:Name="loginError" Content="Username or Password is incorrect" HorizontalAlignment="Center" Height="33" Margin="8,200,29,-14" VerticalAlignment="Top" Width="224" FontSize="14.667" FontFamily="Corbel" Foreground="Red" IsHitTestVisible="True" RenderTransformOrigin="0.469,0.939" Visibility="Hidden"/>
                     </Grid>
-                    <Grid x:Name ="accountInfo" HorizontalAlignment="Left" Height="646" Margin="10,10,0,0" VerticalAlignment="Top" Width="780" Visibility="Hidden">
+                    <Grid x:Name ="accountInfo" HorizontalAlignment="Left" Height="646" Margin="10,0,0,-23" VerticalAlignment="Top" Width="780" Visibility="Hidden">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="53*"/>
-                            <ColumnDefinition Width="4*"/>
-                            <ColumnDefinition Width="138*"/>
+                            <ColumnDefinition Width="212*"/>
+                            <ColumnDefinition Width="279*"/>
+                            <ColumnDefinition Width="289*"/>
                         </Grid.ColumnDefinitions>
-                        <Button x:Name="manageSkills" Style="{StaticResource loginButton}" Content="Manage skills" VerticalAlignment="Top" Width="260" Margin="277,10,15,0" Click="open_skills_window" Height="32" HorizontalAlignment="Center" Grid.Column="2"/>
-                        <Button x:Name="logOut_btn" Content="Sign Out" Grid.Column="2" HorizontalAlignment="Left" Margin="417,329,0,0" VerticalAlignment="Top" Width="120" Height="40" Click="logOut_btn_Click"/>
-                        <Label x:Name="username_label" Content="Username" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="32" FontWeight="Bold"/>
-                        <Label x:Name="name_label" Content="Full name" HorizontalAlignment="Left" Margin="10,63,0,0" VerticalAlignment="Top" FontStyle="Italic"/>
+                        <Button x:Name="manageSkills" Style="{StaticResource loginButton}" Content="Manage skills" VerticalAlignment="Top" Width="260" Margin="0,19,29,0" Click="open_skills_window" Height="32" HorizontalAlignment="Center" Grid.Column="2"/>
+                        <Button x:Name="logOut_btn" Content="Sign Out" HorizontalAlignment="Left" Margin="10,105,0,0" VerticalAlignment="Top" Width="120" Height="40" Click="logOut_btn_Click"/>
+                        <Label x:Name="username_label" Content="Username" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" FontSize="32" FontWeight="Bold" Height="53" Width="202"/>
+                        <Label x:Name="name_label" Content="Full name" HorizontalAlignment="Left" Margin="0,63,0,0" VerticalAlignment="Top" FontStyle="Italic" Height="31" Width="202"/>
+                        <TextBox x:Name="lesson_comments" HorizontalAlignment="Left" Height="182" Margin="10,56,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="248" Grid.Column="1" TextChanged="textBox_TextChanged"/>
+                        <Label x:Name="label2" Content="Recent comments:" Grid.Column="1" HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top" Height="31" Width="140"/>
+                        <Label x:Name="label3" Content="Lessons attended:" Grid.Column="2" HorizontalAlignment="Left" Margin="0,96,0,0" VerticalAlignment="Top"/>
+                        <Label x:Name="lesson_attend_number" Content="..." HorizontalAlignment="Left" Margin="10,132,0,0" VerticalAlignment="Top" Grid.Column="2"/>
+                        <Label x:Name="label4" Content="Upcoming lessons:" HorizontalAlignment="Left" Margin="10,168,0,0" VerticalAlignment="Top" Grid.Column="2"/>
+                        <Label x:Name="upcoming_lesson_number" Content="..." HorizontalAlignment="Left" Margin="10,199,0,0" VerticalAlignment="Top" Grid.Column="2"/>
                     </Grid>
                 </Grid>
             </TabItem>

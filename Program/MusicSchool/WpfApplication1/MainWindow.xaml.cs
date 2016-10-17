@@ -39,6 +39,7 @@ namespace WpfApplication1
         private DatabaseConnector.DatabaseConnector db;
         private BackgroundWorker worker;
         private BackgroundWorker refreshMessage;
+        private BackgroundWorker update_loginscreen;
         private List<Messages> messages;
 
         #endregion
@@ -287,24 +288,32 @@ namespace WpfApplication1
         private void Login()
         {
             List<string[]> result = db.ReadLoginCheckValid(usernameBox.Text, passwordBox.Password);
-            if (bool.Parse(result[0][0]))
+            if (result != null)
             {
-                isAdmin = bool.Parse(result[0][1]);
-                isTeacher = bool.Parse(result[0][2]);
-                studentID = int.Parse(result[0][3]);
-                checkAbilities();
+                if (bool.Parse(result[0][0]))
+                {
+                    isAdmin = bool.Parse(result[0][1]);
+                    isTeacher = bool.Parse(result[0][2]);
+                    studentID = int.Parse(result[0][3]);
+                    checkAbilities();
 
-                refreshMessage = new BackgroundWorker();
-                refreshMessage.DoWork += refreshMessage_DoWork;
-                refreshMessage.RunWorkerAsync();
-                MessageBox.Show("You have logged in successfuly");
-                //show confirmation and change user screen
-                //load relavant Info
-                loginPrompt.Visibility = Visibility.Hidden;
-                accountInfo.Visibility = Visibility.Visible;
-                update_loginscreen();
+                    refreshMessage = new BackgroundWorker();
+                    refreshMessage.DoWork += refreshMessage_DoWork;
+                    refreshMessage.RunWorkerAsync();
+                    MessageBox.Show("You have logged in successfuly");
+
+                    //show confirmation and change user screen
+                    //load relavant Info
+                    loginPrompt.Visibility = Visibility.Hidden;
+                    accountInfo.Visibility = Visibility.Visible;
+
+                    update_loginscreen = new BackgroundWorker();
+                    update_loginscreen.DoWork += update_loginscreen_DoWork;
+                    update_loginscreen.RunWorkerAsync();
+                }
+                else loginError.Visibility = Visibility.Visible;
             }
-            else loginError.Visibility = Visibility.Visible;
+            else MessageBox.Show("Could not contact database");
         }
 
         /// <summary>
@@ -319,15 +328,57 @@ namespace WpfApplication1
             return error;
         }
 
-        private void update_loginscreen()
+
+        /// <summary>
+        /// Series of actions that update information in the login screen
+        /// </summary>
+        private void update_loginscreen_DoWork(object sender, DoWorkEventArgs e)
         {
             //Get basic name info
             string query = "SELECT users.username, users.first_name, users.last_name FROM users WHERE user_id = @student_id";
             Dictionary<string, object> param = new Dictionary<string, object>();
             param.Add("@student_id", studentID + "");
             List<string[]> result = db.simpleConnection(false, query, param);
-            username_label.Content = result[0][0];
-            name_label.Content = result[0][1] + " " + result[0][2];
+
+            this.Dispatcher.Invoke(() => username_label.Content = result[0][0]);
+            this.Dispatcher.Invoke(() => name_label.Content = result[0][1] + " " + result[0][2]);
+
+            //get lesson comments
+            query = "SELECT lessons.lesson_date, lessons.comments, lessons.attended, " +
+                    "users.first_name , users.last_name FROM musicschool.lessons " +
+                    "INNER JOIN users ON users.user_id = lessons.teacher_id WHERE student_id = @student_id";
+            param = new Dictionary<string, object>();
+            param.Add("@student_id", studentID + "");
+            result = db.simpleConnection(false, query, param);
+
+            int lessons_attended = 0;
+            int lessons_upcoming = 0;
+            int lessons_prior = 0;
+
+            foreach (string[] les in result)
+            {
+
+                //update the comments box
+                if (les[1] != "")
+                {
+                    this.Dispatcher.Invoke(() => lesson_comments.Text += les[0] + "\n\"" + les[1] + "\"\n-" + les[3] + " " + les[4] + "\n\n");
+                }
+
+                //get lessions attended vs total lessons
+                DateTime currentTime = DateTime.Now;
+                DateTime lessonTime = Convert.ToDateTime(les[0]);
+                if (DateTime.Compare(lessonTime, currentTime) < 0)
+                {
+                    lessons_prior++;
+                }
+                else
+                {
+                    lessons_upcoming++;
+                }
+                if (bool.Parse(les[2])) lessons_attended++;
+            }
+            this.Dispatcher.Invoke(() => lesson_attend_number.Content = lessons_attended + "/" + lessons_prior);
+            this.Dispatcher.Invoke(() => upcoming_lesson_number.Content = lessons_upcoming);
 
         }
 
@@ -342,8 +393,18 @@ namespace WpfApplication1
             isAdmin = false;
             isTeacher = false;
             studentID = -1;
+            clear_account_screen();
             loginPrompt.Visibility = Visibility.Visible;
             accountInfo.Visibility = Visibility.Hidden;
+        }
+
+        private void clear_account_screen()
+        {
+            lesson_comments.Text = "";
+            username_label.Content = "...";
+            name_label.Content = "...";
+            lesson_attend_number.Content = "...";
+            upcoming_lesson_number.Content = "...";
         }
 
 
@@ -540,6 +601,10 @@ namespace WpfApplication1
 
         }
 
+        private void textBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 
     #region Timetable Layout
