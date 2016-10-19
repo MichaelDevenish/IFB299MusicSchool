@@ -42,6 +42,9 @@ namespace WpfApplication1
         private BackgroundWorker update_loginscreen;
         private List<Messages> messages;
 
+        private List<string> lesson_list;
+        private List<string> comments;
+
         #endregion
         #region Properties
         public List<string[]> TeacherInfo { get { return teacherInfo; } }
@@ -353,43 +356,73 @@ namespace WpfApplication1
             this.Dispatcher.Invoke(() => username_label.Content = result[0][0]);
             this.Dispatcher.Invoke(() => name_label.Content = result[0][1] + " " + result[0][2]);
 
-            //get lesson comments
-            query = "SELECT lessons.lesson_date, lessons.comments, lessons.attended, " +
-                    "users.first_name , users.last_name FROM musicschool.lessons " +
-                    "INNER JOIN users ON users.user_id = lessons.teacher_id WHERE student_id = @student_id";
-            param = new Dictionary<string, object>();
-            param.Add("@student_id", studentID + "");
-            result = db.simpleConnection(false, query, param);
-
-            int lessons_attended = 0;
-            int lessons_upcoming = 0;
-            int lessons_prior = 0;
-
-            foreach (string[] les in result)
+            if (IsTeacher)
             {
+                query = "SELECT lessons.lesson_date, lessons.comments, lessons.attended, " +
+                        "users.first_name , users.last_name FROM musicschool.lessons " +
+                        "INNER JOIN users ON users.user_id = lessons.student_id WHERE lessons.teacher_id = @user_id";
+                param = new Dictionary<string, object>();
+                param.Add("@user_id", studentID + "");
+                result = db.simpleConnection(false, query, param);
 
-                //update the comments box
-                if (les[1] != "")
+                lesson_list = new List<string>();
+                comments = new List<string>();
+                foreach(string[] les in result)
                 {
-                    this.Dispatcher.Invoke(() => lesson_comments.Text += les[0] + "\n\"" + les[1] + "\"\n-" + les[3] + " " + les[4] + "\n\n");
+                    lesson_list.Add(les[0] + " - " + les[3] + " " + les[4]);
+                    string com_temp = "";
+                    if (bool.Parse(les[2])) com_temp = "Attended - ";
+                    com_temp = com_temp + les[1];
+                    comments.Add(com_temp);
                 }
-
-                //get lessions attended vs total lessons
-                DateTime currentTime = DateTime.Now;
-                DateTime lessonTime = Convert.ToDateTime(les[0]);
-                if (DateTime.Compare(lessonTime, currentTime) < 0)
-                {
-                    lessons_prior++;
-                }
-                else
-                {
-                    lessons_upcoming++;
-                }
-                if (bool.Parse(les[2])) lessons_attended++;
+                this.Dispatcher.Invoke(() => lesson_box.ItemsSource = lesson_list);
             }
-            this.Dispatcher.Invoke(() => lesson_attend_number.Content = lessons_attended + "/" + lessons_prior);
-            this.Dispatcher.Invoke(() => upcoming_lesson_number.Content = lessons_upcoming);
+            else
+            {
+                //get lesson comments
+                query = "SELECT lessons.lesson_date, lessons.comments, lessons.attended, " +
+                        "users.first_name , users.last_name FROM musicschool.lessons " +
+                        "INNER JOIN users ON users.user_id = lessons.teacher_id WHERE student_id = @student_id";
+                param = new Dictionary<string, object>();
+                param.Add("@student_id", studentID + "");
+                result = db.simpleConnection(false, query, param);
 
+                int lessons_attended = 0;
+                int lessons_upcoming = 0;
+                int lessons_prior = 0;
+
+                foreach (string[] les in result)
+                {
+
+                    //update the comments box
+                    if (les[1] != "")
+                    {
+                        this.Dispatcher.Invoke(() => lesson_comments.Text += les[0] + "\n\"" + les[1] + "\"\n-" + les[3] + " " + les[4] + "\n\n");
+                    }
+
+                    //get lessions attended vs total lessons
+                    DateTime currentTime = DateTime.Now;
+                    DateTime lessonTime = Convert.ToDateTime(les[0]);
+                    if (DateTime.Compare(lessonTime, currentTime) < 0)
+                    {
+                        lessons_prior++;
+                    }
+                    else
+                    {
+                        lessons_upcoming++;
+                    }
+                    if (bool.Parse(les[2])) lessons_attended++;
+                }
+                this.Dispatcher.Invoke(() => lesson_attend_number.Content = lessons_attended + "/" + lessons_prior);
+                this.Dispatcher.Invoke(() => upcoming_lesson_number.Content = lessons_upcoming);
+            }
+
+        }
+
+
+        private void lesson_box_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            lesson_comments.Text = comments[lesson_box.SelectedIndex];
         }
 
         /// <summary>
@@ -629,10 +662,13 @@ namespace WpfApplication1
 
         }
 
+<<<<<<< HEAD
         private void txtInstrumentInfo_Copy_TextChanged(object sender, TextChangedEventArgs e)
         {
 
         }
+=======
+>>>>>>> c54aba5e03fce4003ae7cffb6b1c1df922d95c94
     }
 
     #region Timetable Layout
