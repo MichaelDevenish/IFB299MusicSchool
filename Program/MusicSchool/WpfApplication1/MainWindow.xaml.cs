@@ -120,8 +120,13 @@ namespace WpfApplication1
         {
             adminLessonButton.Visibility = Visibility.Hidden;
             manageSkills.Visibility = Visibility.Hidden;
+            bookButton.IsEnabled = false;
             if (logged_in)
             {
+                if (!isAdmin && !IsTeacher && studentID != -1)
+                {
+                    bookButton.IsEnabled = true;
+                }
                 //get data for timetable info
                 if (timetableTab.IsSelected)
                 {
@@ -137,14 +142,12 @@ namespace WpfApplication1
                 }
 
                 errorMessage.Visibility = System.Windows.Visibility.Hidden;
-                bookButton.IsEnabled = true;
             }
             //timetable_ret.Visibility = System.Windows.Visibility.Visible;
 
             else
             {
                 errorMessage.Visibility = System.Windows.Visibility.Visible;
-                bookButton.IsEnabled = false;
                 //timetable_ret.Visibility = System.Windows.Visibility.Hidden;
 
             }
@@ -367,7 +370,7 @@ namespace WpfApplication1
 
                 lesson_list = new List<string>();
                 comments = new List<string>();
-                foreach(string[] les in result)
+                foreach (string[] les in result)
                 {
                     lesson_list.Add(les[0] + " - " + les[3] + " " + les[4]);
                     string com_temp = "";
@@ -662,13 +665,11 @@ namespace WpfApplication1
 
         }
 
-<<<<<<< HEAD
         private void txtInstrumentInfo_Copy_TextChanged(object sender, TextChangedEventArgs e)
         {
 
         }
-=======
->>>>>>> c54aba5e03fce4003ae7cffb6b1c1df922d95c94
+
     }
 
     #region Timetable Layout
