@@ -68,6 +68,16 @@ namespace WpfApplication1
             worker.DoWork += timetable_DoWork;
             worker.RunWorkerAsync();
 
+            System.Windows.Threading.DispatcherTimer wallpaperIncrement = new System.Windows.Threading.DispatcherTimer();
+            wallpaperIncrement.Tick += new EventHandler(wallpaperIncrement_Tick);
+            wallpaperIncrement.Interval = new TimeSpan(0, 1, 0);
+            wallpaperIncrement.Start();
+
+            System.Windows.Threading.DispatcherTimer sessionClock = new System.Windows.Threading.DispatcherTimer();
+            sessionClock.Tick += new EventHandler(sessionClock_Tick);
+            sessionClock.Interval = new TimeSpan(0, 0, 1);
+            sessionClock.Start();
+
         }
 
         /// <summary>
@@ -596,12 +606,30 @@ namespace WpfApplication1
         }
         #endregion
 
+
+
+
+        private void wallpaperIncrement_Tick(object sender, EventArgs e)
+        {
+            // wallpaper array index increment
+        }
+
+        private void sessionClock_Tick(object sender, EventArgs e)
+        {
+            this.clockTimer.Text = DateTime.Now.ToString("HH:mm:ss");
+        }
+
         private void button_Click_1(object sender, RoutedEventArgs e)
         {
 
         }
 
         private void textBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void txtInstrumentInfo_Copy_TextChanged(object sender, TextChangedEventArgs e)
         {
 
         }
