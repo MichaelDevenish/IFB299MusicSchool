@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApplication1.Secondary_Windows;
 
 namespace WpfApplication1
 {
@@ -42,8 +43,10 @@ namespace WpfApplication1
         private BackgroundWorker update_loginscreen;
         private List<Messages> messages;
 
+        //Variables for lesson list on main account tab
         private List<string> lesson_list;
         private List<string> comments;
+        private List<string> lesson_ids;
 
         #endregion
         #region Properties
@@ -361,7 +364,7 @@ namespace WpfApplication1
 
             if (IsTeacher)
             {
-                query = "SELECT lessons.lesson_date, lessons.comments, lessons.attended, " +
+                query = "SELECT lessons.lesson_id, lessons.lesson_date, lessons.comments, lessons.attended, " +
                         "users.first_name , users.last_name FROM musicschool.lessons " +
                         "INNER JOIN users ON users.user_id = lessons.student_id WHERE lessons.teacher_id = @user_id";
                 param = new Dictionary<string, object>();
@@ -370,13 +373,15 @@ namespace WpfApplication1
 
                 lesson_list = new List<string>();
                 comments = new List<string>();
+                lesson_ids = new List<string>();
                 foreach (string[] les in result)
                 {
-                    lesson_list.Add(les[0] + " - " + les[3] + " " + les[4]);
+                    lesson_list.Add(les[1] + " - " + les[4] + " " + les[5]);
                     string com_temp = "";
-                    if (bool.Parse(les[2])) com_temp = "Attended - ";
-                    com_temp = com_temp + les[1];
+                    if (bool.Parse(les[3])) com_temp = "Attended - ";
+                    com_temp = com_temp + les[2];
                     comments.Add(com_temp);
+                    lesson_ids.Add(les[0]);
                 }
                 this.Dispatcher.Invoke(() => lesson_box.ItemsSource = lesson_list);
             }
@@ -398,10 +403,11 @@ namespace WpfApplication1
                 {
 
                     //update the comments box
-                    if (les[1] != "")
-                    {
-                        this.Dispatcher.Invoke(() => lesson_comments.Text += les[0] + "\n\"" + les[1] + "\"\n-" + les[3] + " " + les[4] + "\n\n");
-                    }
+                    lesson_list.Add(les[0] + " - " + les[3] + " " + les[4]);
+                    string com_temp = "";
+                    if (bool.Parse(les[2])) com_temp = "Attended - ";
+                    com_temp = com_temp + les[1];
+                    comments.Add(com_temp);
 
                     //get lessions attended vs total lessons
                     DateTime currentTime = DateTime.Now;
@@ -422,7 +428,11 @@ namespace WpfApplication1
 
         }
 
-
+        /// <summary>
+        /// When the uses selects a new lesson from the listbox, show the comments for that lesson in the comments box
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void lesson_box_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             lesson_comments.Text = comments[lesson_box.SelectedIndex];
@@ -555,6 +565,12 @@ namespace WpfApplication1
             else MessageBox.Show("You must be logged in to use this feature");
         }
 
+        private void modify_lesson_Click(object sender, RoutedEventArgs e)
+        {
+            lesson_comments comments_window = new lesson_comments(lesson_ids[lesson_box.SelectedIndex]);
+            comments_window.ShowDialog();
+        }
+
         #endregion
         #region messaging
         /// <summary>
@@ -669,6 +685,7 @@ namespace WpfApplication1
         {
 
         }
+
 
     }
 

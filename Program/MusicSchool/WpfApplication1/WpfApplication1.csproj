@@ -69,6 +69,9 @@
     <Compile Include="Secondary Windows\skills.xaml.cs">
       <DependentUpon>skills.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Secondary Windows\lesson_comments.xaml.cs">
+      <DependentUpon>lesson_comments.xaml</DependentUpon>
+    </Compile>
     <Page Include="Secondary Windows\AdminTimetable.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -106,6 +109,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Secondary Windows\skills.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Secondary Windows\lesson_comments.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
