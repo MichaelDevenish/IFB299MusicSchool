@@ -354,6 +354,10 @@ namespace WpfApplication1
         /// </summary>
         private void update_loginscreen_DoWork(object sender, DoWorkEventArgs e)
         {
+
+            //Show controls depending on role
+            if (isTeacher) modify_lesson.Visibility = Visibility.Visible;
+
             //Get basic name info
             string query = "SELECT users.username, users.first_name, users.last_name FROM users WHERE user_id = @student_id";
             Dictionary<string, object> param = new Dictionary<string, object>();
@@ -453,6 +457,9 @@ namespace WpfApplication1
             clear_account_screen();
             loginPrompt.Visibility = Visibility.Visible;
             accountInfo.Visibility = Visibility.Hidden;
+
+            //hide all role specific controls
+            modify_lesson.Visibility = Visibility.Visible;
         }
 
         private void clear_account_screen()
@@ -570,6 +577,10 @@ namespace WpfApplication1
         {
             lesson_comments comments_window = new lesson_comments(lesson_ids[lesson_box.SelectedIndex]);
             comments_window.ShowDialog();
+            update_loginscreen = new BackgroundWorker();
+            clear_account_screen();
+            update_loginscreen.DoWork += update_loginscreen_DoWork;
+            update_loginscreen.RunWorkerAsync();
         }
 
         #endregion

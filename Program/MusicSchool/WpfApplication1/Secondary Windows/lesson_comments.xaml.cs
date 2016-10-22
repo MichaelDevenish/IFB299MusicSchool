@@ -20,7 +20,8 @@ namespace WpfApplication1.Secondary_Windows
     public partial class lesson_comments : Window
     {
         DatabaseConnector.DatabaseConnector db = new DatabaseConnector.DatabaseConnector();
-        string lesson_id;
+        private string lesson_id;
+
         public lesson_comments(string l_id)
         {
             InitializeComponent();
@@ -30,12 +31,13 @@ namespace WpfApplication1.Secondary_Windows
 
         private void submit_btn_Click(object sender, RoutedEventArgs e)
         {
-            string query = "UPDATE musicschool.lessons SET comments= @comment, attended=@attended WHERE lesson_id= @lesson_id";
+            string query = "UPDATE musicschool.lessons SET comments= @comment, attended = @attended WHERE lesson_id= @lesson_id";
             Dictionary<string, object> param = new Dictionary<string, object>();
             param.Add("@comment", comment_box.Text);
             param.Add("@attended", attended_chkbx.IsChecked);
             param.Add("@lesson_id", lesson_id);
             db.simpleConnection(true, query, param);
+            this.Close();
         }
     }
 }
