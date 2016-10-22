@@ -24,6 +24,7 @@ namespace WpfApplication1.Secondary_Windows
         public lesson_comments(string l_id)
         {
             InitializeComponent();
+            this.Icon = BitmapFrame.Create(new Uri(Environment.CurrentDirectory + "/images/logo.ico"));
             lesson_id = l_id;
         }
 

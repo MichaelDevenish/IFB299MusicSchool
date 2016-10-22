@@ -65,6 +65,7 @@ namespace WpfApplication1
 
             InitializeComponent();
             imgMusicSchool.Source = new BitmapImage(new Uri(Environment.CurrentDirectory + "/images/header.jpg"));
+            this.Icon = BitmapFrame.Create(new Uri(Environment.CurrentDirectory + "/images/logo.ico"));
 
             BackgroundWorker firstLoad = new BackgroundWorker();
             firstLoad.DoWork += info_DoWork;
