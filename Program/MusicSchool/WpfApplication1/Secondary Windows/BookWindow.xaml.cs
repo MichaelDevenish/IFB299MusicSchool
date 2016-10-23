@@ -47,14 +47,23 @@ namespace WpfApplication1
 
         private void update()
         {
+            string query = "SELECT users.user_id, first_name, last_name, GROUP_CONCAT(skills.skill_name SEPARATOR ', ') " +
+                            "FROM users " +
+                            "LEFT JOIN user_skills " +
+                            "ON user_skills.user_id = users.user_id " +
+                            "LEFT JOIN skills " +
+                            "ON skills.skill_id = user_skills.skill_id " +
+                            "WHERE role = 1 " +
+                            "GROUP BY users.user_id";
+            teacherinfo = db.simpleConnection(false, query, null);
             //Get the names of the teachers and populate the teacher combobox
-            teacherinfo = db.ReadTeacherInfo();
+            //teacherinfo = db.ReadTeacherInfo();
 
             //get user skills from database so we can display skills next to name
             //string query = "SELECT lesson_date, lesson_length FROM lessons";
             foreach (string[] name in teacherinfo)
             {
-                teacherNames.Add(name[1] + " " + name[2]);
+                teacherNames.Add(name[1] + " " + name[2] + " - " + name[3]);
                 teacherIDs.Add(name[0]);
             }
             ;
@@ -63,7 +72,7 @@ namespace WpfApplication1
 
             //Access the databse and determine which timeslots for the next 90 days are
             //valid, and populate bookarray
-            string query = "SELECT lesson_date, lesson_length FROM lessons";
+            query = "SELECT lesson_date, lesson_length FROM lessons";
             List<string[]> lessons = db.simpleConnection(false, query, null);
 
             foreach (string[] day in lessons)

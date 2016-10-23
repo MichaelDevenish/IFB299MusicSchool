@@ -163,7 +163,13 @@ namespace WpfApplication1
 
         private void delete_Click(object sender, RoutedEventArgs e)
         {
-            entry delete = (entry)dataGrid.SelectedItem;
+            entry delete;
+            try { delete = (entry)dataGrid.SelectedItem; }
+            catch { return; }
+
+            //if nothing selected, cancel;
+            if (delete == null || delete.Skill == "" || delete.Name == "") return;
+
             string query = "DELETE FROM user_skills WHERE skill_ID = @skillID AND user_ID = @userID";
             Dictionary<string, object> param = new Dictionary<string, object>()
             {

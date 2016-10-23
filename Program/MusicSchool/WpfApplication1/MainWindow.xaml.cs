@@ -356,6 +356,7 @@ namespace WpfApplication1
 
             //Show controls depending on role
             if (isTeacher) this.Dispatcher.Invoke(() => modify_lesson.Visibility = Visibility.Visible);
+            if (isAdmin) this.Dispatcher.Invoke(() => manageSkills.Visibility = Visibility.Visible);
 
             //Get basic name info
             string query = "SELECT users.username, users.first_name, users.last_name FROM users WHERE user_id = @student_id";
@@ -459,11 +460,13 @@ namespace WpfApplication1
 
             //hide all role specific controls
             modify_lesson.Visibility = Visibility.Visible;
+            manageSkills.Visibility = Visibility.Hidden;
         }
 
         private void clear_account_screen()
         {
             lesson_comments.Text = "";
+            lesson_box.ItemsSource = null;
             username_label.Content = "...";
             name_label.Content = "...";
             lesson_attend_number.Content = "...";
@@ -574,7 +577,7 @@ namespace WpfApplication1
 
         private void modify_lesson_Click(object sender, RoutedEventArgs e)
         {
-            if (lesson_box.SelectedItem == null)
+            if (lesson_box.SelectedItem != null)
             {
                 lesson_comments comments_window = new lesson_comments(lesson_ids[lesson_box.SelectedIndex]);
                 comments_window.ShowDialog();
