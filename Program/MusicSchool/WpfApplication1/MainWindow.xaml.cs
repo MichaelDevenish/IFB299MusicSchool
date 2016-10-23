@@ -310,7 +310,7 @@ namespace WpfApplication1
             List<string[]> result = db.ReadLoginCheckValid(usernameBox.Text, passwordBox.Password);
             if (result != null)
             {
-                if (bool.Parse(result[0][0]))
+                if (result.Count != 0)
                 {
                     isAdmin = bool.Parse(result[0][1]);
                     isTeacher = bool.Parse(result[0][2]);
@@ -320,7 +320,6 @@ namespace WpfApplication1
                     refreshMessage = new BackgroundWorker();
                     refreshMessage.DoWork += refreshMessage_DoWork;
                     refreshMessage.RunWorkerAsync();
-                    MessageBox.Show("You have logged in successfuly");
 
                     //show confirmation and change user screen
                     //load relavant Info
@@ -356,7 +355,7 @@ namespace WpfApplication1
         {
 
             //Show controls depending on role
-            if (isTeacher) modify_lesson.Visibility = Visibility.Visible;
+            if (isTeacher) this.Dispatcher.Invoke(() => modify_lesson.Visibility = Visibility.Visible);
 
             //Get basic name info
             string query = "SELECT users.username, users.first_name, users.last_name FROM users WHERE user_id = @student_id";
@@ -367,6 +366,8 @@ namespace WpfApplication1
             this.Dispatcher.Invoke(() => username_label.Content = result[0][0]);
             this.Dispatcher.Invoke(() => name_label.Content = result[0][1] + " " + result[0][2]);
 
+            lesson_list = new List<string>();
+            comments = new List<string>();
             if (IsTeacher)
             {
                 query = "SELECT lessons.lesson_id, lessons.lesson_date, lessons.comments, lessons.attended, " +
@@ -376,8 +377,6 @@ namespace WpfApplication1
                 param.Add("@user_id", studentID + "");
                 result = db.simpleConnection(false, query, param);
 
-                lesson_list = new List<string>();
-                comments = new List<string>();
                 lesson_ids = new List<string>();
                 foreach (string[] les in result)
                 {
@@ -575,12 +574,15 @@ namespace WpfApplication1
 
         private void modify_lesson_Click(object sender, RoutedEventArgs e)
         {
-            lesson_comments comments_window = new lesson_comments(lesson_ids[lesson_box.SelectedIndex]);
-            comments_window.ShowDialog();
-            update_loginscreen = new BackgroundWorker();
-            clear_account_screen();
-            update_loginscreen.DoWork += update_loginscreen_DoWork;
-            update_loginscreen.RunWorkerAsync();
+            if (lesson_box.SelectedItem == null)
+            {
+                lesson_comments comments_window = new lesson_comments(lesson_ids[lesson_box.SelectedIndex]);
+                comments_window.ShowDialog();
+                update_loginscreen = new BackgroundWorker();
+                clear_account_screen();
+                update_loginscreen.DoWork += update_loginscreen_DoWork;
+                update_loginscreen.RunWorkerAsync();
+            }
         }
 
         #endregion
