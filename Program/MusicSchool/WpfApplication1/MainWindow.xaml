@@ -152,8 +152,8 @@
             </TabItem>
             <TabItem Margin="0" Header="INSTRUMENTS">
                 <Grid Background="White">
-                    <Label Content="Instrunment List" HorizontalAlignment="Left" Height="32" VerticalAlignment="Top" Width="131" Margin="10,19,0,0"/>
-                    <ComboBox x:Name="cmbInstrument" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" FontFamily="Segoe UI" Text="Select Recipients" SelectionChanged="cmbInstrument_SelectionChanged" Margin="146,19,0,0" Height="26"/>
+                    <Label Content="Instrunment List" HorizontalAlignment="Left" Height="34" VerticalAlignment="Top" Width="131" Margin="10,19,0,0"/>
+                    <ComboBox x:Name="cmbInstrument" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" FontFamily="Segoe UI" Text="Select Recipients" SelectionChanged="cmbInstrument_SelectionChanged" Margin="146,19,0,0" Height="30"/>
                     <TextBox x:Name="txtInstrumentInfo" TextWrapping="Wrap" Text="Instrument Information:" Margin="10,56,10,383"/>
                     <Image x:Name ="imgInstrument" Source="Best-Drum-Set-Main.jpg" HorizontalAlignment="Center" Height="368" VerticalAlignment="Bottom" Width="630" Margin="0,0,167,10" Opacity="0.5"/>
                 </Grid>
