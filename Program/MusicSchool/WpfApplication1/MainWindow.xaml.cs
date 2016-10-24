@@ -488,8 +488,7 @@ namespace WpfApplication1
         private void cmbInstrument_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             txtInstrumentInfo.Text = String.Empty;
-            int instrumentID = int.Parse(instrumentInfo[cmbInstrument.SelectedIndex][0]);
-            txtInstrumentInfo.Text = "Instrument Info: " + instrumentInfo[instrumentID][3] + ", " + instrumentInfo[instrumentID][1];
+            txtInstrumentInfo.Text = "Instrument: " + instrumentInfo[cmbInstrument.SelectedIndex][1] + "\nInstrument Info: " + instrumentInfo[cmbInstrument.SelectedIndex][3];
         }
 
         private void signupButton_Click(object sender, RoutedEventArgs e)
