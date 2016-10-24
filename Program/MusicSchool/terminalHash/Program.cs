@@ -21,6 +21,8 @@ namespace terminalHash
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+
+
             PasswordManagment passTest = new PasswordManagment(2);
             byte[] output = passTest.GenerateHash("password", passTest.GenerateSalt());
             foreach (var item in output)

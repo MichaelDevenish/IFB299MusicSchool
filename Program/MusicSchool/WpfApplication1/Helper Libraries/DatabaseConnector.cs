@@ -45,6 +45,10 @@ namespace DatabaseConnector
             connection = new MySqlConnection(connectionString);
         }
 
+        /// <summary>
+        /// This function loads user information from the database into a datatable
+        /// </summary>
+        /// <returns>A Datatable containing user information</returns>
         public DataTable getUsers()
         {
             
@@ -60,6 +64,10 @@ namespace DatabaseConnector
  
         }
 
+        /// <summary>
+        /// This function loads instrument information from the database into a datatable
+        /// </summary>
+        /// <returns>A Datatable containing Iinsturment information</returns>
         public DataTable getInstruments()
         {
 
@@ -76,7 +84,10 @@ namespace DatabaseConnector
         }
 
 
-
+        /// <summary>
+        /// This function updates the information in the database based on the
+        /// changes made in the datagridview element in the administrators GUI
+        /// </summary>
         public void updateFields()
         {
             scb = new MySqlCommandBuilder(sda);
