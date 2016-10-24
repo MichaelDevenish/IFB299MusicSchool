@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApplication1.Secondary_Windows;
 
 namespace WpfApplication1
 {
@@ -42,8 +43,10 @@ namespace WpfApplication1
         private BackgroundWorker update_loginscreen;
         private List<Messages> messages;
 
+        //Variables for lesson list on main account tab
         private List<string> lesson_list;
         private List<string> comments;
+        private List<string> lesson_ids;
 
         #endregion
         #region Properties
@@ -62,6 +65,7 @@ namespace WpfApplication1
 
             InitializeComponent();
             imgMusicSchool.Source = new BitmapImage(new Uri(Environment.CurrentDirectory + "/images/header.jpg"));
+            this.Icon = BitmapFrame.Create(new Uri(Environment.CurrentDirectory + "/images/logo.ico"));
 
             BackgroundWorker firstLoad = new BackgroundWorker();
             firstLoad.DoWork += info_DoWork;
@@ -306,7 +310,7 @@ namespace WpfApplication1
             List<string[]> result = db.ReadLoginCheckValid(usernameBox.Text, passwordBox.Password);
             if (result != null)
             {
-                if (bool.Parse(result[0][0]))
+                if (result.Count != 0)
                 {
                     isAdmin = bool.Parse(result[0][1]);
                     isTeacher = bool.Parse(result[0][2]);
@@ -316,7 +320,6 @@ namespace WpfApplication1
                     refreshMessage = new BackgroundWorker();
                     refreshMessage.DoWork += refreshMessage_DoWork;
                     refreshMessage.RunWorkerAsync();
-                    MessageBox.Show("You have logged in successfuly");
 
                     //show confirmation and change user screen
                     //load relavant Info
@@ -350,6 +353,11 @@ namespace WpfApplication1
         /// </summary>
         private void update_loginscreen_DoWork(object sender, DoWorkEventArgs e)
         {
+
+            //Show controls depending on role
+            if (isTeacher) this.Dispatcher.Invoke(() => modify_lesson.Visibility = Visibility.Visible);
+            if (isAdmin) this.Dispatcher.Invoke(() => manageSkills.Visibility = Visibility.Visible);
+
             //Get basic name info
             string query = "SELECT users.username, users.first_name, users.last_name FROM users WHERE user_id = @student_id";
             Dictionary<string, object> param = new Dictionary<string, object>();
@@ -359,24 +367,26 @@ namespace WpfApplication1
             this.Dispatcher.Invoke(() => username_label.Content = result[0][0]);
             this.Dispatcher.Invoke(() => name_label.Content = result[0][1] + " " + result[0][2]);
 
+            lesson_list = new List<string>();
+            comments = new List<string>();
             if (IsTeacher)
             {
-                query = "SELECT lessons.lesson_date, lessons.comments, lessons.attended, " +
+                query = "SELECT lessons.lesson_id, lessons.lesson_date, lessons.comments, lessons.attended, " +
                         "users.first_name , users.last_name FROM musicschool.lessons " +
                         "INNER JOIN users ON users.user_id = lessons.student_id WHERE lessons.teacher_id = @user_id";
                 param = new Dictionary<string, object>();
                 param.Add("@user_id", studentID + "");
                 result = db.simpleConnection(false, query, param);
 
-                lesson_list = new List<string>();
-                comments = new List<string>();
+                lesson_ids = new List<string>();
                 foreach (string[] les in result)
                 {
-                    lesson_list.Add(les[0] + " - " + les[3] + " " + les[4]);
+                    lesson_list.Add(les[1] + " - " + les[4] + " " + les[5]);
                     string com_temp = "";
-                    if (bool.Parse(les[2])) com_temp = "Attended - ";
-                    com_temp = com_temp + les[1];
+                    if (bool.Parse(les[3])) com_temp = "Attended - ";
+                    com_temp = com_temp + les[2];
                     comments.Add(com_temp);
+                    lesson_ids.Add(les[0]);
                 }
                 this.Dispatcher.Invoke(() => lesson_box.ItemsSource = lesson_list);
             }
@@ -398,10 +408,11 @@ namespace WpfApplication1
                 {
 
                     //update the comments box
-                    if (les[1] != "")
-                    {
-                        this.Dispatcher.Invoke(() => lesson_comments.Text += les[0] + "\n\"" + les[1] + "\"\n-" + les[3] + " " + les[4] + "\n\n");
-                    }
+                    lesson_list.Add(les[0] + " - " + les[3] + " " + les[4]);
+                    string com_temp = "";
+                    if (bool.Parse(les[2])) com_temp = "Attended - ";
+                    com_temp = com_temp + les[1];
+                    comments.Add(com_temp);
 
                     //get lessions attended vs total lessons
                     DateTime currentTime = DateTime.Now;
@@ -418,14 +429,19 @@ namespace WpfApplication1
                 }
                 this.Dispatcher.Invoke(() => lesson_attend_number.Content = lessons_attended + "/" + lessons_prior);
                 this.Dispatcher.Invoke(() => upcoming_lesson_number.Content = lessons_upcoming);
+                this.Dispatcher.Invoke(() => lesson_box.ItemsSource = lesson_list);
             }
 
         }
 
-
+        /// <summary>
+        /// When the uses selects a new lesson from the listbox, show the comments for that lesson in the comments box
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void lesson_box_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            lesson_comments.Text = comments[lesson_box.SelectedIndex];
+            if(lesson_box.SelectedIndex != -1) lesson_comments.Text = comments[lesson_box.SelectedIndex];
         }
 
         /// <summary>
@@ -442,11 +458,16 @@ namespace WpfApplication1
             clear_account_screen();
             loginPrompt.Visibility = Visibility.Visible;
             accountInfo.Visibility = Visibility.Hidden;
+
+            //hide all role specific controls
+            modify_lesson.Visibility = Visibility.Visible;
+            manageSkills.Visibility = Visibility.Hidden;
         }
 
         private void clear_account_screen()
         {
             lesson_comments.Text = "";
+            lesson_box.ItemsSource = null;
             username_label.Content = "...";
             name_label.Content = "...";
             lesson_attend_number.Content = "...";
@@ -553,6 +574,19 @@ namespace WpfApplication1
                 }
             }
             else MessageBox.Show("You must be logged in to use this feature");
+        }
+
+        private void modify_lesson_Click(object sender, RoutedEventArgs e)
+        {
+            if (lesson_box.SelectedItem != null)
+            {
+                lesson_comments comments_window = new lesson_comments(lesson_ids[lesson_box.SelectedIndex]);
+                comments_window.ShowDialog();
+                update_loginscreen = new BackgroundWorker();
+                clear_account_screen();
+                update_loginscreen.DoWork += update_loginscreen_DoWork;
+                update_loginscreen.RunWorkerAsync();
+            }
         }
 
         #endregion
@@ -669,6 +703,7 @@ namespace WpfApplication1
         {
 
         }
+
 
     }
 

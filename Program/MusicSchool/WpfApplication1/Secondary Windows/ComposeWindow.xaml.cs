@@ -33,6 +33,7 @@ namespace WpfApplication1
         public ComposeWindow(MainWindow parentWindow)
         {
             InitializeComponent();
+            this.Icon = BitmapFrame.Create(new Uri(Environment.CurrentDirectory + "/images/logo.ico"));
             this.parentWindow = parentWindow;
             InitializeComponent();
 

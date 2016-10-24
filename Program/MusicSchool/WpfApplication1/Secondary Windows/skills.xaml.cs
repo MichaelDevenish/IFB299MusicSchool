@@ -33,6 +33,7 @@ namespace WpfApplication1
         public skills()
         {
             InitializeComponent();
+            this.Icon = BitmapFrame.Create(new Uri(Environment.CurrentDirectory + "/images/logo.ico"));
             ThreadStart initialize = new ThreadStart(getInfo);
             Thread initialThread = new Thread(initialize);
             initialThread.Start();
@@ -61,7 +62,8 @@ namespace WpfApplication1
             tableData = new List<entry>();
             foreach (string[] el in userSkills)
             {
-                try {
+                try
+                {
                     tableData.Add(new entry { Name = teachers_inverse[el[0]], Skill = skillList_inverse[el[1]] });
                 }
                 catch
@@ -71,7 +73,7 @@ namespace WpfApplication1
             }
 
             //manipulate the table synchroniously
-            this.Dispatcher.Invoke(()=>  dataGrid.ItemsSource = tableData);
+            this.Dispatcher.Invoke(() => dataGrid.ItemsSource = tableData);
 
         }
 
@@ -82,7 +84,7 @@ namespace WpfApplication1
         {
             public string Name { get; set; }
             public string Skill { get; set; }
-            
+
         }
 
 
@@ -97,14 +99,14 @@ namespace WpfApplication1
             string query = "SELECT  user_ID, first_name, last_name FROM users WHERE role=1";
             List<string[]> data = db.simpleConnection(false, query, null);
             teachers = new Dictionary<string, string>();
-            foreach(string[] teach in data)
+            foreach (string[] teach in data)
             {
                 teachers.Add(teach[1] + " " + teach[2], teach[0] + "");
                 teachers_inverse.Add(teach[0] + "", teach[1] + " " + teach[2]);
             }
 
             this.Dispatcher.Invoke(() => teacherSelect.ItemsSource = teachers.Keys);
-            
+
             //Get the info on skills
             query = "SELECT  skill_ID, skill_name FROM skills";
             skillInfo = db.simpleConnection(false, query, null);
@@ -135,9 +137,9 @@ namespace WpfApplication1
             string addUser = teachers[(string)teacherSelect.SelectedItem];
 
             //use the dictionaries to quickly check if value isn't already in database
-            foreach(string[] us in userSkills)
+            foreach (string[] us in userSkills)
             {
-                if(us[0] == addUser && us[1] == addSkill)
+                if (us[0] == addUser && us[1] == addSkill)
                 {
                     System.Windows.MessageBox.Show("User skill already exists in database");
                     return;
@@ -161,7 +163,13 @@ namespace WpfApplication1
 
         private void delete_Click(object sender, RoutedEventArgs e)
         {
-            entry delete = (entry)dataGrid.SelectedItem;
+            entry delete;
+            try { delete = (entry)dataGrid.SelectedItem; }
+            catch { return; }
+
+            //if nothing selected, cancel;
+            if (delete == null || delete.Skill == "" || delete.Name == "") return;
+
             string query = "DELETE FROM user_skills WHERE skill_ID = @skillID AND user_ID = @userID";
             Dictionary<string, object> param = new Dictionary<string, object>()
             {

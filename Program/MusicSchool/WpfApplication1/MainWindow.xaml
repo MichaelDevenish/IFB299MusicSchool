@@ -1,7 +1,7 @@
 ﻿<Window x:Class="WpfApplication1.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="800" Width="800" MinWidth="807" MinHeight="800" >
+        Title="MainWindow" Height="800" Width="800" MinWidth="807" MinHeight="800">
 
     <Window.Resources>
 
@@ -48,21 +48,21 @@
 
     </Window.Resources>
     <Grid>
-        
+
         <Image HorizontalAlignment="Left" Height="152" VerticalAlignment="Top" Width="790"/>
         <TabControl Margin="0,100,0,0" Padding="0" SelectionChanged="tab_changed">
             <TabItem Header="ACCOUNT" Margin="-2,0,0,0" IsTabStop="False" Padding="0,-2,4,0">
-                <Grid Background="White" Margin="0,8,0,3">
+                <Grid Background="White" Margin="0,8,0,10">
                     <Label x:Name="passwordError" Content="Password must not be null" HorizontalAlignment="Center" Height="34" Margin="100,125,0,0" VerticalAlignment="Top" Width="176" FontSize="14.667" FontFamily="Corbel" Foreground="Red" Visibility="Hidden"/>
                     <Label x:Name="usernameError" Content="Username must not be null" HorizontalAlignment="Center" Height="33" Margin="100,66,0,0" VerticalAlignment="Top" Width="176" FontSize="14.667" FontFamily="Corbel" Foreground="Red" IsHitTestVisible="True" Visibility="Hidden"/>
-                    <Grid x:Name ="loginPrompt" HorizontalAlignment="Left" Height="231" Margin="247,62,0,0" VerticalAlignment="Top" Width="261">
-                        <Label x:Name="label2_Copy" Content="Username" Margin="-1,0,171,0" VerticalAlignment="Top" FontFamily="Corbel" FontSize="18.667" HorizontalAlignment="Center" Width="91"/>
-                        <TextBox x:Name="usernameBox" Height="24" TextWrapping="Wrap"  VerticalAlignment="Top" Width="262" Margin="0,37,-1,0" HorizontalAlignment="Center" />
-                        <Label x:Name="label1" Content="Password" Margin="0,66,155,0" VerticalAlignment="Top" FontFamily="Corbel" FontSize="18.667" HorizontalAlignment="Center" Width="106"/>
-                        <PasswordBox x:Name="passwordBox" Height="24" Margin="0,99,-1,0" VerticalAlignment="Top" Width="262" HorizontalAlignment="Center"/>
-                        <Button x:Name="loginButton" Style="{StaticResource loginButton}" Content="Login" VerticalAlignment="Top" Width="260" Margin="0,128,1,0" Click="loginButton_Click" Height="32" HorizontalAlignment="Center"/>
-                        <Button x:Name="signupButton" Style="{StaticResource loginButton}" Content="Sign Up" VerticalAlignment="Top" Width="100" Margin="160,177,1,0" Click="signupButton_Click" Height="32" HorizontalAlignment="Center"/>
-                        <Label x:Name="label" FontSize="14.667" Content="Don't have an account?" Margin="10,181,90,0" VerticalAlignment="Top" FontFamily="Corbel" HorizontalAlignment="Center" Width="161"/>
+                    <Grid x:Name ="loginPrompt" Height="231" Margin="0,0,0,100" Width="261">
+                        <Label x:Name="label2_Copy" Content="Username" Margin="-1,0,171,0" FontFamily="Corbel" FontSize="18.667" Width="91" VerticalAlignment="Top"/>
+                        <TextBox x:Name="usernameBox" Height="24" TextWrapping="Wrap" Width="262" Margin="0,37,-1,0" VerticalAlignment="Top" />
+                        <Label x:Name="label1" Content="Password" Margin="0,66,155,0" FontFamily="Corbel" FontSize="18.667" Width="106" VerticalAlignment="Top"/>
+                        <PasswordBox x:Name="passwordBox" Height="24" Margin="0,99,-1,0" Width="262" VerticalAlignment="Top"/>
+                        <Button x:Name="loginButton" Style="{StaticResource loginButton}" Content="Login" Width="260" Margin="0,128,1,0" Click="loginButton_Click" Height="32" VerticalAlignment="Top"/>
+                        <Button x:Name="signupButton" Style="{StaticResource loginButton}" Content="Sign Up" Width="100" Margin="160,177,1,0" Click="signupButton_Click" Height="32" VerticalAlignment="Top"/>
+                        <Label x:Name="label" FontSize="14.667" Content="Don't have an account?" Margin="10,181,90,0" FontFamily="Corbel" Width="161" VerticalAlignment="Top"/>
                         <Label x:Name="loginError" Content="Username or Password is incorrect" HorizontalAlignment="Center" Height="33" Margin="8,200,29,-14" VerticalAlignment="Top" Width="224" FontSize="14.667" FontFamily="Corbel" Foreground="Red" IsHitTestVisible="True" RenderTransformOrigin="0.469,0.939" Visibility="Hidden"/>
                     </Grid>
                     <Grid x:Name ="accountInfo" HorizontalAlignment="Left" Height="646" Margin="10,0,0,-23" VerticalAlignment="Top" Width="780" Visibility="Hidden">
@@ -73,15 +73,17 @@
                         </Grid.ColumnDefinitions>
                         <Button x:Name="manageSkills" Style="{StaticResource loginButton}" Content="Manage skills" VerticalAlignment="Top" Width="260" Margin="0,19,29,0" Click="open_skills_window" Height="32" HorizontalAlignment="Center" Grid.Column="2"/>
                         <Button x:Name="logOut_btn" Content="Sign Out" HorizontalAlignment="Left" Margin="10,105,0,0" VerticalAlignment="Top" Width="120" Height="40" Click="logOut_btn_Click"/>
-                        <Label x:Name="username_label" Content="Username" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" FontSize="32" FontWeight="Bold" Height="53" Width="202"/>
-                        <Label x:Name="name_label" Content="Full name" HorizontalAlignment="Left" Margin="0,63,0,0" VerticalAlignment="Top" FontStyle="Italic" Height="31" Width="202"/>
-                        <TextBox x:Name="lesson_comments" HorizontalAlignment="Left" Height="56" Margin="10,262,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="248" Grid.Column="1" TextChanged="textBox_TextChanged"/>
+                        <Label x:Name="username_label" Content="..." HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" FontSize="32" FontWeight="Bold" Height="53" Width="202"/>
+                        <Label x:Name="name_label" Content="..." HorizontalAlignment="Left" Margin="0,63,0,0" VerticalAlignment="Top" FontStyle="Italic" Height="31" Width="202"/>
+                        <TextBox x:Name="lesson_comments" HorizontalAlignment="Left" Height="80" Margin="10,274,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="248" Grid.Column="1" TextChanged="textBox_TextChanged"/>
                         <Label x:Name="label2" Content="Recent lessons:" Grid.Column="1" HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top" Height="31" Width="140"/>
                         <Label x:Name="label3" Content="Lessons attended:" Grid.Column="2" HorizontalAlignment="Left" Margin="0,96,0,0" VerticalAlignment="Top"/>
                         <Label x:Name="lesson_attend_number" Content="..." HorizontalAlignment="Left" Margin="10,132,0,0" VerticalAlignment="Top" Grid.Column="2"/>
                         <Label x:Name="label4" Content="Upcoming lessons:" HorizontalAlignment="Left" Margin="10,168,0,0" VerticalAlignment="Top" Grid.Column="2"/>
                         <Label x:Name="upcoming_lesson_number" Content="..." HorizontalAlignment="Left" Margin="10,199,0,0" VerticalAlignment="Top" Grid.Column="2"/>
                         <ListBox x:Name="lesson_box" HorizontalAlignment="Left" Height="174" Margin="10,63,0,0" VerticalAlignment="Top" Width="259" SelectionChanged="lesson_box_SelectionChanged" Grid.Column="1"/>
+                        <Label x:Name="label5" Content="Comments" Grid.Column="1" HorizontalAlignment="Left" Margin="10,238,0,0" VerticalAlignment="Top"/>
+                        <Button x:Name="modify_lesson" Content="Comment on lesson" HorizontalAlignment="Left" Margin="10,380,0,0" VerticalAlignment="Top" Width="193" Grid.Column="1" Click="modify_lesson_Click" Visibility="Hidden"/>
                     </Grid>
                 </Grid>
             </TabItem>
@@ -165,7 +167,7 @@
                     </Grid.ColumnDefinitions>
                     <Label Content="Music School History" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="246" Margin="4,10,0,0"/>
                     <Image x:Name ="imgHistory" Source="Teacher Img.jpg" VerticalAlignment ="Top" Height="812" Margin="-318,0,0,-178" HorizontalAlignment="Center" Opacity="0.35" Width="1115" Grid.ColumnSpan="2"/>
-                    <TextBox x:Name="txtInstrumentInfo_Copy2" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Administration Contact:&#xD;&#xA;&#xD;&#xA;Mika Williams&#xD;&#xA;07 3484 9287&#xD;&#xA;123 Ipsum st&#xD;&#xA;Lorum, Brisbane 4000" Width="227" Margin="10,50,0,0" VerticalAlignment="Top" Height="283"/>
+                    <TextBox x:Name="txtInstrumentInfo_Copy2" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Administration Contact:&#xD;&#xA;&#xD;&#xA;Mika Williams&#xD;&#xA;07 3484 9287&#xD;&#xA;123 Ipsum st&#xD;&#xA;Lorum, Brisbane 4000 &#xD;&#xA;BSB: 123-456 &#xD;&#xA; Acc No: 1234 5678" Width="227" Margin="10,50,0,0" VerticalAlignment="Top" Height="283"/>
                     <TextBox x:Name="txtInstrumentInfo_Copy3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Location:" Width="227" Margin="10,338,0,10"/>
                     <TextBox x:Name="txtInstrumentInfo_Copy" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Administration History:&#xD;&#xA; Pinelands Music School is run by a dedicated musician and teacher Mika Williams. Mika has had a passion for her music since she was a young and has been teaching music classes for years. Due to the large amount of interest from dedicated students she decided to open a music school, the Pinelands Music School. &#xD;&#xA;&#xD;&#xA;Pinelands immediately experienced a boom in popularity, from both talented students and experienced teachers which lead to its notoriety today. Pinelands has continued to provide professional, intimate teaching, ensuring students will be provided with an environment suited to encouraging young musicians to flourish.&#xD;&#xA;&#xD;&#xA;Upholding high quality standards, providing qualified teachers and bringing the best out of all students attending are Pineland Music School's aims." Width="527" Margin="10,10,0,0" VerticalAlignment="Top" Height="351" Grid.Column="1" TextChanged="txtInstrumentInfo_Copy_TextChanged"/>
                 </Grid>
