@@ -429,6 +429,7 @@ namespace WpfApplication1
                 }
                 this.Dispatcher.Invoke(() => lesson_attend_number.Content = lessons_attended + "/" + lessons_prior);
                 this.Dispatcher.Invoke(() => upcoming_lesson_number.Content = lessons_upcoming);
+                this.Dispatcher.Invoke(() => lesson_box.ItemsSource = lesson_list);
             }
 
         }
@@ -440,7 +441,7 @@ namespace WpfApplication1
         /// <param name="e"></param>
         private void lesson_box_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            lesson_comments.Text = comments[lesson_box.SelectedIndex];
+            if(lesson_box.SelectedIndex != -1) lesson_comments.Text = comments[lesson_box.SelectedIndex];
         }
 
         /// <summary>
