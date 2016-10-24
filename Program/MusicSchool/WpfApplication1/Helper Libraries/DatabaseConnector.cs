@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WpfApplication1;
+using System.Data.SqlClient;
 
 namespace DatabaseConnector
 {
@@ -15,6 +16,9 @@ namespace DatabaseConnector
     public class DatabaseConnector
     {
         private MySqlConnection connection;
+        private MySqlDataAdapter sda;
+        private MySqlCommandBuilder scb;
+        private DataTable dt;
         private string server;
         private string database;
         private string uid;
@@ -39,6 +43,44 @@ namespace DatabaseConnector
             database + ";" + "UID=" + uid + ";" + "PASSWORD=" + password + ";";
 
             connection = new MySqlConnection(connectionString);
+        }
+
+        public DataTable getUsers()
+        {
+            
+            sda = new MySqlDataAdapter();
+            MySqlCommand cmd = new MySqlCommand(@"SELECT user_id, first_name, last_name, username, dob, role, email FROM users ;", connection);
+            sda.SelectCommand = cmd;
+            sda.SelectCommand.CommandTimeout = 0;
+            dt = new DataTable();
+            
+            sda.Fill(dt);
+
+            return dt;
+ 
+        }
+
+        public DataTable getInstruments()
+        {
+
+            sda = new MySqlDataAdapter();
+            MySqlCommand cmd = new MySqlCommand(@"SELECT * FROM instruments ;", connection);
+            sda.SelectCommand = cmd;
+            sda.SelectCommand.CommandTimeout = 0;
+            dt = new DataTable();
+
+            sda.Fill(dt);
+
+            return dt;
+
+        }
+
+
+
+        public void updateFields()
+        {
+            scb = new MySqlCommandBuilder(sda);
+            sda.Update(dt);
         }
 
         /// <summary>
