@@ -85,6 +85,11 @@ namespace WpfApplication1
             sessionClock.Interval = new TimeSpan(0, 0, 1);
             sessionClock.Start();
 
+            Image[] instrumentImages = new Image[3] { new Image(), new Image(), new Image() };
+            instrumentImages[0].Source = new BitmapImage(new Uri("instrument1.jpg"));
+            instrumentImages[1].Source = new BitmapImage(new Uri("instrument2.jpg"));
+            instrumentImages[2].Source = new BitmapImage(new Uri("instrument3.jpg"));
+
         }
 
         /// <summary>
@@ -680,7 +685,7 @@ namespace WpfApplication1
 
         private void wallpaperIncrement_Tick(object sender, EventArgs e)
         {
-            // wallpaper array index increment
+            //increment array instrumentImage
         }
 
         private void sessionClock_Tick(object sender, EventArgs e)
