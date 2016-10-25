@@ -24,7 +24,8 @@ namespace WindowsFormsApplication1
             //establishDBConnection();
             InitializeComponent();
             this.Text = "Admin Application";
-           
+            this.MinimumSize = new Size(758, 508);
+            this.MaximumSize = new Size(758, 508);           
             
         }
 
@@ -138,8 +139,32 @@ namespace WindowsFormsApplication1
             string instName = textBox7.Text;
             string instType = textBox8.Text;
             string quality = richTextBox1.Text;
-            //call a method to add the information to the database
-            database.InsertInstrument(quality, instName, instType);
+
+            if (instName == "" || instType == "" || quality == "")
+            {
+                MessageBox.Show("Please fill all input fields.");
+            }
+            else
+            {
+                //call a method to add the information to the database
+                database.InsertInstrument(quality, instName, instType);
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            toolTips();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            toolTips();
+        }
+        private void toolTips()
+        {
+            MessageBox.Show("EDIT: \nSimply click on a square in the tabel and change it's input, then click apply changes" +
+               "\n \nDELETE: \nSimply click on the left most edge of the row to select it and then hit delete on your KeyBoard, now click apply changes."
+               + "\n \nADD: \nPlease fill out all input fields and click add then click the load button to verify that you entry has been added.");
         }
 
     }
